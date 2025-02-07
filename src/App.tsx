@@ -4,6 +4,7 @@ import Create from "./pages/Create";
 import Tasks from "./pages/Tasks";
 import Wellcome from "./pages/Wellcome";
 
+// Definimos el tipo para el evento beforeinstallprompt
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
   readonly userChoice: Promise<{
@@ -29,22 +30,24 @@ const Content = () => {
     useState<BeforeInstallPromptEvent | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Efecto para manejar la transición de páginas
   useEffect(() => {
     if (location !== displayLocation) setTransistionStage("fadeOut");
   }, [location, displayLocation]);
 
+  // Efecto para detectar si el usuario está en un dispositivo móvil y escuchar el evento beforeinstallprompt
   useEffect(() => {
+    // Detectar si el usuario está en un dispositivo móvil
     const userAgent = navigator.userAgent.toLowerCase();
-    console.log({ userAgent });
-    
     const isMobileDevice =
       /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
         userAgent
       );
-      
+
     console.log("Is mobile device?", isMobileDevice); // Depuración
     setIsMobile(isMobileDevice);
 
+    // Escuchar el evento beforeinstallprompt
     const handleBeforeInstallPrompt = (e: Event) => {
       console.log("beforeinstallprompt event fired!"); // Depuración
       e.preventDefault();
@@ -61,6 +64,7 @@ const Content = () => {
     };
   }, []);
 
+  // Función para manejar la instalación de la PWA
   const handleInstallClick = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
@@ -87,31 +91,51 @@ const Content = () => {
         }
       }}
     >
+      {/* Mostrar el banner de instalación solo si es un dispositivo móvil y el evento beforeinstallprompt está disponible */}
       {isMobile && deferredPrompt && (
         <div
           style={{
             position: "fixed",
-            bottom: "20px",
+            top: "20px",
             left: "50%",
             transform: "translateX(-50%)",
-            backgroundColor: "white",
-            padding: "10px",
-            borderRadius: "5px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "rgba(255, 255, 255, 0.9)", // Fondo casi transparente
+            padding: "15px 20px",
+            borderRadius: "12px",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
             zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            gap: "15px",
+            fontFamily: "Arial, sans-serif",
+            color: "#333",
+            fontSize: "14px",
+            maxWidth: "90%",
+            width: "100%",
           }}
         >
-          <p>¿Te gustaría instalar esta aplicación en tu dispositivo?</p>
+          <p style={{ margin: 0 }}>
+            ¿Te gustaría instalar esta aplicación en tu dispositivo?
+          </p>
           <button
             onClick={handleInstallClick}
             style={{
-              backgroundColor: "#007bff",
+              backgroundColor: "#34A853", // Verde de Google
               color: "white",
               border: "none",
-              padding: "5px 10px",
-              borderRadius: "5px",
+              padding: "8px 16px",
+              borderRadius: "8px",
               cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: "bold",
+              transition: "background-color 0.3s ease",
             }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.backgroundColor = "#2E8B57")
+            } // Efecto hover
+            onMouseOut={(e) =>
+              (e.currentTarget.style.backgroundColor = "#34A853")
+            }
           >
             Instalar
           </button>

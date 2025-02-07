@@ -1,7 +1,7 @@
 import { BackgroundSyncPlugin } from "workbox-background-sync";
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
 import { NavigationRoute, Route, registerRoute } from "workbox-routing";
-import { CacheFirst, NetworkFirst } from "workbox-strategies";
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -10,6 +10,11 @@ cleanupOutdatedCaches();
 precacheAndRoute(self.__WB_MANIFEST);
 
 self.skipWaiting();
+
+registerRoute(
+  ({ request }) => request.destination === "image",
+  new StaleWhileRevalidate()
+);
 
 // cache images
 const imageRoute = new Route(
@@ -55,6 +60,7 @@ const taskSubmitRoute = new Route(
   },
   // new NetworkOnly({
   new NetworkFirst({
+    cacheName: "api/submit-task",
     plugins: [bgSyncPlugin],
   }),
   "POST"
@@ -69,6 +75,7 @@ const editTaskRoute = new Route(
   },
   new NetworkFirst({
     // new NetworkOnly({
+    cacheName: "api/edit-task",
     plugins: [bgSyncPlugin],
   }),
   "PATCH"
@@ -82,6 +89,7 @@ const deleteTaskRoute = new Route(
     );
   },
   new NetworkFirst({
+    cacheName: "api/delete-task",
     plugins: [bgSyncPlugin],
   }),
   "DELETE"

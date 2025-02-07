@@ -1,21 +1,21 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
-// https://vitejs.dev/config/
+
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
       devOptions: {
-        enabled: true,
-        type: "module",
+        enabled: true, // Habilita el soporte de PWA en desarrollo
+        type: "module", // Usa módulos ES para el service worker en desarrollo
       },
-      strategies: "injectManifest",
-      srcDir: "src",
-      filename: "sw.ts",
-      registerType: "autoUpdate",
+      strategies: "injectManifest", // Usa injectManifest para personalizar el service worker
+      srcDir: "src", // Carpeta donde está el archivo sw.ts
+      filename: "sw.ts", // Nombre del archivo del service worker
+      registerType: "autoUpdate", // Actualización automática del service worker
       injectManifest: {
-        swDest: "dist/sw.js",
+        swDest: "dist/sw.js", // Archivo de salida del service worker
       },
       manifest: {
         name: "Task Management APP",
@@ -48,6 +48,28 @@ export default defineConfig({
         start_url: "/",
         display: "standalone",
         orientation: "portrait",
+      },
+      workbox: {
+        globIgnores: [
+          "**/@vite/**", // Ignora archivos de Vite
+          "**/node_modules/**", // Ignora node_modules
+          "**/src/**", // Ignora la carpeta src (solo para desarrollo)
+          "**/*.ts", // Ignora archivos TypeScript
+          "**/*.tsx", // Ignora archivos TypeScript JSX
+        ],
+        runtimeCaching: [
+          {
+            urlPattern: /\.(png|jpg|jpeg|svg|webp)$/, // Cachear imágenes
+            handler: "CacheFirst",
+            options: {
+              cacheName: "images",
+              expiration: {
+                maxEntries: 50, // Máximo 50 entradas en la caché
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
+              },
+            },
+          },
+        ],
       },
     }),
   ],
