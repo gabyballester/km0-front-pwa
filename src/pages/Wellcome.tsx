@@ -1,6 +1,5 @@
 import { IoArrowForward } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import imageSrc from "../assets/wellcome.svg";
 import Layout from "../components/Layout";
 
 function Wellcome() {
@@ -9,7 +8,7 @@ function Wellcome() {
       <div className="flex flex-col h-screen">
         <div className="mx-auto my-auto max-w-96">
           <div className="pt-10 mx-auto">
-            <img src={imageSrc} alt="Wellcome Page" />
+            <img src="/assets/wellcome.svg" alt="Wellcome Page" />
           </div>
 
           <div className="mt-10">

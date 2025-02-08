@@ -73,4 +73,11 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[name].[ext]", // Evita el hash en los nombres de los archivos
+      },
+    },
+  },
 });
