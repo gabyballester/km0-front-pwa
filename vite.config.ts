@@ -57,27 +57,27 @@ export default defineConfig({
           "**/*.ts", // Ignora archivos TypeScript
           "**/*.tsx", // Ignora archivos TypeScript JSX
         ],
-        runtimeCaching: [
-          {
-            urlPattern: /\.(png|jpg|jpeg|svg|webp)$/, // Cachear imágenes
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "images",
-              expiration: {
-                maxEntries: 50, // Máximo 50 entradas en la caché
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
-              },
-            },
-          },
-        ],
+        // runtimeCaching: [
+        //   {
+        //     urlPattern: /\.(png|jpg|jpeg|svg|webp)$/, // Cachear imágenes
+        //     handler: "NetworkFirst",
+        //     options: {
+        //       cacheName: "images",
+        //       expiration: {
+        //         maxEntries: 50, // Máximo 50 entradas en la caché
+        //         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
+        //       },
+        //     },
+        //   },
+        // ],
       },
     }),
   ],
-  build: {
-    rollupOptions: {
-      output: {
-        assetFileNames: "assets/[name].[ext]", // Evita el hash en los nombres de los archivos
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     output: {
+  //       assetFileNames: "assets/[name].[ext]", // Evita el hash en los nombres de los archivos
+  //     },
+  //   },
+  // },
 });
