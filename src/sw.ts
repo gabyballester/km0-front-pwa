@@ -1,8 +1,7 @@
 import { BackgroundSyncPlugin } from "workbox-background-sync";
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
 import { NavigationRoute, Route, registerRoute } from "workbox-routing";
-// import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
-import { NetworkFirst } from "workbox-strategies";
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 declare let self: ServiceWorkerGlobalScope;
 
@@ -12,21 +11,21 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 self.skipWaiting();
 
-// registerRoute(
-//   ({ request }) => request.destination === "image",
-//   new StaleWhileRevalidate()
-// );
+registerRoute(
+  ({ request }) => request.destination === "image",
+  new StaleWhileRevalidate()
+);
 
 // cache images
-// const imageRoute = new Route(
-//   ({ request, sameOrigin }) => {
-//     return sameOrigin && request.destination === "image";
-//   },
-//   new CacheFirst({
-//     cacheName: "images",
-//   })
-// );
-// registerRoute(imageRoute);
+const imageRoute = new Route(
+  ({ request, sameOrigin }) => {
+    return sameOrigin && request.destination === "image";
+  },
+  new CacheFirst({
+    cacheName: "images",
+  })
+);
+registerRoute(imageRoute);
 
 // cache api calls
 const fetchTasksRoute = new Route(
