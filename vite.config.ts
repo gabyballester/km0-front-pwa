@@ -60,7 +60,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /\.(png|jpg|jpeg|svg|webp)$/, // Cachear imágenes
-            handler: "CacheFirst",
+            handler: "NetworkFirst",
             options: {
               cacheName: "images",
               expiration: {
