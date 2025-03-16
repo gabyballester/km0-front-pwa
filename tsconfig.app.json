@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "composite": true,
     "skipLibCheck": true,
+    "disableReferencedProjectLoad": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,7 +26,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    // Añadir esto ↓
+    "types": [
+      "vite/client",
+      "workbox-precaching",
+      "workbox-routing",
+      "workbox-strategies"
+    ]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

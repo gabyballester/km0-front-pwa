@@ -4,18 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <!-- Favicon ICO (para navegadores que no soportan SVG) -->
+    <!-- Favicon ICO (para navegadores antiguos) -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
+
     <!-- Favicon SVG (recomendado para navegadores modernos) -->
+
     <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+
     <!-- Apple Touch Icon (para dispositivos iOS/macOS) -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-192x192.png" />
+    <link
+      rel="apple-touch-icon"
+      href="/apple-touch-icon-180x180.png"
+      sizes="180x180"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/apple-touch-icon-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="/splash-screen-640x1136.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    />
+
+    <!-- Icono de windows/edge -->
+    <meta name="msapplication-TileImage" content="/pwa-192x192.png" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Aplicación PWA para gestión de recursos locales KM0"
+    />
     <!-- Título de la aplicación -->
     <title>Km0-pwa-react-ts</title>
+    <style>
+      .splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff url("/splash-screen-640x1136.png") center/cover
+          no-repeat;
+        z-index: 9999;
+        animation: fadeOut 1s 2s forwards;
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- <div id="splash" class="splash-screen"></div> -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Oculta el splash cuando la app cargue
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("splash")?.remove();
+      });
+    </script>
   </body>
 </html>
