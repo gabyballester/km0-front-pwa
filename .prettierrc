@@ -1,0 +1,27 @@
+{
+  "jsxSingleQuote": true,
+  "semi": true,
+  "endOfLine": "lf",
+  "bracketSpacing": true,
+  "printWidth": 100,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "tabWidth": 2,
+  "useTabs": false,
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "files": ["*.js", "*.cjs", "*.mjs"],
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": ["eslint.config.js"],
+      "options": {
+        "parser": "typescript"
+      }
+    }
+  ]
+}
