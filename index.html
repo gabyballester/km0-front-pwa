@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,19 +9,11 @@
 
     <!-- Favicon SVG (recomendado para navegadores modernos) -->
 
-    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+    <link rel="icon" href="src\assets\svg\favicon.svg" sizes="any" type="image/svg+xml" />
 
     <!-- Apple Touch Icon (para dispositivos iOS/macOS) -->
-    <link
-      rel="apple-touch-icon"
-      href="/apple-touch-icon-180x180.png"
-      sizes="180x180"
-    />
-    <link
-      rel="apple-touch-icon"
-      href="/apple-touch-icon-192x192.png"
-      sizes="192x192"
-    />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-192x192.png" sizes="192x192" />
     <link
       rel="apple-touch-startup-image"
       href="/splash-screen-640x1136.png"
@@ -33,10 +25,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
 
     <!-- SEO -->
-    <meta
-      name="description"
-      content="Aplicación PWA para gestión de recursos locales KM0"
-    />
+    <meta name="description" content="Aplicación PWA para gestión de recursos locales KM0" />
     <!-- Título de la aplicación -->
     <title>Km0-pwa-react-ts</title>
     <style>
@@ -46,8 +35,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: #ffffff url("/splash-screen-640x1136.png") center/cover
-          no-repeat;
+        background: #ffffff url('/splash-screen-640x1136.png') center/cover no-repeat;
         z-index: 9999;
         animation: fadeOut 1s 2s forwards;
       }
@@ -65,8 +53,8 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       // Oculta el splash cuando la app cargue
-      window.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("splash")?.remove();
+      window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('splash')?.remove();
       });
     </script>
   </body>

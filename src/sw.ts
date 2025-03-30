@@ -1,45 +1,42 @@
 /// <reference lib="webworker" />
+import { clientsClaim } from 'workbox-core';
+import { ExpirationPlugin } from 'workbox-expiration';
 import {
   cleanupOutdatedCaches,
   precacheAndRoute,
-  createHandlerBoundToURL,
-} from "workbox-precaching";
-import { clientsClaim } from "workbox-core";
-import { registerRoute, NavigationRoute } from "workbox-routing";
-import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
-import { ExpirationPlugin } from "workbox-expiration";
+  createHandlerBoundToURL
+} from 'workbox-precaching';
+import { registerRoute, NavigationRoute } from 'workbox-routing';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
-type ManifestEntry = { url: string; revision: string | null };
+interface ManifestEntry {
+  url: string;
+  revision: string | null;
+}
 const isDev = import.meta.env.DEV;
 
-const wbManifest = self.__WB_MANIFEST as (
-  | string
-  | { url: string; revision?: string | null }
-)[];
+const wbManifest = self.__WB_MANIFEST as (string | { url: string; revision?: string | null })[];
 
 // ===== PRECACHE CONFIGURATION =====
 
 const manifestFiltered: ManifestEntry[] = wbManifest
-  .filter((entry) => {
-    const url = typeof entry === "string" ? entry : entry.url;
+  .filter(entry => {
+    const url = typeof entry === 'string' ? entry : entry.url;
     return isDev
-      ? url === "index.html" || // ✅ Cambio clave: Asegurar index.html en dev
-          !/@vite|react-refresh|__vite_ping|\.map$|^chunk-|@react-refresh|@id|@fs/.test(
-            url
-          )
+      ? url === 'index.html' || // ✅ Cambio clave: Asegurar index.html en dev
+          !/@vite|react-refresh|__vite_ping|\.map$|^chunk-|@react-refresh|@id|@fs/.test(url)
       : true;
   })
   .map((entry): ManifestEntry => {
-    if (typeof entry === "string") {
+    if (typeof entry === 'string') {
       return { url: entry, revision: null };
     }
     return {
       url: entry.url,
       revision:
-        entry.revision ||
-        (entry.url === "index.html" && isDev ? Date.now().toString() : null),
+        entry.revision || (entry.url === 'index.html' && isDev ? Date.now().toString() : null)
     };
   });
 
@@ -51,80 +48,81 @@ const commonStrategyOptions = {
     new ExpirationPlugin({
       maxEntries: 100,
       maxAgeSeconds: isDev ? 3600 : 30 * 24 * 3600,
-      purgeOnQuotaError: true,
-    }),
-  ],
+      purgeOnQuotaError: true
+    })
+  ]
 };
 
 // ===== RUNTIME CACHING =====
 
 // Fonts caching
 registerRoute(
-  ({ url }) => url.hostname === "fonts.gstatic.com",
+  ({ url }) => url.hostname === 'fonts.gstatic.com',
   new CacheFirst({
-    cacheName: `${isDev ? "dev" : "prod"}-google-fonts`,
+    cacheName: `${isDev ? 'dev' : 'prod'}-google-fonts`,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 20,
-        maxAgeSeconds: 60 * 60 * 24 * 365, // 1 año
-      }),
+        maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
+      })
     ],
-    matchOptions: { ignoreVary: true },
+    matchOptions: { ignoreVary: true }
   })
 );
 
 // Google Fonts stylesheets
 registerRoute(
-  ({ url }) => url.href.startsWith("https://fonts.googleapis.com/"),
+  ({ url }) => url.href.startsWith('https://fonts.googleapis.com/'),
   new StaleWhileRevalidate({
-    cacheName: `${isDev ? "dev" : "prod"}-google-fonts-stylesheets`,
-    ...commonStrategyOptions,
+    cacheName: `${isDev ? 'dev' : 'prod'}-google-fonts-stylesheets`,
+    ...commonStrategyOptions
   })
 );
 
 // Images strategy
 const imageStrategy = new CacheFirst({
-  cacheName: `${isDev ? "dev" : "prod"}-images`,
-  ...commonStrategyOptions,
+  cacheName: `${isDev ? 'dev' : 'prod'}-images`,
+  ...commonStrategyOptions
 });
 
-registerRoute(({ request }) => request.destination === "image", imageStrategy);
+registerRoute(({ request }) => request.destination === 'image', imageStrategy);
 
 // Static assets
 registerRoute(
-  ({ request }) => ["style", "script", "worker"].includes(request.destination),
+  ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
   new StaleWhileRevalidate({
-    cacheName: `${isDev ? "dev" : "prod"}-static-assets`,
-    ...commonStrategyOptions, // Includes ignoreVary
+    cacheName: `${isDev ? 'dev' : 'prod'}-static-assets`,
+    ...commonStrategyOptions // Includes ignoreVary
   })
 );
 
 // ===== NAVIGATION HANDLING =====
 if (!isDev) {
-  const navigationHandler = createHandlerBoundToURL("index.html");
+  const navigationHandler = createHandlerBoundToURL('index.html');
   const navigationRoute = new NavigationRoute(navigationHandler, {
-    allowlist: [new RegExp(`^${import.meta.env.BASE_URL || "/"}`)],
-    denylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|json|xml|webp)$/, /^\/_/],
+    allowlist: [new RegExp(`^${import.meta.env.BASE_URL || '/'}`)],
+    // denylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|json|xml|webp)$/, /^\/_/]
+    denylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css)(\?.*)?$/, /^\/_/]
   });
   registerRoute(navigationRoute);
 }
 
 // ===== DEVELOPMENT HANDLING =====
 if (isDev) {
-  self.addEventListener("fetch", (event) => {
+  self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
-    if (url.protocol === "ws:" || url.pathname.startsWith("/@")) {
+    if (url.protocol === 'ws:' || url.pathname.startsWith('/@')) {
       event.respondWith(new Response(null, { status: 502 }));
       return;
     }
     // Offline handling
-    if (url.pathname.startsWith("/@")) return;
+    if (url.pathname.startsWith('/@')) return;
 
     event.respondWith(
       (async () => {
         try {
-          const cache = await caches.open("dev-fallback");
+          const cache = await caches.open('dev-fallback');
           const networkResponse = await fetch(event.request);
 
           if (!isDev) {
@@ -135,21 +133,17 @@ if (isDev) {
 
           return networkResponse;
         } catch (error) {
-          console.log("error", error);
+          console.error('error', error);
 
           const cachedResponse = await caches.match(event.request);
           if (cachedResponse) return cachedResponse;
 
-          if (event.request.mode === "navigate") {
-            const fallback = await caches.match("/index.html");
-            const offlinePage = await caches.match("/offline.html");
-            return (
-              fallback ||
-              offlinePage ||
-              new Response("Offline", { status: 503 })
-            );
+          if (event.request.mode === 'navigate') {
+            const fallback = await caches.match('/index.html');
+            const offlinePage = await caches.match('/offline.html');
+            return fallback || offlinePage || new Response('Offline', { status: 503 });
           }
-          return new Response("Offline", { status: 503 });
+          return new Response('Offline', { status: 503 });
         }
       })()
     );
@@ -158,33 +152,33 @@ if (isDev) {
 
 // ===== CACHE MANAGEMENT =====
 
-self.addEventListener("error", (event) => {
-  console.error("SW Error:", {
+self.addEventListener('error', event => {
+  console.error('SW Error:', {
     error: event.error,
     message: event.message,
     filename: event.filename,
     lineno: event.lineno,
-    colno: event.colno,
+    colno: event.colno
   });
 });
 
-self.addEventListener("unhandledrejection", (event) => {
-  console.error("SW Unhandled Rejection:", event.reason);
+self.addEventListener('unhandledrejection', event => {
+  console.error('SW Unhandled Rejection:', event.reason);
 });
 
-self.addEventListener("install", (event) => {
-  console.log("[Service Worker] Installing...");
-  console.log({ event });
+self.addEventListener('install', event => {
+  console.warn('[Service Worker] Installing...');
+  console.warn({ event });
 });
-self.addEventListener("activate", (event) => {
+self.addEventListener('activate', event => {
   event.waitUntil(
     caches
       .keys()
-      .then((cacheNames) =>
+      .then(cacheNames =>
         Promise.all(
           cacheNames
-            .filter((name) => name.startsWith(isDev ? "dev-" : "prod-"))
-            .map((name) => caches.delete(name))
+            .filter(name => name.startsWith(isDev ? 'dev-' : 'prod-'))
+            .map(name => caches.delete(name))
         )
       )
   );
