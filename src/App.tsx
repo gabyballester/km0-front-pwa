@@ -10,7 +10,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-function App() {
+export function App() {
   const [count, setCount] = useState(0);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallMessage, setShowInstallMessage] = useState(false);
@@ -95,5 +95,3 @@ function App() {
     </>
   );
 }
-
-export default App;

@@ -31,5 +31,5 @@
     "types": ["vite/client", "workbox-precaching", "workbox-routing", "workbox-strategies"]
   },
   "include": ["src", "src/vite-env.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

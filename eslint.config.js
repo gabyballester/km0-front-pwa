@@ -21,7 +21,7 @@ export default tseslint.config(
         React: 'writable'
       },
       parserOptions: {
-        project: './tsconfig.app.json',
+        project: './tsconfig.eslint.json',
         ecmaFeatures: {
           jsx: true
         },
@@ -142,17 +142,17 @@ export default tseslint.config(
   },
   // Configuración para archivos de configuración (tsconfig.node.json)
   {
-    files: ['vite.config.ts', 'pwa-assets.config.ts'],
+    files: ['vite.config.ts', 'pwa-assets.config.ts', 'jest.config.ts'],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.node.json',
+        project: './tsconfig.eslint.json',
         EXPERIMENTAL_useProjectService: true
       }
     },
     settings: {
       'import/resolver': {
         typescript: {
-          project: './tsconfig.node.json',
+          project: './tsconfig.eslint.json',
           alwaysTryTypes: true,
           conditions: ['import', 'require', 'default'],
           extensionAlias: {

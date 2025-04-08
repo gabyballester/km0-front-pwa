@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": [
+    "src",
+    "test",
+    "jest.config.ts",
+    "vite.config.ts",
+    "pwa-assets.config.ts",
+    "src/vite-env.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "dev-dist"]
+}
