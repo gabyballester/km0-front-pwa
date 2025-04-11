@@ -31,3 +31,26 @@ declare module '*.svg?url' {
   const src: string;
   export default src;
 }
+
+declare module 'util' {
+  export class TextEncoder {
+    encode(input?: string): Uint8Array;
+    encoding: string; // Es necesario incluir encoding para el conflicto.
+    encodeInto?(source: string, destination: Uint8Array): { read: number; written: number }; // Método opcional
+  }
+
+  export class TextDecoder {
+    constructor(encoding?: string, options?: { fatal?: boolean; ignoreBOM?: boolean });
+    decode(input?: Uint8Array, options?: { stream?: boolean }): string;
+    encoding: string;
+    fatal: boolean;
+    ignoreBOM: boolean;
+  }
+}
+
+declare global {
+  interface GlobalThis {
+    TextEncoder: typeof TextEncoder;
+    TextDecoder: typeof TextDecoder;
+  }
+}

@@ -13,7 +13,7 @@ const config: Config = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
-  transformIgnorePatterns: ['/node_modules/']
+  transformIgnorePatterns: ['/node_modules/(?!react-router)']
 
   //si uso toastify
   // transformIgnorePatterns: ['/node_modules/(?!react-toastify)']
