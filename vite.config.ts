@@ -8,17 +8,15 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-// Función para generar hash MD5
+// Función para resolver rutas relativas
+const applyToPath = (url: string) => resolve(__dirname, url);
 
 // Calcula la revisión de index.html (útil para evitar problemas de caché en producción)
 const htmlRevision = !isDev
   ? createHash('md5')
-      .update(readFileSync(resolve(__dirname, 'index.html')))
+      .update(readFileSync(applyToPath('index.html')))
       .digest('hex')
   : 'dev-html-revision';
-
-// Función para resolver rutas relativas
-const applyToPath = (url: string) => resolve(__dirname, url);
 
 export default defineConfig({
   base: '/', // Ajusta si la app está en un subdirectorio
