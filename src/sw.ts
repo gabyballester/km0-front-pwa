@@ -3,10 +3,10 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import {
   cleanupOutdatedCaches,
-  precacheAndRoute,
-  createHandlerBoundToURL
+  createHandlerBoundToURL,
+  precacheAndRoute
 } from 'workbox-precaching';
-import { registerRoute, NavigationRoute } from 'workbox-routing';
+import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
@@ -169,6 +169,7 @@ self.addEventListener('unhandledrejection', event => {
 self.addEventListener('install', event => {
   console.warn('[Service Worker] Installing...');
   console.warn({ event });
+  console.warn('[Service Worker] Installed!!');
 });
 self.addEventListener('activate', event => {
   event.waitUntil(

@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
-import { AppRouter } from './AppRouter';
-import { PWAInstallComponent } from './components/pwa-install-component/PWAInstallComponent';
+import { PWAInstallComponent } from '@/shared/components';
 
-import './index.css';
+import { AppRouter } from './AppRouter';
+
+import './styles/global.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
