@@ -1,1 +1,2 @@
-export * from './pwa-install-component/PWAInstallComponent';
+export * from './ui';
+export * from './custom';

@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
+import { AppRouter } from '@/app/AppRouter';
 import { PWAInstallComponent } from '@/shared/components';
-
-import { AppRouter } from './AppRouter';
 
 import './styles/global.css';
 

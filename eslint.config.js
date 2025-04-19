@@ -31,6 +31,7 @@ export default tseslint.config(
       },
       parserOptions: {
         project: './tsconfig.eslint.json',
+        warnOnMultipleProjects: false,
         ecmaFeatures: { jsx: true },
         EXPERIMENTAL_useProjectService: true
       }
@@ -49,13 +50,13 @@ export default tseslint.config(
       'import/resolver': {
         typescript: {
           ...importResolverBase,
-          project: './tsconfig.app.json'
+          project: ['./tsconfig.app.json', './tsconfig.eslint.json']
         }
       }
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': 'off',
       'no-multiple-empty-lines': ['error', { max: 1 }],
       'padding-line-between-statements': [
         'error', // También una línea en blanco antes de una expresión
@@ -149,6 +150,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: './tsconfig.eslint.json',
+        warnOnMultipleProjects: false,
         EXPERIMENTAL_useProjectService: true
       }
     },

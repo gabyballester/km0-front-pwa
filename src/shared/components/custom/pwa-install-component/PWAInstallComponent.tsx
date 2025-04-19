@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import './PWAInstallComponent.css';
+import { Button } from '@/shared/components';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -52,23 +52,42 @@ export const PWAInstallComponent = () => {
   };
 
   const handleCloseMessage = () => {
-    setShowInstallMessage(false);
+    setShowInstallMessage(prevstate => !prevstate);
     sessionStorage.setItem('installMessageClosed', 'true');
+  };
+
+  const handleOpenMessage = () => {
+    setShowInstallMessage(prevstate => !prevstate);
+    sessionStorage.removeItem('installMessageClosed');
   };
 
   return (
     <>
       {deferredPrompt && (
-        <button onClick={handleInstallClick} className='install-button'>
+        <Button
+          onClick={handleOpenMessage}
+          className='fixed right-5 bottom-5 z-50 rounded-lg bg-green-600 px-5 py-2.5 text-white shadow-md transition-colors hover:bg-green-700'
+        >
           Instalar App
-        </button>
+        </Button>
       )}
+
       {showInstallMessage && (
-        <div className='install-message'>
-          <p>¿Quieres usar la aplicación?</p>
-          <div className='install-message-buttons'>
-            <button onClick={handleInstallClick}>Instalar</button>
-            <button onClick={handleCloseMessage}>Cerrar</button>
+        <div className='fixed top-4 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-3 rounded-xl bg-gray-800 p-4 text-white shadow-lg'>
+          <p className='m-0 text-base'>¿Quieres usar la aplicación?</p>
+          <div className='flex gap-2'>
+            <Button
+              onClick={handleInstallClick}
+              className='rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-700'
+            >
+              Instalar
+            </Button>
+            <Button
+              onClick={handleCloseMessage}
+              className='rounded-md border border-gray-500 bg-transparent px-4 py-2 text-sm text-white transition-colors hover:bg-gray-100/10'
+            >
+              Cerrar
+            </Button>
           </div>
         </div>
       )}
