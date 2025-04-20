@@ -9,16 +9,25 @@
   "arrowParens": "avoid",
   "tabWidth": 2,
   "useTabs": false,
-  "plugins": ["prettier-plugin-tailwindcss"],
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-classnames"
+  ],
   "overrides": [
     {
-      "files": ["*.js", "*.cjs", "*.mjs"],
+      "files": [
+        "*.js",
+        "*.cjs",
+        "*.mjs"
+      ],
       "options": {
         "parser": "babel"
       }
     },
     {
-      "files": ["eslint.config.js"],
+      "files": [
+        "eslint.config.js"
+      ],
       "options": {
         "parser": "typescript"
       }

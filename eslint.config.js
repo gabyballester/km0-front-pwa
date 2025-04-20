@@ -9,6 +9,15 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const importResolverBase = {
+  alwaysTryTypes: true,
+  conditions: ['import', 'require', 'default'],
+  extensionAlias: {
+    '.js': ['.js', '.ts', '.tsx'],
+    '.svg': ['.svg']
+  }
+};
+
 export default tseslint.config(
   { ignores: ['dist', 'dev-dist'] },
   {
@@ -22,9 +31,8 @@ export default tseslint.config(
       },
       parserOptions: {
         project: './tsconfig.eslint.json',
-        ecmaFeatures: {
-          jsx: true
-        },
+        warnOnMultipleProjects: false,
+        ecmaFeatures: { jsx: true },
         EXPERIMENTAL_useProjectService: true
       }
     },
@@ -36,9 +44,19 @@ export default tseslint.config(
       'eslint-comments': eslintComments,
       react: reactPlugin
     },
+
+    settings: {
+      react: { version: 'detect' },
+      'import/resolver': {
+        typescript: {
+          ...importResolverBase,
+          project: ['./tsconfig.app.json', './tsconfig.eslint.json']
+        }
+      }
+    },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': 'off',
       'no-multiple-empty-lines': ['error', { max: 1 }],
       'padding-line-between-statements': [
         'error', // También una línea en blanco antes de una expresión
@@ -77,7 +95,15 @@ export default tseslint.config(
           'newlines-between': 'always'
         }
       ],
-      // Nuevas reglas React
+      'sort-imports': [
+        'error',
+        {
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
+          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single']
+        }
+      ],
       'react/jsx-key': 'error',
       'react/jsx-no-target-blank': 'error',
       'react/self-closing-comp': [
@@ -113,26 +139,9 @@ export default tseslint.config(
       'import/no-unresolved': [
         'error',
         {
-          ignore: [
-            '@vite-pwa/assets-generator/config',
-            'virtual:pwa-register/react' // Añadir esto
-          ]
+          ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
         }
       ]
-    },
-    settings: {
-      react: { version: 'detect' },
-      'import/resolver': {
-        typescript: {
-          project: './tsconfig.app.json',
-          alwaysTryTypes: true,
-          conditions: ['import', 'require', 'default'],
-          extensionAlias: {
-            '.js': ['.js', '.ts', '.tsx'],
-            '.svg': ['.svg']
-          }
-        }
-      }
     }
   },
   // Configuración para archivos de configuración (tsconfig.node.json)
@@ -141,24 +150,20 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: './tsconfig.eslint.json',
+        warnOnMultipleProjects: false,
         EXPERIMENTAL_useProjectService: true
       }
     },
     settings: {
       'import/resolver': {
         typescript: {
-          project: './tsconfig.eslint.json',
-          alwaysTryTypes: true,
-          conditions: ['import', 'require', 'default'],
-          extensionAlias: {
-            '.js': ['.js', '.ts', '.tsx'],
-            '.svg': ['.svg']
-          }
+          ...importResolverBase,
+          project: './tsconfig.eslint.json'
         }
       }
     },
+    // Reglas específicas para archivos de configuración
     rules: {
-      // Reglas específicas para archivos de configuración
       'import/no-default-export': 'off',
       'import/no-unresolved': ['error', { ignore: ['@vite-pwa/assets-generator/config'] }]
     }

@@ -2,13 +2,12 @@ import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const isDev = process.env.NODE_ENV === 'development';
-
-// Función para generar hash MD5
 
 // Calcula la revisión de index.html (útil para evitar problemas de caché en producción)
 const htmlRevision = !isDev
@@ -16,9 +15,6 @@ const htmlRevision = !isDev
       .update(readFileSync(resolve(__dirname, 'index.html')))
       .digest('hex')
   : 'dev-html-revision';
-
-// Función para resolver rutas relativas
-const applyToPath = (url: string) => resolve(__dirname, url);
 
 export default defineConfig({
   base: '/', // Ajusta si la app está en un subdirectorio
@@ -36,12 +32,13 @@ export default defineConfig({
   assetsInclude: ['**/*.svg'],
   resolve: {
     alias: {
-      '@': applyToPath('./src')
+      '@': resolve(__dirname, './src')
     }
   },
 
   plugins: [
     react(),
+    tailwindcss(),
     VitePWA({
       // Usamos la estrategia de injectManifest para mayor control
       strategies: 'injectManifest',
