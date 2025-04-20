@@ -1,12 +1,11 @@
-import { Moon, Palette, Sun, X } from 'lucide-react';
+import { Moon, Palette, Sun, XIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import type { ThemeColor } from '@/contexts/theme-context/ThemeProvider';
 import { useTheme } from '@/contexts/theme-context/ThemeProvider';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@/shared/components';
+import { TextP } from '@/shared/components/custom/TypographyP';
 import { capitalizeFirstLetter, cn } from '@/shared/lib/utils';
-
-import { TextP } from './TypographyP';
 
 interface AvailableThemeColor {
   name: ThemeColor;
@@ -25,7 +24,7 @@ export const availableThemeColors: AvailableThemeColor[] = [
   { name: 'violet', light: 'bg-violet-500', dark: 'bg-violet-700' }
 ];
 
-export const ThemeToggle = () => {
+export const ThemeAndColorToggle = () => {
   const { themeMode, setThemeMode, themeColor, setThemeColor } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,7 +49,7 @@ export const ThemeToggle = () => {
         <div className='flex flex-col gap-4'>
           <div className='flex items-center justify-between'>
             <h3 className='text-sm font-medium text-foreground'>Elige el tema: </h3>
-            <X className='cursor-pointer' onClick={() => setIsOpen(false)} />
+            <XIcon className='cursor-pointer' onClick={() => setIsOpen(false)} />
           </div>
           <div className='grid grid-cols-2 gap-2'>
             {[

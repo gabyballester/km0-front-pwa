@@ -23,9 +23,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeColor, setThemeColor] = useState<ThemeColor>('slate');
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
-  const [mounted, setMounted] = useState(false);
+  const [themeColor, setThemeColor] = useState<ThemeColor>(() => {
+    return (localStorage.getItem('themeColor') as ThemeColor) || 'slate';
+  });
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    return (localStorage.getItem('themeMode') as ThemeMode) || 'light';
+  });
 
   useEffect(() => {
     const savedColor = (localStorage.getItem('themeColor') as ThemeColor) || 'slate';
@@ -33,23 +36,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     setThemeColor(savedColor);
     setThemeMode(savedMode);
-    setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    const root = document.documentElement;
 
-    document.documentElement.classList.remove('dark');
     if (themeMode === 'dark') {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
     }
 
     applyColorTheme(themeColor, themeMode);
+
     localStorage.setItem('themeColor', themeColor);
     localStorage.setItem('themeMode', themeMode);
-  }, [themeColor, themeMode, mounted]);
-
-  if (!mounted) return null;
+  }, [themeColor, themeMode]);
 
   return (
     <ThemeContext.Provider value={{ themeColor, setThemeColor, themeMode, setThemeMode }}>
@@ -72,9 +74,9 @@ const applyColorTheme = (color: ThemeColor, mode: ThemeMode) => {
     console.error(`Theme or mode not found for color: ${color}, mode: ${mode}`);
     return;
   }
-  for (const key in theme) {
-    if (Object.prototype.hasOwnProperty.call(theme, key)) {
-      document.documentElement.style.setProperty(`--${key}`, theme[key as keyof typeof theme]);
-    }
-  }
+
+  const root = document.documentElement;
+  Object.entries(theme).forEach(([key, value]) => {
+    root.style.setProperty(`--${key}`, value);
+  });
 };

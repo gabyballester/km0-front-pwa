@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router';
 // import { LandingPage } from '@/features/landing/LandingPage';
 import { APP_ROUTES } from '@/shared/constants/routes';
 
-import { MainLayout } from './MainLayout';
+import { MainLayout } from './layout/MainLayout';
 
 const NotFoundPage = lazy(() => import('@/features/not-found/NotFoundPage'));
 const AboutPage = lazy(() => import('@/features/about/AboutPage'));
@@ -16,14 +16,11 @@ export const AppRouter = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
-        {/* Layout público */}
         <Route element={<MainLayout />}>
           <Route index element={<LandingPage />} />
           <Route path={APP_ROUTES.ABOUT} element={<AboutPage />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Route>
-
-        {/* 404 */}
-        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );
