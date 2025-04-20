@@ -10,7 +10,7 @@ import { APP_ROUTES } from '@/shared/constants/routes';
 
 export const MainHeaderMenu = () => {
   return (
-    <nav className='container mx-auto border-2 border-red-500 px-4 py-3'>
+    <nav className='container mx-auto px-4 py-3'>
       <NavigationMenu>
         <ul className='flex space-x-4'>
           <NavigationMenuItem>

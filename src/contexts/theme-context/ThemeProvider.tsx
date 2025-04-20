@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { themes } from './themes';
 
-export type ThemeColors =
+export type ThemeColor =
   | 'slate'
   | 'red'
   | 'rose'
@@ -14,8 +14,8 @@ export type ThemeColors =
 type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextType {
-  themeColor: ThemeColors;
-  setThemeColor: (color: ThemeColors) => void;
+  themeColor: ThemeColor;
+  setThemeColor: (color: ThemeColor) => void;
   themeMode: ThemeMode;
   setThemeMode: (mode: ThemeMode) => void;
 }
@@ -23,12 +23,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeColor, setThemeColor] = useState<ThemeColors>('slate');
+  const [themeColor, setThemeColor] = useState<ThemeColor>('slate');
   const [themeMode, setThemeMode] = useState<ThemeMode>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedColor = (localStorage.getItem('themeColor') as ThemeColors) || 'slate';
+    const savedColor = (localStorage.getItem('themeColor') as ThemeColor) || 'slate';
     const savedMode = (localStorage.getItem('themeMode') as ThemeMode) || 'light';
 
     setThemeColor(savedColor);
@@ -66,7 +66,7 @@ export const useTheme = () => {
   return context;
 };
 
-const applyColorTheme = (color: ThemeColors, mode: ThemeMode) => {
+const applyColorTheme = (color: ThemeColor, mode: ThemeMode) => {
   const theme = themes[color]?.[mode];
   if (!theme) {
     console.error(`Theme or mode not found for color: ${color}, mode: ${mode}`);
