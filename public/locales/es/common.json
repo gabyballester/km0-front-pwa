@@ -1,0 +1,12 @@
+{
+  "header": {
+    "companyName": "Grupo Km0",
+    "english": "English",
+    "spanish": "Español",
+    "ukFlag": "Bandera del Reino Unido",
+    "spainFlag": "Bandera de España",
+    "changeLanguage": "Cambiar idioma",
+    "selectLanguage": "Seleccionar idioma",
+    "close": "Cerrar"
+  }
+}

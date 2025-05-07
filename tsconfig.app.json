@@ -29,7 +29,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     // Añadir esto ↓
-    "types": ["vite/client", "workbox-precaching", "workbox-routing", "workbox-strategies"]
+    "types": ["vite/client", "workbox-precaching", "workbox-routing", "workbox-strategies", "node"]
   },
   "include": ["src", "src/vite-env.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

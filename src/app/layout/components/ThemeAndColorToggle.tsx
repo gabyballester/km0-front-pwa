@@ -39,7 +39,9 @@ export const ThemeAndColorToggle = () => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Palette className='h-6 w-6 cursor-pointer' />
+        <div className='uppercase flex items-center gap-2 cursor-pointer hover:bg-accent p-2 rounded-lg'>
+          <Palette className='h-6 w-6 cursor-pointer' />
+        </div>
       </PopoverTrigger>
       <PopoverContent
         side='left'
