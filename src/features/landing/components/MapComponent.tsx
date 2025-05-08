@@ -37,7 +37,7 @@ export const MapComponent: FC<MapComponentProps> = ({
   const ClusterToggle = () => {
     const map = useMap();
     useMapEvents({
-      zoomend: () => setIsClusteringEnabled(e => e && map.getZoom() < 13)
+      zoomend: () => setIsClusteringEnabled(e => e && map.getZoom() < 15)
     });
     return null;
   };

@@ -1,7 +1,10 @@
 import type { MarkerInterface } from '@/shared/types/map.types';
 
 export const INITIAL_CENTER: [number, number] = [39.46975, -0.37739];
-export const INITIAL_ZOOM = 13;
+export const INITIAL_ZOOM = 15;
+export const mapProvider = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+export const attribution =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 export const MARKERS: MarkerInterface[] = [
   {
