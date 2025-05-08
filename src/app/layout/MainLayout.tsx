@@ -9,7 +9,7 @@ export const MainLayout = () => {
         <MainHeader />
       </header>
 
-      <main className='overflow-auto flex flex-col'>
+      <main className='overflow-hidden scroll-auto flex flex-col'>
         <Outlet />
         <MainFooter />
       </main>

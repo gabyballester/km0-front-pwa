@@ -161,4 +161,8 @@ export default defineConfig({
       }
     })
   ]
+  // todo: verificar que esto es necesario
+  // optimizeDeps: {
+  //   exclude: ['leaflet', 'react-leaflet', 'react-leaflet-markercluster']
+  // }
 });

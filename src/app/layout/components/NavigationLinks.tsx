@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router';
 
 import { Button } from '@/shared/components/ui';
-import { APP_ROUTES } from '@/shared/constants/routes';
+import { APP_ROUTES } from '@/shared/constants/route.constants';
 import { cn } from '@/shared/lib/utils';
 
 const items = [

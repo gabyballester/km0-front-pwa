@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 
 import { Button } from '@/shared/components';
-import { APP_ROUTES } from '@/shared/constants/routes';
+import { APP_ROUTES } from '@/shared/constants/route.constants';
 import { cn } from '@/shared/lib/utils';
 
 export const AuthButtons = ({ mobile, className }: { mobile?: boolean; className?: string }) => {

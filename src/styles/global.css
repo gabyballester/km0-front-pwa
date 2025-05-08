@@ -16,6 +16,77 @@ body {
   min-height: 100dvh;
 }
 
+.leaflet-container {
+  height: 100%;
+}
+
+.cluster-icon {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  background-color: rgb(51, 188, 51);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 900;
+  transform: translate(-25%, -25%);
+}
+
+.cluster-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Transiciones */
+.cluster-transition {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.marker-group-transition {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Error Boundary */
+.map-error {
+  @apply flex h-full w-full items-center justify-center bg-red-50 font-medium text-red-600;
+}
+
+.cluster-inner {
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.custom-cluster:hover .cluster-inner {
+  transform: scale(1.1);
+  background: #2563eb;
+}
+
+.map-error {
+  padding: 2rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

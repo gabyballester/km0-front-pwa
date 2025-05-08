@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router';
 
 // import { LandingPage } from '@/features/landing/LandingPage';
-import { APP_ROUTES } from '@/shared/constants/routes';
+import { APP_ROUTES } from '@/shared/constants/route.constants';
 
 import { MainLayout } from './layout/MainLayout';
 
