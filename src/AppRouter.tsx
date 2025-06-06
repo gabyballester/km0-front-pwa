@@ -1,5 +1,7 @@
-import { Routes, Route, Link } from 'react-router';
+import { Link, Route, Routes } from 'react-router';
 
+import { APP_ROUTES } from './shared/constants/route.constants';
+//todo: tengo 2 AppRouter.tsx
 export const AppRouter = () => {
   return (
     <>
@@ -36,23 +38,24 @@ function NotFoundPage() {
   return <h1>404: Página no encontrada</h1>;
 }
 
-function Menu() {
+// Componente Menu movido al MainLayout
+const Menu = () => {
   return (
     <nav>
       <ul>
         <li>
-          <Link to='/'>Inicio</Link>
+          <Link to={APP_ROUTES.HOME}>Inicio</Link>
         </li>
         <li>
-          <Link to='/about'>Sobre Nosotros</Link>
+          <Link to={APP_ROUTES.ABOUT}>Sobre Nosotros</Link>
         </li>
         <li>
-          <Link to='/auth/login'>Iniciar Sesión</Link>
+          <Link to={APP_ROUTES.LOGIN}>Iniciar Sesión</Link>
         </li>
         <li>
-          <Link to='/auth/register'>Regístrate</Link>
+          <Link to={APP_ROUTES.REGISTER}>Regístrate</Link>
         </li>
       </ul>
     </nav>
   );
-}
+};

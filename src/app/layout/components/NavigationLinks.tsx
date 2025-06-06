@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router';
 
 import { Button } from '@/shared/components/ui';
-import { APP_ROUTES } from '@/shared/constants/routes';
+import { APP_ROUTES } from '@/shared/constants/route.constants';
 import { cn } from '@/shared/lib/utils';
 
 const items = [
   { text: 'Inicio', to: APP_ROUTES.HOME },
-  { text: 'Nosotros', to: APP_ROUTES.ABOUT }
+  { text: 'Nosotros', to: APP_ROUTES.ABOUT },
+  { text: 'Google Maps', to: APP_ROUTES.GOOGLE_MAPS }
 ];
 
 export const NavigationLinks = () => {

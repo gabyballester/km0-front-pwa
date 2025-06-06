@@ -15,12 +15,13 @@ const FLAG_DICTIONARY = {
 export const LanguageSection = () => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
     { code: 'en', label: t('header.english') },
     { code: 'es', label: t('header.spanish') }
   ];
+
   const CurrentFlag = FLAG_DICTIONARY[currentLanguage as keyof typeof FLAG_DICTIONARY];
 
   return (

@@ -3,7 +3,7 @@
 import { Link } from 'react-router';
 
 import { Alert, Button } from '@/shared/components';
-import { APP_ROUTES } from '@/shared/constants/routes';
+import { APP_ROUTES } from '@/shared/constants/route.constants';
 
 const NotFoundPage = () => {
   return (

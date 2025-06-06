@@ -10,7 +10,7 @@ i18n
   .init({
     fallbackLng: 'en',
     supportedLngs: ['en', 'es'],
-    debug: process.env.NODE_ENV === 'development',
+    debug: false, // process.env.NODE_ENV === 'development',
     ns: ['common'], // Namespace(s)
     defaultNS: 'common',
     detection: {
