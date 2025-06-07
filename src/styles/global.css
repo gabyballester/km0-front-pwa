@@ -133,3 +133,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* InfoWindow from Google Maps */
+/* Sets manually always black color for info window google maps */
+.gm-title {
+  color: #000;
+}

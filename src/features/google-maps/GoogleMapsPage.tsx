@@ -1,9 +1,73 @@
-import type { MapCameraChangedEvent } from '@vis.gl/react-google-maps';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
+import { APIProvider, ColorScheme, InfoWindow, Map, useMap } from '@vis.gl/react-google-maps';
+import { useEffect, useRef, useState } from 'react';
+
+import { useTheme } from '@/contexts/theme-context/ThemeProvider';
+
+const markersData = [
+  {
+    id: 1,
+    position: { lat: 38.7937, lng: 0.0344 },
+    nombre: 'Tomate',
+    descripcion: 'Tomate ecológico, 1kg'
+  },
+  {
+    id: 2,
+    position: { lat: 38.795, lng: 0.035 },
+    nombre: 'Lechuga',
+    descripcion: 'Lechuga fresca, 500g'
+  },
+  {
+    id: 3,
+    position: { lat: 38.792, lng: 0.033 },
+    nombre: 'Naranja',
+    descripcion: 'Naranja valenciana, 2kg'
+  }
+];
+
+function Markers({ onMarkerClick }: { onMarkerClick: (id: number) => void }) {
+  const map = useMap();
+  const clustererRef = useRef<MarkerClusterer | null>(null);
+  const markersRef = useRef<google.maps.Marker[]>([]);
+
+  useEffect(() => {
+    if (!map) return;
+
+    // Limpia marcadores y clusterer previos
+    markersRef.current.forEach(marker => marker.setMap(null));
+    clustererRef.current?.clearMarkers();
+
+    // Crea nuevos marcadores
+    markersRef.current = markersData.map(point => {
+      const marker = new google.maps.Marker({
+        position: point.position,
+        map
+      });
+      marker.addListener('click', () => onMarkerClick(point.id));
+      return marker;
+    });
+
+    // Crea el clusterer
+    clustererRef.current = new MarkerClusterer({ markers: markersRef.current, map });
+
+    // Limpieza al desmontar
+    return () => {
+      markersRef.current.forEach(marker => marker.setMap(null));
+      clustererRef.current?.clearMarkers();
+    };
+  }, [map, onMarkerClick]);
+
+  return null;
+}
 
 const GoogleMapsPage = () => {
   const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-  const defaultCenter = { lat: 40.416775, lng: -3.70379 };
+  const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || 'km0-map-style';
+  const defaultCenter = { lat: 38.7937, lng: 0.0344 };
+  const { themeMode } = useTheme();
+
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const selectedMarker = markersData.find(m => m.id === selectedId);
 
   if (!apiKey) {
     return (
@@ -35,6 +99,8 @@ const GoogleMapsPage = () => {
             <li>La clave de API está correctamente copiada sin espacios extra</li>
             <li>La clave de API está activa en la Google Cloud Console</li>
             <li>La API de Maps JavaScript está habilitada en tu proyecto</li>
+            <li>Las restricciones de la API key incluyen tu dominio</li>
+            <li>La facturación está habilitada en tu proyecto de Google Cloud</li>
           </ul>
         </div>
       </div>
@@ -42,21 +108,35 @@ const GoogleMapsPage = () => {
   }
 
   return (
-    <div className='w-full h-[calc(100vh-70px)] z-0'>
+    <div className='w-full h-[calc(100vh-70px)] relative'>
       <APIProvider apiKey={apiKey}>
         <Map
           id='km0-map'
-          mapId='f139b71987a5806f525f29f4'
+          mapId={mapId}
           defaultCenter={defaultCenter}
           defaultZoom={12}
           gestureHandling='greedy'
           disableDefaultUI={false}
+          colorScheme={themeMode === 'dark' ? ColorScheme.DARK : ColorScheme.LIGHT}
           className='w-full h-full'
-          onCameraChanged={(ev: MapCameraChangedEvent) =>
-            // eslint-disable-next-line no-console
-            console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom)
-          }
-        />
+          reuseMaps={true}
+        >
+          <Markers onMarkerClick={setSelectedId} />
+          {selectedMarker && (
+            <InfoWindow
+              headerContent={
+                <p className='font-bold text-black text-md'>{selectedMarker.nombre}</p>
+              }
+              position={selectedMarker.position}
+              onCloseClick={() => setSelectedId(null)}
+              pixelOffset={[0, -45]}
+            >
+              <div>
+                <p className='text-md text-black'>{selectedMarker.descripcion}</p>
+              </div>
+            </InfoWindow>
+          )}
+        </Map>
       </APIProvider>
     </div>
   );
