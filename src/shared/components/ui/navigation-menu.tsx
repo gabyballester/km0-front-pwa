@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 function NavigationMenu({
   className,
@@ -17,7 +17,7 @@ function NavigationMenu({
     <NavigationMenuPrimitive.Root
       data-slot='navigation-menu'
       data-viewport={viewport}
-      className={cn(
+      className={combineClassNames(
         'group/navigation-menu relative flex max-w-max flex-1 items-center justify-center',
         className
       )}
@@ -36,7 +36,10 @@ function NavigationMenuList({
   return (
     <NavigationMenuPrimitive.List
       data-slot='navigation-menu-list'
-      className={cn('group flex flex-1 list-none items-center justify-center gap-1', className)}
+      className={combineClassNames(
+        'group flex flex-1 list-none items-center justify-center gap-1',
+        className
+      )}
       {...props}
     />
   );
@@ -49,7 +52,7 @@ function NavigationMenuItem({
   return (
     <NavigationMenuPrimitive.Item
       data-slot='navigation-menu-item'
-      className={cn('relative', className)}
+      className={combineClassNames('relative', className)}
       {...props}
     />
   );
@@ -67,7 +70,7 @@ function NavigationMenuTrigger({
   return (
     <NavigationMenuPrimitive.Trigger
       data-slot='navigation-menu-trigger'
-      className={cn(navigationMenuTriggerStyle(), 'group', className)}
+      className={combineClassNames(navigationMenuTriggerStyle(), 'group', className)}
       {...props}
     >
       {children}
@@ -86,7 +89,7 @@ function NavigationMenuContent({
   return (
     <NavigationMenuPrimitive.Content
       data-slot='navigation-menu-content'
-      className={cn(
+      className={combineClassNames(
         `data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in
         data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52
         data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52
@@ -120,10 +123,10 @@ function NavigationMenuViewport({
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>) {
   return (
-    <div className={cn('absolute top-full left-0 isolate z-50 flex justify-center')}>
+    <div className={combineClassNames('absolute top-full left-0 isolate z-50 flex justify-center')}>
       <NavigationMenuPrimitive.Viewport
         data-slot='navigation-menu-viewport'
-        className={cn(
+        className={combineClassNames(
           `origin-top-center bg-popover text-popover-foreground data-[state=open]:animate-in
           data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90
           relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md
@@ -143,7 +146,7 @@ function NavigationMenuLink({
   return (
     <NavigationMenuPrimitive.Link
       data-slot='navigation-menu-link'
-      className={cn(
+      className={combineClassNames(
         `data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent
         data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground hover:bg-accent
         hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring/50
@@ -164,7 +167,7 @@ function NavigationMenuIndicator({
   return (
     <NavigationMenuPrimitive.Indicator
       data-slot='navigation-menu-indicator'
-      className={cn(
+      className={combineClassNames(
         `data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out
         data-[state=visible]:fade-in top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden`,
         className

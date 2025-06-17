@@ -5,7 +5,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui/button';
 import { BaseLayout } from '@/shared/layouts/BaseLayout';
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 export function AuthLayout() {
   const location = useLocation();
@@ -22,7 +22,7 @@ export function AuthLayout() {
         <Button
           variant='ghost'
           asChild
-          className={cn(
+          className={combineClassNames(
             'hover:bg-transparent hover:text-primary',
             currentPath === PATHS.LOGIN && 'text-primary'
           )}
@@ -32,7 +32,7 @@ export function AuthLayout() {
         <Button
           variant='ghost'
           asChild
-          className={cn(
+          className={combineClassNames(
             'hover:bg-transparent hover:text-primary',
             currentPath === PATHS.REGISTER && 'text-primary'
           )}

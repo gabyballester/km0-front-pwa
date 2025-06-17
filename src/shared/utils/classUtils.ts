@@ -10,6 +10,6 @@ import { twMerge } from 'tailwind-merge';
  * @param inputs - Clases CSS a combinar
  * @returns String con las clases combinadas
  */
-export function cn(...inputs: ClassValue[]): string {
+export function combineClassNames(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import ESFlag from '@/assets/svg/flags/es.svg';
 import GBFlag from '@/assets/svg/flags/gb.svg';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@/shared/components';
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 const FLAG_DICTIONARY = {
   en: { component: GBFlag, altKey: 'header.ukFlag' },
@@ -66,7 +66,7 @@ export const LanguageSection = () => {
                     i18n.changeLanguage(lang.code);
                     setIsOpen(false);
                   }}
-                  className={cn(
+                  className={combineClassNames(
                     'w-full h-12 justify-start gap-3',
                     isCurrent && 'ring-2 ring-primary'
                   )}

@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@/shared/components';
 import type { ThemeColor } from '@/shared/contexts/theme-context/ThemeProvider';
 import { useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
-import { capitalize, cn } from '@/shared/utils';
+import { capitalize, combineClassNames } from '@/shared/utils';
 
 interface AvailableThemeColor {
   name: ThemeColor;
@@ -79,7 +79,7 @@ export function ThemeAndColorToggle() {
                   key={color.name}
                   variant='ghost'
                   size='icon'
-                  className={cn(
+                  className={combineClassNames(
                     'h-8 w-8 rounded-full',
                     themeColor === color.name &&
                       'ring-2 ring-offset-2 ring-offset-background ring-ring'
@@ -90,7 +90,7 @@ export function ThemeAndColorToggle() {
                   }}
                 >
                   <div
-                    className={cn(
+                    className={combineClassNames(
                       'h-4 w-4 rounded-full',
                       themeMode === 'light' ? color.light : color.dark
                     )}

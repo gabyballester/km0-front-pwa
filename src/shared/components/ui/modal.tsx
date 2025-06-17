@@ -12,7 +12,7 @@ import {
   DialogPortal,
   DialogTitle
 } from '@/shared/components/ui/dialog';
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 export interface ModalProps {
   /** Indica si el modal está abierto */
@@ -128,14 +128,14 @@ export function Modal({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
         <DialogOverlay
-          className={cn(
+          className={combineClassNames(
             'data-[state=open]:animate-none data-[state=closed]:animate-none',
             'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
             'duration-200'
           )}
         />
         <DialogContent
-          className={cn(
+          className={combineClassNames(
             sizeClasses[size],
             // Eliminar completamente las animaciones de movimiento
             'data-[state=open]:animate-none data-[state=closed]:animate-none',

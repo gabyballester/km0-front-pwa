@@ -15,7 +15,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 const titleVariants = cva('scroll-m-20 font-semibold tracking-tight', {
   variants: {
@@ -50,7 +50,11 @@ const Title = forwardRef<HTMLHeadingElement, TitleProps>(
     const Component = as;
 
     return (
-      <Component className={cn(titleVariants({ as, align, className }))} ref={ref} {...props} />
+      <Component
+        className={combineClassNames(titleVariants({ as, align, className }))}
+        ref={ref}
+        {...props}
+      />
     );
   }
 );

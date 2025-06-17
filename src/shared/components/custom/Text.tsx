@@ -18,7 +18,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 const textVariants = cva('leading-7', {
   variants: {
@@ -71,7 +71,7 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(
 
     return (
       <Component
-        className={cn(textVariants({ as, variant, size, align, weight, className }))}
+        className={combineClassNames(textVariants({ as, variant, size, align, weight, className }))}
         ref={ref}
         {...props}
       />

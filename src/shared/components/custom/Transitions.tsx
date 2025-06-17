@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, type Transition } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 // Transiciones predefinidas
 export const transitions = {
@@ -67,7 +67,11 @@ export function PageTransition({
         animate={transition.animate}
         exit={transition.exit}
         transition={customTransition || transition.transition}
-        className={cn('min-h-[calc(100vh-4rem)] w-full', 'max-w-7xl mx-auto', className)}
+        className={combineClassNames(
+          'min-h-[calc(100vh-4rem)] w-full',
+          'max-w-7xl mx-auto',
+          className
+        )}
       >
         {children}
       </motion.main>

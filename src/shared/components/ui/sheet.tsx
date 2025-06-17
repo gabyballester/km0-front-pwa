@@ -2,7 +2,7 @@ import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot='sheet' {...props} />;
@@ -27,7 +27,7 @@ function SheetOverlay({
   return (
     <SheetPrimitive.Overlay
       data-slot='sheet-overlay'
-      className={cn(
+      className={combineClassNames(
         `data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0
         data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50`,
         className
@@ -50,7 +50,7 @@ function SheetContent({
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot='sheet-content'
-        className={cn(
+        className={combineClassNames(
           `bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col
           gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300
           data-[state=open]:duration-500`,
@@ -88,7 +88,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot='sheet-header'
-      className={cn('flex flex-col gap-1.5 p-4', className)}
+      className={combineClassNames('flex flex-col gap-1.5 p-4', className)}
       {...props}
     />
   );
@@ -98,7 +98,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot='sheet-footer'
-      className={cn('mt-auto flex flex-col gap-2 p-4', className)}
+      className={combineClassNames('mt-auto flex flex-col gap-2 p-4', className)}
       {...props}
     />
   );
@@ -108,7 +108,7 @@ function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPr
   return (
     <SheetPrimitive.Title
       data-slot='sheet-title'
-      className={cn('text-foreground font-semibold', className)}
+      className={combineClassNames('text-foreground font-semibold', className)}
       {...props}
     />
   );
@@ -121,7 +121,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot='sheet-description'
-      className={cn('text-muted-foreground text-sm', className)}
+      className={combineClassNames('text-muted-foreground text-sm', className)}
       {...props}
     />
   );

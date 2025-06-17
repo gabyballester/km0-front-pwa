@@ -21,7 +21,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/utils';
+import { combineClassNames } from '@/shared/utils';
 
 const codeVariants = cva('relative rounded bg-muted font-mono', {
   variants: {
@@ -50,7 +50,11 @@ const Code = forwardRef<HTMLElement, CodeProps>(
     const Component = as;
 
     return (
-      <Component className={cn(codeVariants({ as, variant, className }))} ref={ref} {...props} />
+      <Component
+        className={combineClassNames(codeVariants({ as, variant, className }))}
+        ref={ref}
+        {...props}
+      />
     );
   }
 );
