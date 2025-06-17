@@ -30,13 +30,14 @@ export const PWAInstallComponent = () => {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
-      logger.error('Error showing install prompt:', error);
+      logger.error('No install prompt available');
       return;
     }
 
     try {
-      const result = await deferredPrompt.prompt();
-      if (result.outcome === 'accepted') {
+      await deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
         logger.warn('User accepted the install prompt');
       } else {
         logger.warn('User dismissed the install prompt');
