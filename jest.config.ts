@@ -15,7 +15,7 @@ const config: Config = {
   },
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
   transformIgnorePatterns: [
-    '/node_modules/(?!(react-router|@testing-library)/)' // Asegura transpilar estas dependencias
+    '/node_modules/(?!(react-router-dom|@testing-library)/)' // Asegura transpilar estas dependencias
   ]
 
   //si uso toastify

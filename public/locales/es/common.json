@@ -8,5 +8,117 @@
     "changeLanguage": "Cambiar idioma",
     "selectLanguage": "Seleccionar idioma",
     "close": "Cerrar"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Dashboard",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "account": "Cuenta",
+    "notifications": "Notificaciones",
+    "backToHome": "Volver al inicio",
+    "back": "Volver",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "saveChanges": "Guardar Cambios",
+    "edit": "Editar",
+    "create": "Crear",
+    "new": "Nuevo",
+    "details": "Detalles",
+    "viewDetails": "Ver Detalles"
+  },
+  "customers": {
+    "title": "Clientes",
+    "list": "Lista de Clientes",
+    "newCustomer": "Nuevo Cliente",
+    "createCustomer": "Crear Cliente",
+    "editCustomer": "Editar Cliente",
+    "customerDetails": "Detalles del Cliente",
+    "manageCustomers": "Gestiona la información de tus clientes",
+    "addNewCustomer": "Añade un nuevo cliente a tu base de datos",
+    "modifyCustomer": "Modifica la información del cliente",
+    "searchCustomers": "Buscar clientes...",
+    "fullName": "Nombre completo",
+    "email": "Email",
+    "phone": "Teléfono",
+    "company": "Empresa",
+    "address": "Dirección",
+    "notes": "Notas",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "pending": "Pendiente",
+    "personalInfo": "Información Personal",
+    "statistics": "Estadísticas",
+    "totalOrders": "Pedidos Totales",
+    "totalSpent": "Total Gastado",
+    "lastOrder": "Último Pedido"
+  },
+  "forms": {
+    "name": "Nombre completo",
+    "email": "Email",
+    "phone": "Teléfono",
+    "company": "Empresa",
+    "address": "Dirección",
+    "notes": "Notas",
+    "status": "Estado",
+    "selectStatus": "Selecciona un estado",
+    "required": "Campo requerido",
+    "invalidEmail": "Email inválido",
+    "invalidPhone": "Teléfono inválido"
+  },
+  "landing": {
+    "loginButton": "Iniciar Sesión",
+    "registerButton": "Registrarse",
+    "info": {
+      "hasAccount": "¿Ya tienes cuenta? Usa el botón \"Iniciar Sesión\"",
+      "newUser": "¿Eres nuevo? Crea tu cuenta con \"Registrarse\""
+    }
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "loginCredentials": "Ingresa tus credenciales para acceder a tu cuenta",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "ejemplo@correo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Iniciar sesión",
+    "loggingIn": "Iniciando sesión...",
+    "loginError": "Error al iniciar sesión. Por favor, verifica tus credenciales.",
+    "noAccount": "¿No tienes una cuenta?",
+    "registerHere": "Regístrate aquí",
+    "register": "Crear cuenta",
+    "registerDescription": "Ingresa tus datos para registrarte",
+    "name": "Nombre completo",
+    "namePlaceholder": "Juan Pérez",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "••••••••",
+    "registerButton": "Registrarse",
+    "registering": "Registrando...",
+    "registerError": "Error al registrarse. Por favor, intenta nuevamente.",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "loginHere": "Inicia sesión aquí",
+    "backToHome": "Volver al inicio",
+    "loginRequired": "Autenticación requerida",
+    "loginRequiredDescription": "Para continuar, necesitas iniciar sesión en tu cuenta.",
+    "cancelAndGoBack": "Cancelar y volver atrás"
+  },
+  "toast": {
+    "auth": {
+      "loginSuccess": "Sesión iniciada correctamente",
+      "registerSuccess": "Cuenta creada correctamente",
+      "logoutSuccess": "Sesión cerrada correctamente",
+      "invalidCredentials": "Credenciales inválidas"
+    },
+    "general": {
+      "error": "Ha ocurrido un error"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "googleMaps": "Google Maps",
+    "dashboard": "Dashboard"
   }
 }

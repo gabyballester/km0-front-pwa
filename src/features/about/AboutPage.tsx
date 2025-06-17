@@ -1,6 +1,17 @@
 import { Card } from '@/shared/components';
+import { usePageLoading } from '@/shared/hooks/usePageLoading';
+
+import AboutPageSkeleton from './pages/skeletons/AboutPageSkeleton';
 
 const AboutPage = () => {
+  // Simular carga de datos
+  const isLoading = false; // Aquí iría la lógica real de carga
+  const showSkeleton = usePageLoading(isLoading);
+
+  if (showSkeleton) {
+    return <AboutPageSkeleton />;
+  }
+
   return (
     <div className='mx-auto max-w-3xl space-y-6'>
       <h1 className='text-3xl font-bold'>Sobre Nosotros</h1>

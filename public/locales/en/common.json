@@ -8,5 +8,117 @@
     "changeLanguage": "Change language",
     "selectLanguage": "Select language",
     "close": "Close"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "profile": "Profile",
+    "account": "Account",
+    "notifications": "Notifications",
+    "backToHome": "Back to home",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "edit": "Edit",
+    "create": "Create",
+    "new": "New",
+    "details": "Details",
+    "viewDetails": "View Details"
+  },
+  "customers": {
+    "title": "Customers",
+    "list": "Customer List",
+    "newCustomer": "New Customer",
+    "createCustomer": "Create Customer",
+    "editCustomer": "Edit Customer",
+    "customerDetails": "Customer Details",
+    "manageCustomers": "Manage your customer information",
+    "addNewCustomer": "Add a new customer to your database",
+    "modifyCustomer": "Modify customer information",
+    "searchCustomers": "Search customers...",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "address": "Address",
+    "notes": "Notes",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "personalInfo": "Personal Information",
+    "statistics": "Statistics",
+    "totalOrders": "Total Orders",
+    "totalSpent": "Total Spent",
+    "lastOrder": "Last Order"
+  },
+  "forms": {
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "address": "Address",
+    "notes": "Notes",
+    "status": "Status",
+    "selectStatus": "Select a status",
+    "required": "Required field",
+    "invalidEmail": "Invalid email",
+    "invalidPhone": "Invalid phone"
+  },
+  "landing": {
+    "loginButton": "Login",
+    "registerButton": "Sign Up",
+    "info": {
+      "hasAccount": "Already have an account? Use the \"Login\" button",
+      "newUser": "New here? Create your account with \"Sign Up\""
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "loginCredentials": "Enter your credentials to access your account",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Login",
+    "loggingIn": "Logging in...",
+    "loginError": "Login error. Please check your credentials.",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "register": "Create account",
+    "registerDescription": "Enter your information to register",
+    "name": "Full name",
+    "namePlaceholder": "John Doe",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "••••••••",
+    "registerButton": "Register",
+    "registering": "Registering...",
+    "registerError": "Registration error. Please try again.",
+    "passwordMismatch": "Passwords do not match",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "backToHome": "Back to home",
+    "loginRequired": "Authentication required",
+    "loginRequiredDescription": "To continue, you need to sign in to your account.",
+    "cancelAndGoBack": "Cancel and go back"
+  },
+  "toast": {
+    "auth": {
+      "loginSuccess": "Successfully logged in",
+      "registerSuccess": "Account created successfully",
+      "logoutSuccess": "Successfully logged out",
+      "invalidCredentials": "Invalid credentials"
+    },
+    "general": {
+      "error": "An error has occurred"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "about": "About",
+    "googleMaps": "Google Maps",
+    "dashboard": "Dashboard"
   }
 }

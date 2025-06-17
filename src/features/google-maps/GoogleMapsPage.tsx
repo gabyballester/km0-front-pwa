@@ -2,7 +2,10 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { APIProvider, ColorScheme, InfoWindow, Map, useMap } from '@vis.gl/react-google-maps';
 import { useEffect, useRef, useState } from 'react';
 
-import { useTheme } from '@/contexts/theme-context/ThemeProvider';
+import { useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
+import { usePageLoading } from '@/shared/hooks/usePageLoading';
+
+import GoogleMapsPageSkeleton from './pages/skeletons/GoogleMapsPageSkeleton';
 
 const markersData = [
   {
@@ -62,12 +65,20 @@ function Markers({ onMarkerClick }: { onMarkerClick: (id: number) => void }) {
 
 const GoogleMapsPage = () => {
   const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-  const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID || 'km0-map-style';
+  const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID;
   const defaultCenter = { lat: 38.7937, lng: 0.0344 };
   const { themeMode } = useTheme();
 
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const selectedMarker = markersData.find(m => m.id === selectedId);
+
+  // Simular carga de datos
+  const isLoading = false; // Aquí iría la lógica real de carga
+  const showSkeleton = usePageLoading(isLoading);
+
+  if (showSkeleton) {
+    return <GoogleMapsPageSkeleton />;
+  }
 
   if (!apiKey) {
     return (

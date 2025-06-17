@@ -28,9 +28,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    // Añadir esto ↓
+    // Configuración para preferir alias sobre rutas relativas
     "types": ["vite/client", "workbox-precaching", "workbox-routing", "workbox-strategies", "node"]
   },
-  "include": ["src", "src/vite-env.d.ts"],
+  "include": ["src", "src/vite-env.d.ts", "dont-delete/old-main"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
