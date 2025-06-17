@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, type Transition } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/utils';
 
 // Transiciones predefinidas
 export const transitions = {

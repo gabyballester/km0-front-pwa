@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import ESFlag from '@/assets/svg/flags/es.svg';
 import GBFlag from '@/assets/svg/flags/gb.svg';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@/shared/components';
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/utils';
 
 const FLAG_DICTIONARY = {
   en: { component: GBFlag, altKey: 'header.ukFlag' },

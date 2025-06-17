@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@/shared/components';
 import type { ThemeColor } from '@/shared/contexts/theme-context/ThemeProvider';
 import { useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
-import { capitalizeFirstLetter, cn } from '@/shared/lib/utils';
+import { capitalize, cn } from '@/shared/utils';
 
 interface AvailableThemeColor {
   name: ThemeColor;
@@ -102,7 +102,7 @@ export function ThemeAndColorToggle() {
                       themeColor === color.name ? 'text-foreground' : 'text-muted-foreground'
                     }
                   >
-                    {capitalizeFirstLetter(color.name)}
+                    {capitalize(color.name)}
                   </Text>
                 </Button>
               ))}

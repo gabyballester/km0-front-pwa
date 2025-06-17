@@ -1,8 +1,9 @@
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
 import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components';
+import { Button } from '@/shared/components/ui/button';
+import { logger } from '@/shared/utils/logger';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -46,14 +47,14 @@ export function ErrorBoundary({ children, fallback }: ErrorBoundaryProps) {
     <ReactErrorBoundary
       FallbackComponent={fallback ? () => <>{fallback}</> : ErrorFallback}
       onError={(error, errorInfo) => {
-        console.error('Application Error:', error, errorInfo);
+        logger.error('Application Error:', error, errorInfo);
 
         // Opcional: enviar a servicio de monitoreo
         // reportError(error, errorInfo);
       }}
       onReset={() => {
         // Limpiar estado si es necesario
-        console.warn('Error boundary reset');
+        logger.warn('Error boundary reset');
       }}
     >
       {children}

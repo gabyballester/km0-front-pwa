@@ -15,7 +15,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 const titleVariants = cva('scroll-m-20 font-semibold tracking-tight', {
   variants: {

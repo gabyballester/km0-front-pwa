@@ -17,6 +17,7 @@ import {
 } from '@/shared/components/ui';
 import { useAuth } from '@/shared/contexts/AuthContext';
 import { useToast } from '@/shared/hooks/useToast';
+import { logger } from '@/shared/utils/logger';
 
 /**
  * Componente de formulario de registro
@@ -61,8 +62,7 @@ export function RegisterForm() {
     try {
       await register(formData.name, formData.email, formData.password);
     } catch (error) {
-      console.error('Registration error:', error);
-      //todo: aplicar un logger para ver por qué falló
+      logger.error('Error en registro:', error);
       showError(t('auth.registerError'));
     } finally {
       setIsLoading(false);

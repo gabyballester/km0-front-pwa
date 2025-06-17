@@ -18,7 +18,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 const textVariants = cva('leading-7', {
   variants: {

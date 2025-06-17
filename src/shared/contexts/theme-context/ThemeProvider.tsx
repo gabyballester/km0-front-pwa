@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { logger } from '@/shared/utils/logger';
+
 import { themes } from './themes';
 
 export type ThemeColor =
@@ -71,7 +73,7 @@ export const useTheme = () => {
 const applyColorTheme = (color: ThemeColor, mode: ThemeMode) => {
   const theme = themes[color]?.[mode];
   if (!theme) {
-    console.error(`Theme or mode not found for color: ${color}, mode: ${mode}`);
+    logger.error(`Theme or mode not found for color: ${color}, mode: ${mode}`);
     return;
   }
 

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Button } from '@/shared/components/ui/button';
 import { Modal } from '@/shared/components/ui/modal';
+import { logger } from '@/shared/utils/logger';
 
 export interface FormModalProps {
   /** Indica si el modal está abierto */
@@ -113,7 +114,7 @@ export function FormModal({
       await onSave();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error al confirmar:', error);
+      logger.error('Error al guardar:', error);
       // El error se maneja en la función onSave
     }
   };

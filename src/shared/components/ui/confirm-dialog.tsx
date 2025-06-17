@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 
 import { Button } from '@/shared/components/ui/button';
 import { Modal } from '@/shared/components/ui/modal';
+import { logger } from '@/shared/utils/logger';
 
 export interface ConfirmDialogProps {
   /** Indica si el modal está abierto */
@@ -146,7 +147,7 @@ export function ConfirmDialog({
       await onConfirm();
       onOpenChange(false);
     } catch (error) {
-      console.error('Error al confirmar:', error);
+      logger.error('Error al confirmar:', error);
       // El error se maneja en la función onConfirm
     }
   };

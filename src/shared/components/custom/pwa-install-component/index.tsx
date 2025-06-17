@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/shared/components';
+import { Button } from '@/shared/components/ui/button';
+import { logger } from '@/shared/utils/logger';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -27,27 +28,23 @@ export const PWAInstallComponent = () => {
     };
   }, []);
 
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      void deferredPrompt.prompt().catch(error => {
-        console.error('Error showing install prompt:', error);
-      });
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      logger.error('Error showing install prompt:', error);
+      return;
+    }
 
-      deferredPrompt.userChoice
-        .then(({ outcome }) => {
-          if (outcome === 'accepted') {
-            console.warn('User accepted the install prompt');
-          } else {
-            console.warn('User dismissed the install prompt');
-          }
-        })
-        .catch(error => {
-          console.error('Error in user choice:', error);
-        })
-        .finally(() => {
-          setDeferredPrompt(null);
-          setShowInstallMessage(false);
-        });
+    try {
+      const result = await deferredPrompt.prompt();
+      if (result.outcome === 'accepted') {
+        logger.warn('User accepted the install prompt');
+      } else {
+        logger.warn('User dismissed the install prompt');
+      }
+    } catch (error) {
+      logger.error('Error in user choice:', error);
+    } finally {
+      setDeferredPrompt(null);
     }
   };
 

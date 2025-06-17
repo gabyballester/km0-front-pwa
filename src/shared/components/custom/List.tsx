@@ -21,7 +21,7 @@ import { cva } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import { cn } from '@/shared/lib';
+import { cn } from '@/shared/utils';
 
 const listVariants = cva('my-6 ml-6', {
   variants: {

@@ -12,7 +12,7 @@ import {
   DialogPortal,
   DialogTitle
 } from '@/shared/components/ui/dialog';
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/utils';
 
 export interface ModalProps {
   /** Indica si el modal está abierto */

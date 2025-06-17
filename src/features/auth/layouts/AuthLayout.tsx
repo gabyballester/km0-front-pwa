@@ -5,7 +5,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui/button';
 import { BaseLayout } from '@/shared/layouts/BaseLayout';
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/utils';
 
 export function AuthLayout() {
   const location = useLocation();

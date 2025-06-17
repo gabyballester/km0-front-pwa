@@ -17,6 +17,7 @@ import {
 } from '@/shared/components/ui';
 import { useAuth } from '@/shared/contexts/AuthContext';
 import { useToast } from '@/shared/hooks/useToast';
+import { logger } from '@/shared/utils/logger';
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -45,8 +46,7 @@ export function LoginForm() {
     try {
       await login(formData.email, formData.password);
     } catch (error) {
-      console.error('Login error:', error);
-      // todo: aplicar un logger para ver por qué falló
+      logger.error('Error en login:', error);
       showError(t('auth.loginError'));
     } finally {
       setIsLoading(false);
