@@ -200,10 +200,20 @@ const preCommitRules = {
 };
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules', 'coverage', '*.config.js'] },
+  {
+    ignores: [
+      'dist',
+      'dev-dist',
+      'node_modules',
+      'coverage',
+      '*.config.js',
+      'jest.config.ts' // Ignorar solo jest.config.ts
+    ]
+  },
+  // Configuración principal para archivos de la aplicación
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
@@ -211,8 +221,8 @@ export default tseslint.config(
         React: 'writable'
       },
       parserOptions: {
-        project: './tsconfig.eslint.json',
-        warnOnMultipleProjects: false,
+        project: './tsconfig.app.json',
+        warnOnMultipleProjects: false, // Suprimir warning para project references
         ecmaFeatures: { jsx: true },
         EXPERIMENTAL_useProjectService: true
       }
@@ -222,19 +232,22 @@ export default tseslint.config(
   },
   // Configuración para archivos de configuración
   {
-    files: ['vite.config.ts', 'pwa-assets.config.ts', 'jest.config.ts'],
+    files: ['vite.config.ts', 'pwa-assets.config.ts'],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        project: './tsconfig.node.json',
         warnOnMultipleProjects: false,
         EXPERIMENTAL_useProjectService: true
       }
+    },
+    plugins: {
+      import: eslintPluginImport
     },
     settings: {
       'import/resolver': {
         typescript: {
           ...importResolverBase,
-          project: './tsconfig.eslint.json'
+          project: './tsconfig.node.json'
         }
       }
     },
@@ -242,6 +255,24 @@ export default tseslint.config(
       'import/no-default-export': 'off',
       'import/no-unresolved': ['error', { ignore: ['@vite-pwa/assets-generator/config'] }],
       'import/order': 'off' // Deshabilitar orden en archivos de config
+    }
+  },
+  // Configuración para archivos de test
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', 'src/__test__/**/*'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.jest.json',
+        warnOnMultipleProjects: false,
+        EXPERIMENTAL_useProjectService: true
+      }
+    },
+    plugins: {
+      import: eslintPluginImport
+    },
+    rules: {
+      'import/no-unresolved': 'off', // Más permisivo en tests
+      'no-console': 'off' // Permitir console en tests
     }
   }
 );
