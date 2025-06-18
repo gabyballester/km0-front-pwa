@@ -124,7 +124,7 @@ export default defineConfig({
           // Excluir rutas de API
           /^\/api\//,
           // Excluir archivos estáticos específicos
-          /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css|woff|woff2|ttf|eot)(\?.*)?$/,
+          /\.(?:png|jpg|jpeg|svg|json|xml|webp|woff|woff2|ttf|eot)(\?.*)?$/,
           // Excluir assets de Vite
           /^\/assets\//,
           // Excluir archivos del service worker

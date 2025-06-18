@@ -2,6 +2,7 @@ export * from './Code';
 export * from './error-boundary';
 export * from './LanguageSection';
 export * from './pwa-install-component';
+export * from './pwa-update-component';
 export * from './SimpleBreadcrumbs';
 export * from './skeletons';
 export * from './Text';

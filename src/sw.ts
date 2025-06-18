@@ -7,7 +7,7 @@ import {
   precacheAndRoute
 } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -17,8 +17,8 @@ interface ManifestEntry {
 }
 const isDev = import.meta.env.DEV;
 
-// Versión del service worker para forzar actualización
-const SW_VERSION = '1.0.1';
+// Versión dinámica del service worker basada en timestamp
+const SW_VERSION = isDev ? `dev-${Date.now()}` : `prod-${Date.now()}`;
 
 const wbManifest = self.__WB_MANIFEST as (string | { url: string; revision?: string | null })[];
 
@@ -82,7 +82,7 @@ registerRoute(
   })
 );
 
-// Images strategy
+// Images strategy - Cache First para imágenes estáticas
 const imageStrategy = new CacheFirst({
   cacheName: `${isDev ? 'dev' : 'prod'}-images`,
   ...commonStrategyOptions
@@ -90,12 +90,27 @@ const imageStrategy = new CacheFirst({
 
 registerRoute(({ request }) => request.destination === 'image', imageStrategy);
 
-// Static assets
+// Static assets - Stale While Revalidate para permitir actualizaciones
 registerRoute(
   ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
   new StaleWhileRevalidate({
     cacheName: `${isDev ? 'dev' : 'prod'}-static-assets`,
-    ...commonStrategyOptions // Includes ignoreVary
+    ...commonStrategyOptions
+  })
+);
+
+// API calls - Network First para datos dinámicos
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/api/'),
+  new NetworkFirst({
+    cacheName: `${isDev ? 'dev' : 'prod'}-api-cache`,
+    networkTimeoutSeconds: 3,
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 5 * 60 // 5 minutos
+      })
+    ]
   })
 );
 
@@ -189,10 +204,11 @@ self.addEventListener('unhandledrejection', event => {
 });
 
 self.addEventListener('install', event => {
-  console.warn('[Service Worker] Installing...');
+  console.warn('[Service Worker] Installing...', SW_VERSION);
   console.warn({ event });
   console.warn('[Service Worker] Installed!!');
 });
+
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches
@@ -210,6 +226,13 @@ self.addEventListener('activate', event => {
         return self.clients.claim();
       })
   );
+});
+
+// Notificar a los clientes sobre la nueva versión
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 cleanupOutdatedCaches();

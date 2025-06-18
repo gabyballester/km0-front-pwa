@@ -1,7 +1,12 @@
 import { BrowserRouter } from 'react-router-dom';
 
 import { Router } from '@/router';
-import { ErrorBoundary, PWAInstallComponent, Toaster } from '@/shared/components';
+import {
+  ErrorBoundary,
+  PWAInstallComponent,
+  PWAUpdateComponent,
+  Toaster
+} from '@/shared/components';
 import { ThemeProvider } from '@/shared/contexts';
 import { AuthProvider } from '@/shared/contexts/AuthContext';
 
@@ -17,6 +22,7 @@ export const App = () => {
       </ThemeProvider>
       <Toaster />
       <PWAInstallComponent />
+      <PWAUpdateComponent />
     </ErrorBoundary>
   );
 };

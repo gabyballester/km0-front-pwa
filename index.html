@@ -46,25 +46,6 @@
         }
       }
     </style>
-    <script>
-      // Limpiar service worker y caché al cargar la página
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function (registrations) {
-          for (let registration of registrations) {
-            registration.unregister();
-          }
-        });
-
-        // Limpiar caché del navegador
-        if ('caches' in window) {
-          caches.keys().then(function (names) {
-            for (let name of names) {
-              caches.delete(name);
-            }
-          });
-        }
-      }
-    </script>
   </head>
   <body>
     <!-- <div id="splash" class="splash-screen"></div> -->
