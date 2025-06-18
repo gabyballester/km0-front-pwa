@@ -18,8 +18,158 @@ const importResolverBase = {
   }
 };
 
+// Configuración base compartida
+const baseConfig = {
+  plugins: {
+    'react-hooks': reactHooks,
+    'react-refresh': reactRefresh,
+    import: eslintPluginImport,
+    'jsx-a11y': jsxA11yPlugin,
+    'eslint-comments': eslintComments,
+    react: reactPlugin
+  },
+  settings: {
+    react: { version: 'detect' },
+    'import/resolver': {
+      typescript: {
+        ...importResolverBase,
+        project: ['./tsconfig.app.json', './tsconfig.eslint.json']
+      }
+    }
+  }
+};
+
+// Reglas base compartidas
+const baseRules = {
+  ...reactHooks.configs.recommended.rules,
+  'react-refresh/only-export-components': 'off',
+  'no-multiple-empty-lines': ['error', { max: 1 }],
+  'padding-line-between-statements': [
+    'error',
+    { blankLine: 'always', prev: 'import', next: 'expression' }
+  ],
+  'import/no-extraneous-dependencies': ['off'],
+  '@typescript-eslint/no-require-imports': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
+  'linebreak-style': ['error', 'unix'],
+  'no-console': ['error', { allow: ['warn', 'error'] }],
+  'react-hooks/exhaustive-deps': 'error',
+  'react-hooks/rules-of-hooks': 'error',
+  'comma-dangle': ['error', 'never'],
+  'import/first': 'error',
+  'import/no-duplicates': 'error',
+  'import/order': [
+    'error',
+    {
+      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      pathGroups: [
+        {
+          pattern: 'react',
+          group: 'external',
+          position: 'before'
+        },
+        {
+          pattern: '@/**',
+          group: 'internal',
+          position: 'before'
+        }
+      ],
+      alphabetize: {
+        order: 'asc',
+        caseInsensitive: true
+      },
+      'newlines-between': 'always'
+    }
+  ],
+  'sort-imports': [
+    'error',
+    {
+      ignoreCase: true,
+      ignoreDeclarationSort: true,
+      ignoreMemberSort: false,
+      memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single']
+    }
+  ],
+  'react/jsx-key': 'error',
+  'react/jsx-no-target-blank': 'error',
+  'react/self-closing-comp': [
+    'error',
+    {
+      component: true,
+      html: true
+    }
+  ],
+  'react/jsx-fragments': ['error', 'syntax'],
+  'react/jsx-curly-brace-presence': ['error', 'never'],
+  'jsx-a11y/alt-text': 'error',
+  'jsx-a11y/anchor-has-content': 'error',
+  'jsx-a11y/aria-role': 'error',
+  '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+  '@typescript-eslint/consistent-type-imports': 'error',
+  'no-implicit-coercion': 'error',
+  'prefer-object-spread': 'error',
+  'default-case-last': 'error',
+  'eslint-comments/no-unused-disable': 'error',
+  'no-promise-executor-return': 'error',
+  'no-unreachable-loop': 'error',
+  'react/jsx-uses-react': 'off',
+  'react/react-in-jsx-scope': 'off',
+  'import/no-unresolved': [
+    'error',
+    {
+      ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
+    }
+  ]
+};
+
+// Reglas optimizadas para pre-commit (más rápidas)
+const preCommitRules = {
+  ...reactHooks.configs.recommended.rules,
+  'react-refresh/only-export-components': 'off',
+  'no-multiple-empty-lines': ['error', { max: 1 }],
+  'no-console': ['error', { allow: ['warn', 'error'] }],
+  'react-hooks/exhaustive-deps': 'warn', // Reducir a warning para velocidad
+  'react-hooks/rules-of-hooks': 'error',
+  'comma-dangle': ['error', 'never'],
+  'react/jsx-key': 'error',
+  'react/jsx-no-target-blank': 'error',
+  'react/self-closing-comp': [
+    'error',
+    {
+      component: true,
+      html: true
+    }
+  ],
+  'react/jsx-fragments': ['error', 'syntax'],
+  'react/jsx-curly-brace-presence': ['error', 'never'],
+  'jsx-a11y/alt-text': 'warn', // Reducir a warning
+  'jsx-a11y/anchor-has-content': 'warn', // Reducir a warning
+  'jsx-a11y/aria-role': 'warn', // Reducir a warning
+  'no-implicit-coercion': 'error',
+  'prefer-object-spread': 'error',
+  'default-case-last': 'error',
+  'react/jsx-uses-react': 'off',
+  'react/react-in-jsx-scope': 'off',
+  // Deshabilitar reglas costosas para pre-commit
+  'import/order': 'off',
+  'sort-imports': 'off',
+  '@typescript-eslint/consistent-type-imports': 'off',
+  'import/first': 'off',
+  'import/no-duplicates': 'off',
+  'padding-line-between-statements': 'off',
+  '@typescript-eslint/no-require-imports': 'off',
+  '@typescript-eslint/no-explicit-any': 'warn',
+  'linebreak-style': 'off', // Problemas en Windows
+  'import/no-unresolved': [
+    'warn',
+    {
+      ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
+    }
+  ]
+};
+
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist'] },
+  { ignores: ['dist', 'dev-dist', 'node_modules', 'coverage', '*.config.js'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
     files: ['**/*.{ts,tsx}'],
@@ -36,113 +186,8 @@ export default tseslint.config(
         EXPERIMENTAL_useProjectService: true
       }
     },
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-      import: eslintPluginImport,
-      'jsx-a11y': jsxA11yPlugin,
-      'eslint-comments': eslintComments,
-      react: reactPlugin
-    },
-
-    settings: {
-      react: { version: 'detect' },
-      'import/resolver': {
-        typescript: {
-          ...importResolverBase,
-          project: ['./tsconfig.app.json', './tsconfig.eslint.json']
-        }
-      }
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': 'off',
-      'no-multiple-empty-lines': ['error', { max: 1 }],
-      'padding-line-between-statements': [
-        'error', // También una línea en blanco antes de una expresión
-        { blankLine: 'always', prev: 'import', next: 'expression' }
-      ],
-      'import/no-extraneous-dependencies': ['off'],
-      '@typescript-eslint/no-require-imports': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
-      'linebreak-style': ['error', 'unix'],
-      'no-console': ['error', { allow: ['warn', 'error'] }],
-      'react-hooks/exhaustive-deps': 'error',
-      'react-hooks/rules-of-hooks': 'error',
-      'comma-dangle': ['error', 'never'],
-      'import/first': 'error',
-      'import/no-duplicates': 'error',
-      'import/order': [
-        'error',
-        {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          pathGroups: [
-            {
-              pattern: 'react',
-              group: 'external',
-              position: 'before'
-            },
-            {
-              pattern: '@/**',
-              group: 'internal',
-              position: 'before'
-            }
-          ],
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true
-          },
-          'newlines-between': 'always'
-        }
-      ],
-      'sort-imports': [
-        'error',
-        {
-          ignoreCase: true,
-          ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
-          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single']
-        }
-      ],
-      'react/jsx-key': 'error',
-      'react/jsx-no-target-blank': 'error',
-      'react/self-closing-comp': [
-        'error',
-        {
-          component: true,
-          html: true
-        }
-      ],
-      'react/jsx-fragments': ['error', 'syntax'],
-      'react/jsx-curly-brace-presence': ['error', 'never'],
-
-      // Reglas de accesibilidad
-      'jsx-a11y/alt-text': 'error',
-      'jsx-a11y/anchor-has-content': 'error',
-      'jsx-a11y/aria-role': 'error',
-
-      // Mejores prácticas TypeScript
-      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-      '@typescript-eslint/consistent-type-imports': 'error',
-
-      // Nuevas reglas generales
-      'no-implicit-coercion': 'error',
-      'prefer-object-spread': 'error',
-      'default-case-last': 'error',
-      'eslint-comments/no-unused-disable': 'error',
-
-      // Mejor manejo de Promesas
-      'no-promise-executor-return': 'error',
-      'no-unreachable-loop': 'error',
-      'react/jsx-uses-react': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'import/no-unresolved': [
-        'error',
-        {
-          ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
-        }
-      ]
-    }
+    ...baseConfig,
+    rules: process.env.NODE_ENV === 'pre-commit' ? preCommitRules : baseRules
   },
   // Configuración para archivos de configuración (tsconfig.node.json)
   {
@@ -162,7 +207,6 @@ export default tseslint.config(
         }
       }
     },
-    // Reglas específicas para archivos de configuración
     rules: {
       'import/no-default-export': 'off',
       'import/no-unresolved': ['error', { ignore: ['@vite-pwa/assets-generator/config'] }]

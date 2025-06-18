@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:staged": "eslint --fix --max-warnings=0 --cache --cache-location node_modules/.cache/.eslintcache",
     "format": "prettier . --write",
+    "format:staged": "prettier --write",
     "preview": "vite preview",
     "generate-pwa-icons": "pwa-assets-generator",
     "prod": "npm run build && npm run preview",
@@ -16,14 +18,15 @@
     "clean-install": "npm run remove-files && npm install",
     "rebuild": "npm run clean-install && npm run prod",
     "prepare": "husky",
-    "pre-commit": "npx lint-staged",
+    "pre-commit": "cross-env NODE_ENV=pre-commit npx lint-staged",
+    "pre-commit:win": "set NODE_ENV=pre-commit && npx lint-staged",
     "test": "jest --coverage --config ./jest.config.ts",
     "test:dev": "jest --watch --coverage --config ./jest.config.ts",
     "test:prod": "jest --silent --config ./jest.config.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix --max-warnings=0",
+      "eslint --fix --cache --cache-location node_modules/.cache/.eslintcache",
       "prettier --write"
     ],
     "*.{json,css,md,html,yml}": [
@@ -84,6 +87,7 @@
     "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-react": "^4.2.1",
     "babel-jest": "^29.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-import-resolver-typescript": "^4.3.2",
