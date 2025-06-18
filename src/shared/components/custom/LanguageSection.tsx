@@ -35,8 +35,11 @@ export const LanguageSection = () => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <div className='bg-white p-2 hover:bg-gray-500 rounded-lg cursor-pointer uppercase flex items-center gap-2'>
-          <Languages className='h-6 w-6' />
+        <div
+          className='bg-white dark:bg-gray-800 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer
+            uppercase flex items-center gap-2 transition-colors'
+        >
+          <Languages className='h-6 w-6 text-gray-700 dark:text-gray-300' />
           <div className='size-6 rounded-full overflow-hidden relative'>
             <img
               src={CurrentFlag.component}

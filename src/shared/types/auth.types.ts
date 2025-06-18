@@ -12,6 +12,7 @@ export interface UserProfile {
   isVerified: boolean;
   verificationLevel: 'email' | 'phone' | 'document';
   companyName?: string;
+  avatar?: string;
 }
 
 export interface User {

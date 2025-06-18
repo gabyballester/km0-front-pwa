@@ -44,7 +44,7 @@ export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
           <Avatar className={sizeClasses[size]}>
-            <AvatarImage src={profile.avatar} alt={profile.name} />
+            {profile.avatar && <AvatarImage src={profile.avatar} alt={profile.name} />}
             <AvatarFallback>
               {profile.name
                 .split(' ')

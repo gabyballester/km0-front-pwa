@@ -78,8 +78,8 @@ const LandingPage = () => {
             <Button
               onClick={handleGoToLogin}
               size='lg'
-              className='w-full h-12 text-lg font-semibold bg-white/90 text-black hover:bg-white/100 backdrop-blur-sm
-                border-2 border-white/20'
+              className='w-full h-12 text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 backdrop-blur-sm border-2
+                border-blue-500/20 shadow-lg'
             >
               <LogIn className='w-5 h-5 mr-2' />
               {t('landing.loginButton')}
@@ -89,8 +89,8 @@ const LandingPage = () => {
               onClick={handleGoToRegister}
               variant='outline'
               size='lg'
-              className='w-full h-12 text-lg font-semibold bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm border-2
-                border-white/30'
+              className='w-full h-12 text-lg font-semibold bg-gray-800/80 text-white hover:bg-gray-700/80 backdrop-blur-sm
+                border-2 border-white/30 shadow-lg'
             >
               <UserPlus className='w-5 h-5 mr-2' />
               {t('landing.registerButton')}
@@ -98,9 +98,9 @@ const LandingPage = () => {
           </div>
 
           {/* Footer Info */}
-          <div className='pt-8 text-sm text-white/80 space-y-2 backdrop-blur-sm bg-black/20 rounded-lg p-4'>
-            <p>{t('landing.info.hasAccount')}</p>
-            <p>{t('landing.info.newUser')}</p>
+          <div className='pt-8 text-sm text-white space-y-2 backdrop-blur-sm bg-gray-800/70 rounded-lg p-4 shadow-xl'>
+            <p className='drop-shadow-lg'>{t('landing.info.hasAccount')}</p>
+            <p className='drop-shadow-lg'>{t('landing.info.newUser')}</p>
           </div>
         </div>
       </div>

@@ -17,6 +17,9 @@ interface ManifestEntry {
 }
 const isDev = import.meta.env.DEV;
 
+// Versión del service worker para forzar actualización
+const SW_VERSION = '1.0.1';
+
 const wbManifest = self.__WB_MANIFEST as (string | { url: string; revision?: string | null })[];
 
 // ===== PRECACHE CONFIGURATION =====
@@ -101,8 +104,27 @@ if (!isDev) {
   const navigationHandler = createHandlerBoundToURL('index.html');
   const navigationRoute = new NavigationRoute(navigationHandler, {
     allowlist: [new RegExp(`^${import.meta.env.BASE_URL || '/'}`)],
-    // denylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|json|xml|webp)$/, /^\/_/]
-    denylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css)(\?.*)?$/, /^\/_/]
+    denylist: [
+      /^\/api\//,
+      // Excluir archivos estáticos específicos
+      /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css|woff|woff2|ttf|eot)(\?.*)?$/,
+      // Excluir assets de Vite
+      /^\/assets\//,
+      // Excluir archivos del service worker
+      /^\/sw\.js$/,
+      /^\/registerSW\.js$/,
+      // Excluir archivos de manifiesto
+      /^\/manifest\.webmanifest$/,
+      // Excluir archivos de PWA
+      /^\/pwa-.*\.png$/,
+      /^\/apple-touch-icon.*\.png$/,
+      /^\/maskable-icon.*\.png$/,
+      /^\/screenshot.*\.png$/,
+      /^\/splash-screen.*\.png$/,
+      /^\/favicon\.ico$/,
+      // Excluir rutas que empiecen con _
+      /^\/_/
+    ]
   });
   registerRoute(navigationRoute);
 }
@@ -182,6 +204,11 @@ self.addEventListener('activate', event => {
             .map(name => caches.delete(name))
         )
       )
+      .then(() => {
+        console.warn(`[Service Worker] Activated version ${SW_VERSION}`);
+        // Forzar la actualización de todos los clientes
+        return self.clients.claim();
+      })
   );
 });
 

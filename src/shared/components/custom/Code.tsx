@@ -47,13 +47,21 @@ interface CodeProps extends HTMLAttributes<HTMLElement>, VariantProps<typeof cod
 
 const Code = forwardRef<HTMLElement, CodeProps>(
   ({ className, as = 'code', variant, ...props }, ref) => {
-    const Component = as;
+    if (as === 'pre') {
+      return (
+        <pre
+          className={combineClassNames(codeVariants({ as, variant, className }))}
+          ref={ref as React.Ref<HTMLPreElement>}
+          {...(props as HTMLAttributes<HTMLPreElement>)}
+        />
+      );
+    }
 
     return (
-      <Component
+      <code
         className={combineClassNames(codeVariants({ as, variant, className }))}
-        ref={ref}
-        {...props}
+        ref={ref as React.Ref<HTMLElement>}
+        {...(props as HTMLAttributes<HTMLElement>)}
       />
     );
   }

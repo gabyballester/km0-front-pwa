@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui';
-import { cn } from '@/shared/lib/utils';
+import { combineClassNames } from '@/shared/utils';
 
 const items = [
   { text: 'Inicio', to: PATHS.HOME },
@@ -23,11 +23,11 @@ export const NavigationLinks = () => {
             <Button
               asChild
               variant={isActive ? 'link' : 'link'}
-              className={cn('w-full justify-start md:w-auto md:justify-center')}
+              className={combineClassNames('w-full justify-start md:w-auto md:justify-center')}
             >
               <Link
                 to={item.to}
-                className={cn(
+                className={combineClassNames(
                   'text-sm font-medium text-foreground hover:underline',
                   isActive && 'underline'
                 )}

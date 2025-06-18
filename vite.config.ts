@@ -17,8 +17,7 @@ const htmlRevision = !isDev
   : 'dev-html-revision';
 
 export default defineConfig({
-  base: '/', // Ajusta si la app está en un subdirectorio
-  // base: isDev ? '/' : '/dist/', // Ajusta si la app está en un subdirectorio
+  base: '/',
   server: {
     host: 'localhost',
     port: 3000,
@@ -28,6 +27,11 @@ export default defineConfig({
       host: 'localhost',
       port: 3000
     }
+  },
+  preview: {
+    port: 4173,
+    host: 'localhost',
+    strictPort: true
   },
   assetsInclude: ['**/*.svg'],
   resolve: {
@@ -96,7 +100,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        navigateFallback: '/dist/index.html',
+        navigateFallback: '/index.html',
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
         globIgnores: [
           '**/@vite/*', // Excluir el core de Vite
@@ -119,7 +123,23 @@ export default defineConfig({
         navigateFallbackDenylist: [
           // Excluir rutas de API
           /^\/api\//,
-          /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css)(\?.*)?$/,
+          // Excluir archivos estáticos específicos
+          /\.(?:png|jpg|jpeg|svg|json|xml|webp|js|mjs|css|woff|woff2|ttf|eot)(\?.*)?$/,
+          // Excluir assets de Vite
+          /^\/assets\//,
+          // Excluir archivos del service worker
+          /^\/sw\.js$/,
+          /^\/registerSW\.js$/,
+          // Excluir archivos de manifiesto
+          /^\/manifest\.webmanifest$/,
+          // Excluir archivos de PWA
+          /^\/pwa-.*\.png$/,
+          /^\/apple-touch-icon.*\.png$/,
+          /^\/maskable-icon.*\.png$/,
+          /^\/screenshot.*\.png$/,
+          /^\/splash-screen.*\.png$/,
+          /^\/favicon\.ico$/,
+          // Excluir rutas que empiecen con _
           /^\/_/
         ]
       },
@@ -131,6 +151,7 @@ export default defineConfig({
           '**/node_modules/**',
           '**/__tests__/**',
           '**/coverage/**',
+          '**/dev-dist/**',
           ...(isDev ? ['**/@vite/**', '**/react-refresh/**'] : [])
         ],
         dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
