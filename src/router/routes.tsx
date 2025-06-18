@@ -1,7 +1,9 @@
-import { Home } from 'lucide-react';
 import { lazy } from 'react';
 
+import { Home } from 'lucide-react';
+
 import { PATHS } from './paths.router';
+
 import type { RouteConfig } from './types';
 
 // Lazy load layouts

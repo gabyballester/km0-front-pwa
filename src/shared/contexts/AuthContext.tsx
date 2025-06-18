@@ -1,8 +1,10 @@
-import { LogIn, Shield, UserPlus } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { LogIn, Shield, UserPlus } from 'lucide-react';
 
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui/button';

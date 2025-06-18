@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
 import { PATHS } from '@/router/paths.router';

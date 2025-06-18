@@ -1,5 +1,6 @@
-import { Bell, Home, Settings } from 'lucide-react';
 import { Link, Outlet } from 'react-router-dom';
+
+import { Bell, Home, Settings } from 'lucide-react';
 
 import { MobileNav } from '@/features/dashboard/components/MobileNav';
 import { UserNav } from '@/features/dashboard/components/UserNav';

@@ -6,9 +6,11 @@
  * <LanguageSection />
  * ```
  */
-import { Languages } from 'lucide-react';
 import { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
+
+import { Languages } from 'lucide-react';
 
 import ESFlag from '@/assets/svg/flags/es.svg';
 import GBFlag from '@/assets/svg/flags/gb.svg';

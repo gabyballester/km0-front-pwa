@@ -1,5 +1,6 @@
-import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
 import { Modal } from '@/shared/components/ui/modal';

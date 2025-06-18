@@ -1,5 +1,6 @@
-import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 
 import { PATHS } from '@/router/paths.router';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar';

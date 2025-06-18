@@ -6,7 +6,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import globals from 'globals';
+globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const importResolverBase = {
@@ -39,76 +39,14 @@ const baseConfig = {
   }
 };
 
-// Configuración mejorada para ordenamiento de imports
-const importOrderConfig = {
-  groups: [
-    'builtin', // Node.js built-in modules
-    'external', // Third-party modules
-    'internal', // Internal modules (aliases)
-    'parent', // Parent directory imports
-    'sibling', // Same directory imports
-    'index', // Index imports
-    'object', // Object imports
-    'type' // Type imports
-  ],
-  pathGroups: [
-    // React siempre primero
-    {
-      pattern: 'react',
-      group: 'external',
-      position: 'before'
-    },
-    // React Router
-    {
-      pattern: 'react-router*',
-      group: 'external',
-      position: 'after'
-    },
-    // Lucide React (iconos)
-    {
-      pattern: 'lucide-react',
-      group: 'external',
-      position: 'after'
-    },
-    // Imports internos con alias @
-    {
-      pattern: '@/**',
-      group: 'internal',
-      position: 'before'
-    },
-    // Assets y archivos estáticos
-    {
-      pattern: '*.{css,scss,less,styl}',
-      group: 'object',
-      patternOptions: { matchBase: true },
-      position: 'after'
-    },
-    // Tipos de TypeScript
-    {
-      pattern: '*.{d.ts}',
-      group: 'type',
-      patternOptions: { matchBase: true },
-      position: 'after'
-    }
-  ],
-  pathGroupsExcludedImportTypes: ['react', 'react-router*'],
-  alphabetize: {
-    order: 'asc',
-    caseInsensitive: true
-  },
-  'newlines-between': 'always',
-  warnOnUnassignedImports: true
-};
-
-// Reglas base compartidas mejoradas
+// Reglas base compartidas
 const baseRules = {
   ...reactHooks.configs.recommended.rules,
   'react-refresh/only-export-components': 'off',
   'no-multiple-empty-lines': ['error', { max: 1 }],
   'padding-line-between-statements': [
     'error',
-    { blankLine: 'always', prev: 'import', next: 'expression' },
-    { blankLine: 'always', prev: 'expression', next: 'export' }
+    { blankLine: 'always', prev: 'import', next: 'expression' }
   ],
   'import/no-extraneous-dependencies': ['off'],
   '@typescript-eslint/no-require-imports': 'error',
@@ -120,12 +58,34 @@ const baseRules = {
   'comma-dangle': ['error', 'never'],
   'import/first': 'error',
   'import/no-duplicates': 'error',
-  'import/order': ['error', importOrderConfig],
+  'import/order': [
+    'error',
+    {
+      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      pathGroups: [
+        {
+          pattern: 'react',
+          group: 'external',
+          position: 'before'
+        },
+        {
+          pattern: '@/**',
+          group: 'internal',
+          position: 'before'
+        }
+      ],
+      alphabetize: {
+        order: 'asc',
+        caseInsensitive: true
+      },
+      'newlines-between': 'always'
+    }
+  ],
   'sort-imports': [
     'error',
     {
       ignoreCase: true,
-      ignoreDeclarationSort: true, // Dejamos que import/order maneje esto
+      ignoreDeclarationSort: true,
       ignoreMemberSort: false,
       memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single']
     }
@@ -145,13 +105,7 @@ const baseRules = {
   'jsx-a11y/anchor-has-content': 'error',
   'jsx-a11y/aria-role': 'error',
   '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-  '@typescript-eslint/consistent-type-imports': [
-    'error',
-    {
-      prefer: 'type-imports',
-      disallowTypeAnnotations: false
-    }
-  ],
+  '@typescript-eslint/consistent-type-imports': 'error',
   'no-implicit-coercion': 'error',
   'prefer-object-spread': 'error',
   'default-case-last': 'error',
@@ -165,42 +119,23 @@ const baseRules = {
     {
       ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
     }
-  ],
-  // Nuevas reglas para mejor calidad de código
-  'prefer-const': 'error',
-  'no-var': 'error',
-  'object-shorthand': 'error',
-  'prefer-template': 'error',
-  'template-curly-spacing': 'error',
-  'arrow-spacing': 'error',
-  'no-duplicate-imports': 'error',
-  'no-useless-rename': 'error'
-};
-
-// Reglas optimizadas para pre-commit (manteniendo orden de imports)
-const preCommitRules = {
-  ...baseRules,
-  // Mantener orden de imports en pre-commit
-  'import/order': ['error', importOrderConfig],
-  'sort-imports': baseRules['sort-imports'],
-  '@typescript-eslint/consistent-type-imports':
-    baseRules['@typescript-eslint/consistent-type-imports'],
-  // Reducir algunas reglas a warnings para velocidad
-  'jsx-a11y/alt-text': 'warn',
-  'jsx-a11y/anchor-has-content': 'warn',
-  'jsx-a11y/aria-role': 'warn',
-  'react-hooks/exhaustive-deps': 'warn',
-  // Deshabilitar reglas muy costosas solo en pre-commit
-  'import/no-unresolved': [
-    'warn',
-    {
-      ignore: ['@vite-pwa/assets-generator/config', 'virtual:pwa-register/react']
-    }
   ]
 };
 
+// Reglas optimizadas para pre-commit (más rápidas)
+const preCommitRules = {
+  ...baseRules,
+  // Deshabilitar reglas costosas para pre-commit
+  'import/order': 'off', // Muy costosa
+  'sort-imports': 'off', // Muy costosa
+  '@typescript-eslint/consistent-type-imports': 'off', // Costosa
+  'jsx-a11y/alt-text': 'warn', // Reducir a warning
+  'jsx-a11y/anchor-has-content': 'warn', // Reducir a warning
+  'jsx-a11y/aria-role': 'warn' // Reducir a warning
+};
+
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules', 'coverage', '*.config.js'] },
+  { ignores: ['dist', 'dev-dist', 'node_modules', 'coverage'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
     files: ['**/*.{ts,tsx}'],
@@ -220,7 +155,7 @@ export default tseslint.config(
     ...baseConfig,
     rules: process.env.NODE_ENV === 'pre-commit' ? preCommitRules : baseRules
   },
-  // Configuración para archivos de configuración
+  // Configuración para archivos de configuración (tsconfig.node.json)
   {
     files: ['vite.config.ts', 'pwa-assets.config.ts', 'jest.config.ts'],
     languageOptions: {
@@ -240,8 +175,7 @@ export default tseslint.config(
     },
     rules: {
       'import/no-default-export': 'off',
-      'import/no-unresolved': ['error', { ignore: ['@vite-pwa/assets-generator/config'] }],
-      'import/order': 'off' // Deshabilitar orden en archivos de config
+      'import/no-unresolved': ['error', { ignore: ['@vite-pwa/assets-generator/config'] }]
     }
   }
-);
+); 

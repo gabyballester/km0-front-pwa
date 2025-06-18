@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+
 import { Route, Routes } from 'react-router-dom';
 
 import { PageTransition } from '@/shared/components';

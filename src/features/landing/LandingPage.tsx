@@ -1,7 +1,10 @@
-import { LogIn, UserPlus } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+
+import { useNavigate } from 'react-router-dom';
+
+import { LogIn, UserPlus } from 'lucide-react';
 
 // Import videos
 import introVideoEN from '@/assets/videos/landing/intro-en.mp4';

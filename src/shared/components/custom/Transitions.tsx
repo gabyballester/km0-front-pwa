@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, type Transition } from 'framer-motion';
+
 import { useLocation } from 'react-router-dom';
 
 import { combineClassNames } from '@/shared/utils';

@@ -1,5 +1,6 @@
-import { Loader2 } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
 import { Modal } from '@/shared/components/ui/modal';

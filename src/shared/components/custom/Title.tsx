@@ -10,10 +10,9 @@
  * <Title as="h2" align="center">Subtítulo</Title>
  * ```
  */
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import type { HTMLAttributes } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
+
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { combineClassNames } from '@/shared/utils';
 

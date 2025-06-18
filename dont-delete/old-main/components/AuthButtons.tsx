@@ -14,7 +14,7 @@ export const AuthButtons = ({ mobile, className }: { mobile?: boolean; className
       )}
     >
       <Button size='lg' variant='secondary' asChild className='w-full md:w-[5rem]'>
-        <Link to={PATHS.LOGIN}>Login</Link>
+        <Link to={PATHS.LOGIN}>Login2</Link>
       </Button>
       <Button size='lg' asChild className='w-full md:w-[5rem]'>
         <Link to={PATHS.REGISTER}>Registro</Link>

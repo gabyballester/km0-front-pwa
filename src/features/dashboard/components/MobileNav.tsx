@@ -1,5 +1,6 @@
-import { Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+import { Menu } from 'lucide-react';
 
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui/button';

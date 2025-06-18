@@ -1,6 +1,8 @@
-import { ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+
 import { Link, Outlet, useLocation } from 'react-router-dom';
+
+import { ArrowLeft } from 'lucide-react';
 
 import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components/ui/button';

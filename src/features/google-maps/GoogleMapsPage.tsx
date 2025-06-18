@@ -1,6 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { APIProvider, ColorScheme, InfoWindow, Map, useMap } from '@vis.gl/react-google-maps';
-import { useEffect, useRef, useState } from 'react';
 
 import { useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
 import { usePageLoading } from '@/shared/hooks/usePageLoading';
