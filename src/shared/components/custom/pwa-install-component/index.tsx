@@ -16,20 +16,17 @@ export const PWAInstallComponent = () => {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault(); // Prevenir que el navegador muestre su propio prompt
+      e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-
-      // Mostrar modal si no se ha cerrado antes
       if (sessionStorage.getItem('installModalClosed') !== 'true') {
         setShowInstallModal(true);
       }
-
-      // Siempre mostrar el botón si hay prompt disponible
-      setShowInstallButton(true);
+      // El botón solo se oculta si el usuario lo cierra manualmente en la sesión
+      if (sessionStorage.getItem('installButtonClosed') !== 'true') {
+        setShowInstallButton(true);
+      }
     };
-
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
@@ -40,14 +37,9 @@ export const PWAInstallComponent = () => {
       logger.error('No install prompt available');
       return;
     }
-
     try {
-      // Mostrar el prompt nativo del navegador
       await deferredPrompt.prompt();
-
-      // Esperar la respuesta del usuario
       const choice = await deferredPrompt.userChoice;
-
       if (choice.outcome === 'accepted') {
         logger.info('Usuario aceptó la instalación');
         setShowInstallButton(false);
@@ -56,7 +48,6 @@ export const PWAInstallComponent = () => {
       } else {
         logger.info('Usuario rechazó la instalación');
         setShowInstallModal(false);
-        // Mantener el botón visible para que pueda intentar de nuevo
       }
     } catch (error) {
       logger.error('Error en la instalación:', error);
@@ -74,50 +65,29 @@ export const PWAInstallComponent = () => {
     sessionStorage.setItem('installButtonClosed', 'true');
   };
 
-  // Solo mostrar el botón si hay un prompt disponible y no se ha cerrado
   if (!deferredPrompt || !showInstallButton) {
     return null;
   }
 
   return (
     <>
-      {/* Modal de instalación */}
+      {/* Modal de instalación resumido */}
       <Modal
         open={showInstallModal}
         onOpenChange={setShowInstallModal}
-        title='¿Quieres instalar la aplicación?'
-        description='Instala esta aplicación en tu dispositivo para acceder más fácilmente y disfrutar de una mejor experiencia.'
+        title='¿Instalar la app?'
+        description='Puedes instalar la app para acceder más rápido. Siempre puedes usar el botón verde abajo a la derecha para instalarla más tarde o cerrarlo para ocultarlo durante esta sesión.'
         size='sm'
       >
-        <div className='space-y-4'>
-          <div className='flex items-start gap-3'>
-            <span className='text-2xl'>📱</span>
-            <div className='flex-1'>
-              <h4 className='font-medium text-gray-900 dark:text-white'>
-                Beneficios de instalar la app:
-              </h4>
-              <ul className='mt-2 text-sm text-gray-600 dark:text-gray-300 space-y-1'>
-                <li>• Acceso rápido desde el escritorio</li>
-                <li>• Funciona sin conexión a internet</li>
-                <li>• Notificaciones push</li>
-                <li>• Experiencia como app nativa</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
         <Modal.Footer>
-          <div className='flex gap-2 justify-end'>
-            <Button variant='outline' onClick={handleCloseModal}>
-              Más tarde
-            </Button>
-            <Button onClick={handleInstallClick} className='bg-green-600 hover:bg-green-700'>
-              Instalar
-            </Button>
-          </div>
+          <Button variant='outline' onClick={handleCloseModal}>
+            Más tarde
+          </Button>
+          <Button onClick={handleInstallClick} className='bg-green-600 hover:bg-green-700'>
+            Instalar
+          </Button>
         </Modal.Footer>
       </Modal>
-
       {/* Botón flotante de instalación */}
       <div className='fixed bottom-4 right-4 z-50 flex flex-col gap-2'>
         <Button

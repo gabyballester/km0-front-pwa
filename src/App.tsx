@@ -4,7 +4,7 @@ import { Router } from '@/router';
 import {
   ErrorBoundary,
   PWAInstallComponent,
-  PWAUpdateComponent,
+  // PWAUpdateComponent,
   Toaster
 } from '@/shared/components';
 import { ThemeProvider } from '@/shared/contexts';
@@ -22,7 +22,7 @@ export const App = () => {
       </ThemeProvider>
       <Toaster />
       <PWAInstallComponent />
-      <PWAUpdateComponent />
+      {/* <PWAUpdateComponent /> */}
     </ErrorBoundary>
   );
 };

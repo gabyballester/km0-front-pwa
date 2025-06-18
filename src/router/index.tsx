@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import { PageTransition } from '@/shared/components';
+import { TransitionComponent } from '@/shared/components';
 
 import { RouteGuard } from './components/RouteGuard';
 import { routes } from './routes';
@@ -28,7 +28,7 @@ export function Router() {
             path={route.path}
             element={
               <RouteGuard type={route.type}>
-                <PageTransition>{route.element}</PageTransition>
+                <TransitionComponent>{route.element}</TransitionComponent>
               </RouteGuard>
             }
           >
@@ -38,7 +38,7 @@ export function Router() {
                 path={child.path}
                 element={
                   <RouteGuard type={child.type}>
-                    <PageTransition>{child.element}</PageTransition>
+                    <TransitionComponent>{child.element}</TransitionComponent>
                   </RouteGuard>
                 }
               />

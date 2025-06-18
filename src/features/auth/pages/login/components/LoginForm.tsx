@@ -57,7 +57,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className='w-full max-w-sm mx-auto'>
+    <Card className='w-full max-w-sm mx-auto border-2 border-green-500'>
       <CardHeader className='space-y-1'>
         <CardTitle className='text-2xl text-center'>{t('auth.login')}</CardTitle>
         <CardDescription className='text-center'>{t('auth.loginCredentials')}</CardDescription>

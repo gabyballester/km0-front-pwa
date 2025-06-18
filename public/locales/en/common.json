@@ -68,7 +68,7 @@
     "invalidPhone": "Invalid phone"
   },
   "landing": {
-    "loginButton": "Login2",
+    "loginButton": "Login",
     "registerButton": "Sign Up",
     "info": {
       "hasAccount": "Already have an account? Use the \"Login\" button",

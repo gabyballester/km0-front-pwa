@@ -1,4 +1,4 @@
-export * from './Code';
+export * from './CodeText';
 export * from './error-boundary';
 export * from './LanguageSection';
 export * from './pwa-install-component';
@@ -8,4 +8,4 @@ export * from './skeletons';
 export * from './Text';
 export * from './ThemeAndColorToggle';
 export * from './Title';
-export * from './Transitions';
+export * from './TransitionComponent';

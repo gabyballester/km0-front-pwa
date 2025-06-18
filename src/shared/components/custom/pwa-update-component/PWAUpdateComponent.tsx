@@ -144,7 +144,7 @@ export const PWAUpdateComponent = () => {
         open={showUpdateDialog}
         onOpenChange={setShowUpdateDialog}
         title='Nueva versión disponible'
-        description='Hay una nueva versión de la aplicación disponible. ¿Quieres actualizar ahora?'
+        description='Puedes actualizar ahora para obtener las últimas mejoras, o esperar y se actualizará automáticamente la próxima vez que abras la app.'
         size='sm'
       >
         <div className='space-y-4'>
@@ -160,7 +160,6 @@ export const PWAUpdateComponent = () => {
             </div>
           </div>
         </div>
-
         <Modal.Footer>
           <div className='flex flex-col gap-2 w-full'>
             <Button onClick={handleAutoUpdate} className='w-full bg-blue-600 hover:bg-blue-700'>

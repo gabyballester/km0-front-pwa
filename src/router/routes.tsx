@@ -66,7 +66,7 @@ export const routes: RouteConfig[] = [
         path: 'login',
         type: 'auth',
         element: <LoginPage />,
-        title: 'Iniciar Sesión3',
+        title: 'Iniciar Sesión',
         description: 'Accede a tu cuenta'
       },
       {

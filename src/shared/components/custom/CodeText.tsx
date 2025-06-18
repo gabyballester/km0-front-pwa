@@ -44,7 +44,7 @@ interface CodeProps extends HTMLAttributes<HTMLElement>, VariantProps<typeof cod
   as?: 'code' | 'pre';
 }
 
-const Code = forwardRef<HTMLElement, CodeProps>(
+const CodeText = forwardRef<HTMLElement, CodeProps>(
   ({ className, as = 'code', variant, ...props }, ref) => {
     if (as === 'pre') {
       return (
@@ -66,6 +66,6 @@ const Code = forwardRef<HTMLElement, CodeProps>(
   }
 );
 
-Code.displayName = 'Code';
+CodeText.displayName = 'Code';
 
-export { Code, codeVariants };
+export { CodeText as Code, codeVariants };

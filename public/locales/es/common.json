@@ -68,7 +68,7 @@
     "invalidPhone": "Teléfono inválido"
   },
   "landing": {
-    "loginButton": "Iniciar sesión1",
+    "loginButton": "Iniciar sesión",
     "registerButton": "Registrarse",
     "info": {
       "hasAccount": "¿Ya tienes cuenta? Usa el botón \"Iniciar Sesión\"",
@@ -76,13 +76,13 @@
     }
   },
   "auth": {
-    "login": "Iniciar sesión2",
+    "login": "Iniciar sesión",
     "loginCredentials": "Ingresa tus credenciales para acceder a tu cuenta",
     "email": "Correo electrónico",
     "emailPlaceholder": "ejemplo@correo.com",
     "password": "Contraseña",
     "passwordPlaceholder": "••••••••",
-    "loginButton": "Iniciar sesión3",
+    "loginButton": "Iniciar sesión",
     "loggingIn": "Iniciando sesión...",
     "loginError": "Error al iniciar sesión. Por favor, verifica tus credenciales.",
     "noAccount": "¿No tienes una cuenta?",

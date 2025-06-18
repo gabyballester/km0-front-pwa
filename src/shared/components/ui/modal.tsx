@@ -3,16 +3,7 @@ import type { ReactNode } from 'react';
 import { XIcon } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle
-} from '@/shared/components/ui/dialog';
+import { Dialog, DialogContent, DialogOverlay, DialogPortal } from '@/shared/components/ui/dialog';
 import { combineClassNames } from '@/shared/utils';
 
 export interface ModalProps {
@@ -28,18 +19,22 @@ export interface ModalProps {
   children: ReactNode;
   /** Contenido del footer (botones de acción) */
   footer?: ReactNode;
-  /** Clases CSS adicionales para el contenido */
-  className?: string;
-  /** Tamaño del modal */
-  size?: 'sm' | 'md' | 'lg';
+  /** Contenido del header (encabezado) */
+  header?: ReactNode;
+  /** Contenido del botón de cerrar */
+  closeButton?: ReactNode;
   /** Indica si se debe mostrar el botón de cerrar */
   showCloseButton?: boolean;
+  /** Indica si el modal está en modo bare (solo backdrop y children) */
+  bare?: boolean;
+  /** Tamaño del modal */
+  size?: 'sm' | 'md' | 'lg';
+  /** Clases CSS adicionales para el contenido */
+  className?: string;
   /** Indica si se debe prevenir el cierre al hacer clic fuera */
   preventCloseOnClickOutside?: boolean;
   /** Indica si se debe prevenir el cierre al presionar Escape */
   preventCloseOnEscape?: boolean;
-  /** Función que se llama antes de cerrar el modal */
-  onBeforeClose?: () => boolean | Promise<boolean>;
 }
 
 const sizeClasses = {
@@ -105,66 +100,67 @@ export function Modal({
   description,
   children,
   footer,
-  className,
-  size = 'md',
+  header,
+  closeButton,
   showCloseButton = true,
+  bare = false,
+  size = 'md',
+  className,
   preventCloseOnClickOutside = false,
-  preventCloseOnEscape = false,
-  onBeforeClose
+  preventCloseOnEscape = false
 }: ModalProps) {
-  const handleOpenChange = async (newOpen: boolean) => {
-    if (!newOpen && onBeforeClose) {
-      const shouldClose = await onBeforeClose();
-      if (!shouldClose) return;
+  // Función para manejar el cierre
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) {
+      // Si se está cerrando, verificar si está permitido
+      if (preventCloseOnClickOutside || preventCloseOnEscape) {
+        // En este caso, no permitimos el cierre automático
+        return;
+      }
     }
-
-    if (!newOpen && (preventCloseOnClickOutside || preventCloseOnEscape)) {
-      return;
-    }
-
     onOpenChange(newOpen);
   };
+
+  // Si bare, solo backdrop y children
+  if (bare) {
+    return (
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogPortal>
+          <DialogOverlay className='z-50 fixed inset-0 bg-black/60' />
+          <div className='fixed inset-0 z-50 flex items-center justify-center'>{children}</div>
+        </DialogPortal>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
-        <DialogOverlay
-          className={combineClassNames(
-            'data-[state=open]:animate-none data-[state=closed]:animate-none',
-            'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
-            'duration-200'
-          )}
-        />
+        <DialogOverlay className='z-50 fixed inset-0 bg-black/60' />
         <DialogContent
           className={combineClassNames(
             sizeClasses[size],
-            // Eliminar completamente las animaciones de movimiento
-            'data-[state=open]:animate-none data-[state=closed]:animate-none',
-            'data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0',
-            // Asegurar que no hay transformaciones
-            'data-[state=open]:translate-x-0 data-[state=closed]:translate-x-0',
-            'data-[state=open]:translate-y-0 data-[state=closed]:translate-y-0',
-            'data-[state=open]:scale-100 data-[state=closed]:scale-100',
-            // Duración rápida para la aparición
-            'duration-150',
+            'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)]',
+            'translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg',
+            'bg-background duration-150',
             className
           )}
-          onPointerDownOutside={e => {
-            if (preventCloseOnClickOutside) {
-              e.preventDefault();
-            }
-          }}
-          onEscapeKeyDown={e => {
-            if (preventCloseOnEscape) {
-              e.preventDefault();
-            }
-          }}
+          showCloseButton={false} // Controlamos manualmente la X
         >
-          {(title || description) && (
-            <DialogHeader>
-              {title && <DialogTitle>{title}</DialogTitle>}
-              {description && <DialogDescription>{description}</DialogDescription>}
-              {showCloseButton && (
+          {/* Header custom o estándar */}
+          {header
+            ? header
+            : (title || description) && (
+                <div className='flex flex-col gap-2 text-center sm:text-left'>
+                  {title && <h2 className='text-lg leading-none font-semibold'>{title}</h2>}
+                  {description && <p className='text-muted-foreground text-sm'>{description}</p>}
+                </div>
+              )}
+
+          {/* Botón de cerrar custom o estándar */}
+          {closeButton
+            ? closeButton
+            : showCloseButton && (
                 <Button
                   variant='ghost'
                   size='icon'
@@ -175,10 +171,14 @@ export function Modal({
                   <span className='sr-only'>Cerrar</span>
                 </Button>
               )}
-            </DialogHeader>
-          )}
+
+          {/* Contenido */}
           {children}
-          {footer && <DialogFooter>{footer}</DialogFooter>}
+
+          {/* Footer custom o estándar */}
+          {footer && (
+            <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>{footer}</div>
+          )}
         </DialogContent>
       </DialogPortal>
     </Dialog>
@@ -189,31 +189,12 @@ export function Modal({
  * Componente Footer para el Modal
  */
 Modal.Footer = function ModalFooter({ children }: { children: ReactNode }) {
-  return <DialogFooter>{children}</DialogFooter>;
+  return <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>{children}</div>;
 };
 
 /**
  * Componente Header para el Modal
  */
-Modal.Header = function ModalHeader({
-  title,
-  description,
-  onClose
-}: {
-  title?: string;
-  description?: string;
-  onClose?: () => void;
-}) {
-  return (
-    <DialogHeader>
-      {title && <DialogTitle>{title}</DialogTitle>}
-      {description && <DialogDescription>{description}</DialogDescription>}
-      {onClose && (
-        <Button variant='ghost' size='icon' className='absolute right-4 top-4' onClick={onClose}>
-          <XIcon className='h-4 w-4' />
-          <span className='sr-only'>Cerrar</span>
-        </Button>
-      )}
-    </DialogHeader>
-  );
+Modal.Header = function ModalHeader({ children }: { children: ReactNode }) {
+  return <div className='flex flex-col gap-2 text-center sm:text-left'>{children}</div>;
 };
