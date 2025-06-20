@@ -2,9 +2,10 @@ import { type ReactNode } from 'react';
 
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
-import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components/ui/button';
-import { logger } from '@/shared/utils/logger';
+import { Button } from '@/shared/components';
+import { logger } from '@/shared/utils';
+
+import { PATHS } from '@paths';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

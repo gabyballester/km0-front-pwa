@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Loader2 } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
 import {
   Button,
   Card,
@@ -17,10 +16,13 @@ import {
   CardTitle,
   Input,
   Label
-} from '@/shared/components/ui';
-import { useAuth } from '@/shared/contexts/AuthContext';
-import { useToast } from '@/shared/hooks/useToast';
-import { logger } from '@/shared/utils/logger';
+} from '@/shared/components';
+import { useToast } from '@/shared/hooks';
+import { logger } from '@/shared/utils';
+
+import { useAuth } from '@contexts';
+
+import { PATHS } from '@paths';
 
 /**
  * Componente de formulario de registro

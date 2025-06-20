@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { Home, Search } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components';
+
+import { PATHS } from '@paths';
 
 export default function NotFoundPage() {
   return (

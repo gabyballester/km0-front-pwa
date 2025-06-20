@@ -36,6 +36,13 @@ export default defineConfig({
   assetsInclude: ['**/*.svg'],
   resolve: {
     alias: {
+      '@hooks': resolve(__dirname, './src/shared/hooks'),
+      '@components': resolve(__dirname, './src/shared/components'),
+      '@utils': resolve(__dirname, './src/shared/utils'),
+      '@constants': resolve(__dirname, './src/shared/constants'),
+      '@contexts': resolve(__dirname, './src/shared/contexts'),
+      '@router': resolve(__dirname, './src/router'),
+      '@paths': resolve(__dirname, './src/router/paths.router'),
       '@': resolve(__dirname, './src')
     }
   },
@@ -44,7 +51,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      // Usamos la estrategia de injectManifest para mayor control
+      // Configuración simplificada para producción
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.ts',
@@ -99,60 +106,16 @@ export default defineConfig({
           }
         ]
       },
-      workbox: {
-        navigateFallback: '/index.html',
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
-        globIgnores: [
-          '**/@vite/*', // Excluir el core de Vite
-          '**/react-refresh/*', // Excluir HMR
-          '**/*.map', // Excluir source maps
-          '**/sw*.ts', // Excluir el service worker fuente
-          '**/workbox-*.js' // Excluir librerías de Workbox
-        ],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.(?:gstatic|googleapis)\.com/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts',
-              expiration: { maxEntries: 20 },
-              cacheableResponse: { statuses: [0, 200] }
-            }
-          }
-        ],
-        navigateFallbackDenylist: [
-          // Excluir rutas de API
-          /^\/api\//,
-          // Excluir archivos estáticos específicos
-          /\.(?:png|jpg|jpeg|svg|json|xml|webp|woff|woff2|ttf|eot)(\?.*)?$/,
-          // Excluir assets de Vite
-          /^\/assets\//,
-          // Excluir archivos del service worker
-          /^\/sw\.js$/,
-          /^\/registerSW\.js$/,
-          // Excluir archivos de manifiesto
-          /^\/manifest\.webmanifest$/,
-          // Excluir archivos de PWA
-          /^\/pwa-.*\.png$/,
-          /^\/apple-touch-icon.*\.png$/,
-          /^\/maskable-icon.*\.png$/,
-          /^\/screenshot.*\.png$/,
-          /^\/splash-screen.*\.png$/,
-          /^\/favicon\.ico$/,
-          // Excluir rutas que empiecen con _
-          /^\/_/
-        ]
-      },
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}', 'offline.html'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
         globIgnores: [
-          '**/sw*.ts',
-          '**/workbox-*.js',
           '**/node_modules/**',
-          '**/__tests__/**',
-          '**/coverage/**',
-          '**/dev-dist/**',
-          ...(isDev ? ['**/@vite/**', '**/react-refresh/**'] : [])
+          '**/@vite/**',
+          '**/sw*.js',
+          '**/workbox-*.js',
+          '**/*.map',
+          '**/chunk-*.js',
+          '**/*.mjs'
         ],
         dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
@@ -167,19 +130,99 @@ export default defineConfig({
         ]
       },
       includeAssets: [
-        '**/*.woff2',
-        'assets/**/*',
-        '/favicon.ico',
+        'favicon.ico',
+        'apple-touch-icon-180x180.png',
         'pwa-192x192.png',
-        'screenshot-desktop.png',
-        'manifest.webmanifest'
+        'pwa-512x512.png',
+        'maskable-icon-512x512.png'
       ],
       devOptions: {
-        enabled: true,
+        enabled: true, // Habilitado en desarrollo para testing
         suppressWarnings: true,
         type: 'module',
         navigateFallback: 'index.html'
+      },
+      workbox: {
+        // Configuración de Workbox para producción
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        globIgnores: [
+          '**/node_modules/**',
+          '**/@vite/**',
+          '**/sw*.js',
+          '**/workbox-*.js',
+          '**/*.map',
+          '**/chunk-*.js',
+          '**/*.mjs'
+        ],
+        dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
+              }
+            }
+          },
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 días
+              }
+            }
+          }
+        ]
       }
     })
-  ]
+  ],
+
+  build: {
+    // Configuraciones adicionales para mejorar la compatibilidad
+    rollupOptions: {
+      output: {
+        // Asegurar que los módulos se sirvan con el MIME type correcto
+        format: 'es',
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Evitar chunks muy pequeños que pueden causar problemas
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          utils: ['class-variance-authority', 'clsx', 'tailwind-merge']
+        }
+      }
+    },
+    // Configuraciones para mejorar la compatibilidad con service workers
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: !isDev,
+        drop_debugger: !isDev
+      }
+    },
+    // Asegurar que los assets se generen correctamente
+    assetsInlineLimit: 4096,
+    chunkSizeWarningLimit: 1000
+  }
 });

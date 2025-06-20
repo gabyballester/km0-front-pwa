@@ -2,6 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@hooks": ["./src/shared/hooks"],
+      "@components": ["./src/shared/components"],
+      "@utils": ["./src/shared/utils"],
+      "@constants": ["./src/shared/constants"],
+      "@contexts": ["./src/shared/contexts"],
+      "@router": ["./src/router"],
+      "@paths": ["./src/router/paths.router"],
       "@/*": ["./src/*"]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",

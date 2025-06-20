@@ -1,8 +1,9 @@
 import { Link } from 'react-router';
 
-import { PATHS } from '@/router/paths.router';
 import { Button } from '@/shared/components';
 import { combineClassNames } from '@/shared/utils';
+
+import { PATHS } from '@paths';
 
 export const AuthButtons = ({ mobile, className }: { mobile?: boolean; className?: string }) => {
   return (

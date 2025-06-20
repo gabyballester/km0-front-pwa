@@ -1,6 +1,6 @@
 // import { NavigationLinks } from '@/app/layout/components/NavigationLinks';
 // import { ThemeAndColorToggle } from '@/shared/components/custom/ThemeAndColorToggle';
-import { ThemeAndColorToggle } from '@/shared/components/custom/ThemeAndColorToggle';
+import { ThemeAndColorToggle } from '@/shared/components';
 
 import { AuthButtons } from './AuthButtons';
 import { TitleLogoApp } from './TitleLogoApp';

@@ -1,5 +1,6 @@
 import { Card } from '@/shared/components';
-import { usePageLoading } from '@/shared/hooks/usePageLoading';
+
+import { usePageLoading } from '@hooks';
 
 import AboutPageSkeleton from './pages/skeletons/AboutPageSkeleton';
 

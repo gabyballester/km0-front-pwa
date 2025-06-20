@@ -1,10 +1,18 @@
-import type { ReactNode } from 'react';
+import * as React from 'react';
 
-import { XIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Dialog, DialogContent, DialogOverlay, DialogPortal } from '@/shared/components/ui/dialog';
 import { combineClassNames } from '@/shared/utils';
+
+import { Button } from './button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle
+} from './dialog';
 
 export interface ModalProps {
   /** Indica si el modal está abierto */
@@ -16,13 +24,13 @@ export interface ModalProps {
   /** Descripción del modal */
   description?: string;
   /** Contenido del modal */
-  children: ReactNode;
+  children: React.ReactNode;
   /** Contenido del footer (botones de acción) */
-  footer?: ReactNode;
+  footer?: React.ReactNode;
   /** Contenido del header (encabezado) */
-  header?: ReactNode;
+  header?: React.ReactNode;
   /** Contenido del botón de cerrar */
-  closeButton?: ReactNode;
+  closeButton?: React.ReactNode;
   /** Indica si se debe mostrar el botón de cerrar */
   showCloseButton?: boolean;
   /** Indica si el modal está en modo bare (solo backdrop y children) */
@@ -147,15 +155,22 @@ export function Modal({
           )}
           showCloseButton={false} // Controlamos manualmente la X
         >
+          {/* DialogTitle es requerido para accesibilidad */}
+          <DialogTitle className={title ? 'text-lg leading-none font-semibold' : 'sr-only'}>
+            {title || 'Modal'}
+          </DialogTitle>
+
+          {/* DialogDescription es requerido para accesibilidad */}
+          {description ? (
+            <DialogDescription className='text-muted-foreground text-sm'>
+              {description}
+            </DialogDescription>
+          ) : (
+            <DialogDescription className='sr-only'>Contenido del modal</DialogDescription>
+          )}
+
           {/* Header custom o estándar */}
-          {header
-            ? header
-            : (title || description) && (
-                <div className='flex flex-col gap-2 text-center sm:text-left'>
-                  {title && <h2 className='text-lg leading-none font-semibold'>{title}</h2>}
-                  {description && <p className='text-muted-foreground text-sm'>{description}</p>}
-                </div>
-              )}
+          {header && <div className='flex flex-col gap-2 text-center sm:text-left'>{header}</div>}
 
           {/* Botón de cerrar custom o estándar */}
           {closeButton
@@ -167,7 +182,7 @@ export function Modal({
                   className='absolute right-4 top-4'
                   onClick={() => onOpenChange(false)}
                 >
-                  <XIcon className='h-4 w-4' />
+                  <X className='h-4 w-4' />
                   <span className='sr-only'>Cerrar</span>
                 </Button>
               )}
@@ -185,16 +200,64 @@ export function Modal({
   );
 }
 
-/**
- * Componente Footer para el Modal
- */
-Modal.Footer = function ModalFooter({ children }: { children: ReactNode }) {
-  return <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>{children}</div>;
+// Componentes de utilidad para el Modal
+Modal.Header = function ModalHeader({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={combineClassNames('flex flex-col gap-2 text-center sm:text-left', className)}>
+      {children}
+    </div>
+  );
 };
 
-/**
- * Componente Header para el Modal
- */
-Modal.Header = function ModalHeader({ children }: { children: ReactNode }) {
-  return <div className='flex flex-col gap-2 text-center sm:text-left'>{children}</div>;
+Modal.Footer = function ModalFooter({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={combineClassNames(
+        'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+Modal.Title = function ModalTitle({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <DialogTitle className={combineClassNames('text-lg leading-none font-semibold', className)}>
+      {children}
+    </DialogTitle>
+  );
+};
+
+Modal.Description = function ModalDescription({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <DialogDescription className={combineClassNames('text-muted-foreground text-sm', className)}>
+      {children}
+    </DialogDescription>
+  );
 };

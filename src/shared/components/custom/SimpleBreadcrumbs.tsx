@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { ChevronRight, Home } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
+import { PATHS } from '@paths';
 
 interface BreadcrumbItem {
   label: string;

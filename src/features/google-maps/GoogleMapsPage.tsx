@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { APIProvider, ColorScheme, InfoWindow, Map, useMap } from '@vis.gl/react-google-maps';
 
-import { useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
-import { usePageLoading } from '@/shared/hooks/usePageLoading';
+import { usePageLoading } from '@/shared/hooks';
+
+import { useTheme } from '@contexts';
 
 import GoogleMapsPageSkeleton from './pages/skeletons/GoogleMapsPageSkeleton';
 

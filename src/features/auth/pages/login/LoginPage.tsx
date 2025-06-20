@@ -1,4 +1,4 @@
-import { usePageLoading } from '@/shared/hooks/usePageLoading';
+import { usePageLoading } from '@/shared/hooks';
 
 import AuthFormSkeleton from '../skeletons/AuthFormSkeleton';
 

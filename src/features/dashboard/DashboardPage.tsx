@@ -1,8 +1,9 @@
 import { BarChart3, Package, ShoppingCart, Store, TrendingUp } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { useAuth } from '@/shared/contexts/AuthContext';
-import { usePageLoading } from '@/shared/hooks/usePageLoading';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components';
+import { usePageLoading } from '@/shared/hooks';
+
+import { useAuth } from '@contexts';
 
 import { LogoutButton } from './components/LogoutButton';
 import DashboardPageSkeleton from './pages/skeletons/DashboardPageSkeleton';

@@ -4,16 +4,16 @@
  * @example
  * ```tsx
  * // Código inline
- * <Code>const x = 1;</Code>
+ * <CodeText>const x = 1;</CodeText>
  *
  * // Bloque de código
- * <Code as="pre" className="p-4">
+ * <CodeText as="pre" className="p-4">
  *   {`
  *     function example() {
  *       return "Hello World";
  *     }
  *   `}
- * </Code>
+ * </CodeText>
  * ```
  */
 import { forwardRef, type HTMLAttributes } from 'react';
@@ -66,6 +66,6 @@ const CodeText = forwardRef<HTMLElement, CodeProps>(
   }
 );
 
-CodeText.displayName = 'Code';
+CodeText.displayName = 'CodeText';
 
-export { CodeText as Code, codeVariants };
+export { CodeText, codeVariants };

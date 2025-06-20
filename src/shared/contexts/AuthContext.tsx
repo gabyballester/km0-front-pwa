@@ -6,12 +6,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { LogIn, Shield, UserPlus } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components/ui/button';
-import { Modal } from '@/shared/components/ui/modal';
+import { Button, Modal } from '@/shared/components';
 import { EXPIRATION_TIMES, STORAGE_KEYS } from '@/shared/constants';
-import { useToast } from '@/shared/hooks/useToast';
+import { useToast } from '@/shared/hooks';
 import type { User } from '@/shared/types/auth.types';
+
+import { PATHS } from '@paths';
 
 import { createMockUser } from './mock/auth.mock';
 

@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { PATHS } from '@/router/paths.router';
-import { useAuth } from '@/shared/contexts/AuthContext';
+import { useAuth } from '@/shared/contexts';
+
+import { PATHS } from '@paths';
 
 export const useAuthRedirect = (
   options: {

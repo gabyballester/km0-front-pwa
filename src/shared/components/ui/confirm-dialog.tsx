@@ -2,9 +2,8 @@ import type { ReactNode } from 'react';
 
 import { AlertTriangle, CheckCircle, Info, XCircle } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Modal } from '@/shared/components/ui/modal';
-import { logger } from '@/shared/utils/logger';
+import { Button, Modal } from '@/shared/components';
+import { logger } from '@/shared/utils';
 
 export interface ConfirmDialogProps {
   /** Indica si el modal está abierto */

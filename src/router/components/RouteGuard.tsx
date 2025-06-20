@@ -2,9 +2,9 @@ import type { ReactNode } from 'react';
 
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { useAuth } from '@/shared/contexts/AuthContext';
+import { useAuth } from '@contexts';
 
-import { PATHS } from '../paths.router';
+import { PATHS } from '@paths';
 
 import type { RouteType } from '../types';
 
@@ -20,6 +20,7 @@ interface RouteGuardProps {
 
 /**
  * Componente que protege rutas basándose en su tipo y el estado de autenticación
+ * Utiliza un mapeo de funciones para mejor performance y mantenibilidad
  *
  * @example
  * ```tsx
@@ -43,26 +44,20 @@ export function RouteGuard({ children, type }: RouteGuardProps) {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  // Rutas públicas: siempre accesibles
-  if (type === 'public') {
-    return <>{children}</>;
-  }
+  // Mapeo de guardias para cada tipo de ruta
+  const routeGuards = {
+    // Rutas públicas: siempre accesibles
+    public: () => children,
 
-  // Rutas de auth: solo accesibles si NO está autenticado
-  if (type === 'auth') {
-    if (isAuthenticated) {
-      return <Navigate to={PATHS.DASHBOARD} replace />;
-    }
-    return <>{children}</>;
-  }
+    // Rutas de auth: solo accesibles si NO está autenticado
+    auth: () => (isAuthenticated ? <Navigate to={PATHS.DASHBOARD} replace /> : children),
 
-  // Rutas protegidas: solo accesibles si está autenticado
-  if (type === 'protected') {
-    if (!isAuthenticated) {
-      return <Navigate to={PATHS.LOGIN} state={{ from: location }} replace />;
-    }
-    return <>{children}</>;
-  }
+    // Rutas protegidas: solo accesibles si está autenticado
+    protected: () =>
+      !isAuthenticated ? <Navigate to={PATHS.LOGIN} state={{ from: location }} replace /> : children
+  } as const;
 
-  return null;
+  // Ejecutar el guardia correspondiente
+  const guard = routeGuards[type];
+  return guard ? guard() : null;
 }

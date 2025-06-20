@@ -2,9 +2,8 @@ import type { ReactNode } from 'react';
 
 import { Loader2 } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Modal } from '@/shared/components/ui/modal';
-import { logger } from '@/shared/utils/logger';
+import { Button, Modal } from '@/shared/components';
+import { logger } from '@/shared/utils';
 
 export interface FormModalProps {
   /** Indica si el modal está abierto */

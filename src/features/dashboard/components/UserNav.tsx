@@ -2,19 +2,22 @@ import { Link } from 'react-router-dom';
 
 import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar';
-import { Button } from '@/shared/components/ui/button';
+import { PATHS } from '@/router';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/shared/components/ui/dropdown-menu';
-import { useAuth } from '@/shared/contexts/AuthContext';
+} from '@/shared/components';
 import type { User } from '@/shared/types/auth.types';
+
+import { useAuth } from '@contexts';
 
 interface UserNavProps {
   user: User | null;

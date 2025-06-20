@@ -9,12 +9,14 @@ import { LogIn, UserPlus } from 'lucide-react';
 // Import videos
 import introVideoEN from '@/assets/videos/landing/intro-en.mp4';
 import introVideoES from '@/assets/videos/landing/intro-es.mp4';
-import { PATHS } from '@/router/paths.router';
-import { LanguageSection } from '@/shared/components';
-import { Button } from '@/shared/components/ui/button';
-import { usePageLoading } from '@/shared/hooks/usePageLoading';
 
-import LandingPageSkeleton from './pages/skeletons/LandingPageSkeleton';
+import { Button, LanguageSection } from '@components';
+
+import { usePageLoading } from '@hooks';
+
+import { PATHS } from '@paths';
+
+import LandingPageSkeleton from './skeletons/LandingPageSkeleton';
 
 const LandingPage = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { logger } from '@/shared/utils/logger';
+import { logger } from '@/shared/utils';
 
 import { themes } from './themes';
 

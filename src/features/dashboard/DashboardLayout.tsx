@@ -4,16 +4,18 @@ import { Bell, Home, Settings } from 'lucide-react';
 
 import { MobileNav } from '@/features/dashboard/components/MobileNav';
 import { UserNav } from '@/features/dashboard/components/UserNav';
-import { PATHS } from '@/router/paths.router';
-import { SimpleBreadcrumbs } from '@/shared/components';
-import { Button } from '@/shared/components/ui/button';
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/shared/components/ui/dropdown-menu';
-import { useAuth } from '@/shared/contexts/AuthContext';
+  DropdownMenuTrigger,
+  SimpleBreadcrumbs
+} from '@/shared/components';
+
+import { useAuth } from '@contexts';
+
+import { PATHS } from '@paths';
 
 export function DashboardLayout() {
   const { user } = useAuth();

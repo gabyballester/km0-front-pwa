@@ -2,16 +2,18 @@ import { Link } from 'react-router-dom';
 
 import { Menu } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components/ui/button';
 import {
+  Button,
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTitle,
   SheetTrigger
-} from '@/shared/components/ui/sheet';
-import { useAuth } from '@/shared/contexts/AuthContext';
+} from '@components';
+
+import { useAuth } from '@contexts';
+
+import { PATHS } from '@paths';
 
 import { UserNav } from './UserNav';
 

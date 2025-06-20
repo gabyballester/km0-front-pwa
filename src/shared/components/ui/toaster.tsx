@@ -5,7 +5,7 @@ export function Toaster() {
     <SonnerToaster
       richColors
       closeButton
-      position='bottom-right'
+      position='top-center'
       toastOptions={{
         duration: 5000,
         classNames: {

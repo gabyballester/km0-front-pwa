@@ -2,8 +2,9 @@
  * Exporta todos los hooks personalizados
  */
 
-export * from './useConfirmDialog';
-export * from './useDeviceType';
-export * from './usePageLoading';
-export * from './useRequireAuth';
-export * from './useToast';
+export { useConfirmDialog } from './useConfirmDialog';
+export { useDeviceType } from './useDeviceType';
+export { usePageLoading } from './usePageLoading';
+export { useRequireAuth } from './useRequireAuth';
+export { useServiceWorker } from './useServiceWorker';
+export { useToast } from './useToast';

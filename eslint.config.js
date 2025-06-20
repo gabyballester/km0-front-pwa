@@ -33,7 +33,7 @@ const baseConfig = {
     'import/resolver': {
       typescript: {
         ...importResolverBase,
-        project: ['./tsconfig.app.json', './tsconfig.eslint.json']
+        project: ['./tsconfig.json', './tsconfig.app.json', './tsconfig.eslint.json']
       }
     }
   }
@@ -70,9 +70,86 @@ const importOrderConfig = {
       group: 'external',
       position: 'after'
     },
-    // Imports internos con alias @
+    // Imports internos con alias @ (original)
     {
       pattern: '@/**',
+      group: 'internal',
+      position: 'before'
+    },
+    // Nuevos alias específicos
+    {
+      pattern: '@components',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@utils',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@hooks',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@contexts',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@constants',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@router',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@paths',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@types',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@ctx/**',
+      group: 'internal',
+      position: 'before'
+    },
+    // Alias cortos con subcarpetas
+    {
+      pattern: '@c/**',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@u/**',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@h/**',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@const/**',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@r/**',
+      group: 'internal',
+      position: 'before'
+    },
+    {
+      pattern: '@types/**',
       group: 'internal',
       position: 'before'
     },
@@ -156,7 +233,7 @@ const baseRules = {
   'prefer-object-spread': 'error',
   'default-case-last': 'error',
   'eslint-comments/no-unused-disable': 'error',
-  'no-promise-executor-return': 'error',
+  'no-promise-executor-return': 'off',
   'no-unreachable-loop': 'error',
   'react/jsx-uses-react': 'off',
   'react/react-in-jsx-scope': 'off',

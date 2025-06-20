@@ -1,4 +1,4 @@
-import { PageSkeleton } from '@/shared/components/custom/skeletons';
+import { PageSkeleton } from '@/shared/components';
 
 function AboutPageSkeleton() {
   return (

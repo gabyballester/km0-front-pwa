@@ -1,6 +1,7 @@
 import { toast } from 'sonner';
 
-import { TOAST_TYPES } from '@/shared/constants/key.constants';
+import { TOAST_TYPES } from '@/shared/constants';
+import { logger } from '@/shared/utils';
 
 /**
  * Opciones de configuración para los toasts
@@ -18,6 +19,8 @@ interface ToastOptions {
     | 'bottom-center';
   /** Descripción opcional del toast */
   description?: string;
+  /** Si se debe omitir el logging automático */
+  skipLogging?: boolean;
 }
 
 type ToastType = (typeof TOAST_TYPES)[keyof typeof TOAST_TYPES];
@@ -35,7 +38,7 @@ type ToastType = (typeof TOAST_TYPES)[keyof typeof TOAST_TYPES];
  * // Mostrar un toast de error con opciones personalizadas
  * showError("Error en la operación", {
  *   duration: 3000,
- *   position: 'top-center',
+ *   position: 'bottom-center',
  *   description: 'Por favor, intenta de nuevo'
  * });
  * ```
@@ -49,7 +52,29 @@ export function useToast() {
    * @param options - Opciones de configuración del toast
    */
   const showToast = (type: ToastType, title: string, options: ToastOptions = {}) => {
-    const { duration = 5000, position = 'bottom-right', description } = options;
+    const { duration = 5000, position = 'top-center', description, skipLogging = false } = options;
+
+    // Logging automático (a menos que se especifique lo contrario)
+    if (!skipLogging) {
+      const logMessage = description ? `${title} - ${description}` : title;
+
+      switch (type) {
+        case TOAST_TYPES.SUCCESS:
+          logger.info(`[TOAST SUCCESS] ${logMessage}`);
+          break;
+        case TOAST_TYPES.ERROR:
+          logger.error(`[TOAST ERROR] ${logMessage}`);
+          break;
+        case TOAST_TYPES.INFO:
+          logger.info(`[TOAST INFO] ${logMessage}`);
+          break;
+        case TOAST_TYPES.WARNING:
+          logger.warn(`[TOAST WARNING] ${logMessage}`);
+          break;
+        default:
+          logger.info(`[TOAST] ${logMessage}`);
+      }
+    }
 
     const toastOptions = {
       duration,

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
 
-import { PATHS } from '@/router/paths.router';
+import { PATHS } from '@paths';
 
 export const TitleLogoApp = () => {
   const { t } = useTranslation();

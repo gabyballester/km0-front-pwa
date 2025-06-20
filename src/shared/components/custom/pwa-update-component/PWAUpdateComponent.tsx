@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Modal } from '@/shared/components/ui/modal';
-import { logger } from '@/shared/utils/logger';
+import { Button, Modal } from '@/shared/components';
+import { logger } from '@/shared/utils';
 
 interface UpdatePreferences {
   autoUpdate: boolean;
@@ -21,6 +20,7 @@ const STORAGE_KEY = 'pwa-update-preferences';
 export const PWAUpdateComponent = () => {
   const [preferences, setPreferences] = useState<UpdatePreferences>(DEFAULT_PREFERENCES);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [resourceErrorDetected, setResourceErrorDetected] = useState(false);
 
   const {
     needRefresh: [needRefresh],
@@ -32,6 +32,17 @@ export const PWAUpdateComponent = () => {
     },
     onRegisterError(error) {
       logger.error('SW registration error', error);
+
+      // Verificar si es un error de MIME type o recurso no encontrado
+      if (
+        error.message &&
+        (error.message.includes('MIME type') ||
+          error.message.includes('Failed to load') ||
+          error.message.includes('404'))
+      ) {
+        setResourceErrorDetected(true);
+        logger.warn('Resource error detected during registration');
+      }
     }
   });
 
@@ -93,23 +104,36 @@ export const PWAUpdateComponent = () => {
     handleUpdate();
   };
 
-  // Cerrar diálogo
-  const handleClose = () => {
-    setShowUpdateDialog(false);
-  };
-
   // Deshabilitar notificaciones
   const handleDisableNotifications = () => {
     updatePreferences({ showNotifications: false });
     setShowUpdateDialog(false);
   };
 
-  // Función temporal para simular actualización (solo en desarrollo)
-  const simulateUpdate = () => {
-    if (import.meta.env.DEV) {
-      setShowUpdateDialog(true);
-    }
-  };
+  // Mostrar mensaje de error de recurso
+  if (resourceErrorDetected) {
+    return (
+      <div className='fixed top-4 left-4 z-50 rounded-lg bg-red-600 p-4 text-white shadow-lg max-w-sm'>
+        <div className='flex items-start gap-3'>
+          <div className='flex-shrink-0'>
+            <span className='text-lg'>⚠️</span>
+          </div>
+          <div className='flex-1'>
+            <h4 className='mb-1 text-sm font-medium'>Error de carga detectado</h4>
+            <p className='mb-3 text-xs text-red-100'>
+              Se detectó un problema al cargar la aplicación. Esto se resolverá automáticamente.
+            </p>
+            <Button
+              onClick={() => setResourceErrorDetected(false)}
+              className='h-6 rounded bg-red-700 px-2 py-1 text-xs hover:bg-red-800'
+            >
+              Entendido
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Mostrar mensaje de offline ready
   if (offlineReady) {
@@ -137,72 +161,33 @@ export const PWAUpdateComponent = () => {
     );
   }
 
-  // Mostrar diálogo de actualización usando el Modal del proyecto
+  // Mostrar diálogo de actualización
   if (showUpdateDialog) {
     return (
       <Modal
         open={showUpdateDialog}
         onOpenChange={setShowUpdateDialog}
-        title='Nueva versión disponible'
-        description='Puedes actualizar ahora para obtener las últimas mejoras, o esperar y se actualizará automáticamente la próxima vez que abras la app.'
-        size='sm'
+        title='Actualización disponible'
+        description='Hay una nueva versión de la aplicación disponible.'
       >
         <div className='space-y-4'>
-          <div className='flex items-start gap-3'>
-            <span className='text-2xl'>🔄</span>
-            <div className='flex-1'>
-              <h4 className='font-medium text-gray-900 dark:text-white'>
-                ¿Qué incluye esta actualización?
-              </h4>
-              <p className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
-                Mejoras de rendimiento, correcciones de errores y nuevas funcionalidades.
-              </p>
-            </div>
-          </div>
-        </div>
-        <Modal.Footer>
-          <div className='flex flex-col gap-2 w-full'>
-            <Button onClick={handleAutoUpdate} className='w-full bg-blue-600 hover:bg-blue-700'>
-              Actualizar y recordar preferencia
+          <p className='text-sm text-gray-600'>
+            Se ha detectado una nueva versión de la aplicación. ¿Deseas actualizar ahora?
+          </p>
+
+          <div className='flex flex-col gap-2'>
+            <Button onClick={handleAutoUpdate} className='w-full'>
+              Actualizar y recordar
             </Button>
             <Button onClick={handleManualUpdate} variant='outline' className='w-full'>
               Actualizar solo esta vez
             </Button>
-            <div className='flex justify-between pt-2'>
-              <Button
-                onClick={handleDisableNotifications}
-                variant='ghost'
-                className='text-xs text-gray-500 hover:text-gray-700'
-              >
-                No mostrar de nuevo
-              </Button>
-              <Button
-                onClick={handleClose}
-                variant='ghost'
-                className='text-xs text-gray-500 hover:text-gray-700'
-              >
-                Más tarde
-              </Button>
-            </div>
+            <Button onClick={handleDisableNotifications} variant='ghost' className='w-full'>
+              No mostrar de nuevo
+            </Button>
           </div>
-        </Modal.Footer>
+        </div>
       </Modal>
-    );
-  }
-
-  // Botón temporal para simular actualización (solo en desarrollo)
-  if (import.meta.env.DEV) {
-    return (
-      <div className='fixed top-4 right-4 z-50'>
-        <Button
-          onClick={simulateUpdate}
-          variant='outline'
-          size='sm'
-          className='bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-        >
-          🔄 Simular Actualización
-        </Button>
-      </div>
     );
   }
 

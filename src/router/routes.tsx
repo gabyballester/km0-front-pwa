@@ -1,115 +1,62 @@
-import { lazy } from 'react';
+import { logger } from '@/shared/utils';
 
-import { Home } from 'lucide-react';
-
-import { PATHS } from './paths.router';
+import { authRoutes } from './modules/auth.routes';
+import { protectedRoutes } from './modules/protected.routes';
+import { publicRoutes } from './modules/public.routes';
+import { RouteBuilder } from './utils/route-builder';
 
 import type { RouteConfig } from './types';
 
-// Lazy load layouts
-const AuthLayout = lazy(() =>
-  import('@/features/auth/layouts/AuthLayout').then(m => ({ default: m.AuthLayout }))
+/**
+ * Configuración unificada de todas las rutas de la aplicación
+ * Utiliza un sistema modular para mejor organización y mantenibilidad
+ *
+ * @example
+ * ```tsx
+ * // Para agregar nuevas rutas, edita el módulo correspondiente:
+ * // - publicRoutes: src/router/modules/public.routes.tsx
+ * // - authRoutes: src/router/modules/auth.routes.tsx
+ * // - protectedRoutes: src/router/modules/protected.routes.tsx
+ * ```
+ */
+export const routes: RouteConfig[] = RouteBuilder.combineRoutes(
+  publicRoutes,
+  authRoutes,
+  protectedRoutes
 );
-const DashboardLayout = lazy(() =>
-  import('@/features/dashboard/DashboardLayout').then(m => ({ default: m.DashboardLayout }))
-);
 
-// Lazy load pages
-const LandingPage = lazy(() => import('@/features/landing/LandingPage'));
-const AboutPage = lazy(() => import('@/features/about/AboutPage'));
-const NotFoundPage = lazy(() => import('@/shared/pages/NotFoundPage'));
-const LoginPage = lazy(() => import('@/features/auth/pages/login/LoginPage'));
-const RegisterPage = lazy(() => import('@/features/auth/pages/register/RegisterPage'));
-
-// Lazy load dashboard pages
-const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
-
-// Lazy load other pages
-const GoogleMapsPage = lazy(() => import('@/features/google-maps/GoogleMapsPage'));
+// Validación de rutas en desarrollo
+if (process.env.NODE_ENV === 'development') {
+  const validation = RouteBuilder.validateRoutes(routes);
+  if (!validation.isValid) {
+    logger.warn('⚠️ Problemas detectados en la configuración de rutas:', validation.errors);
+  } else {
+    logger.info('✅ Configuración de rutas validada correctamente');
+  }
+}
 
 /**
- * Configuración de todas las rutas de la aplicación
- * Cada ruta incluye metadatos para navegación y autorización
+ * Utilidades exportadas para uso en componentes
  */
-export const routes: RouteConfig[] = [
-  // Rutas públicas
-  {
-    path: PATHS.HOME,
-    type: 'public',
-    element: <LandingPage />,
-    title: 'Inicio',
-    description: 'Página principal'
-  },
-  {
-    path: PATHS.ABOUT,
-    type: 'public',
-    element: <AboutPage />,
-    title: 'Acerca de',
-    description: 'Información sobre nosotros'
-  },
-  {
-    path: PATHS.GOOGLE_MAPS,
-    type: 'public',
-    element: <GoogleMapsPage />,
-    title: 'Mapas',
-    description: 'Visualización de mapas'
-  },
+export const routeUtils = {
+  /**
+   * Obtiene todas las rutas navegables (no ocultas)
+   */
+  getNavigableRoutes: () => RouteBuilder.getNavigableRoutes(routes),
 
-  // Rutas de autenticación
-  {
-    path: PATHS.AUTH,
-    type: 'auth',
-    element: <AuthLayout />,
-    isLayout: true,
-    children: [
-      {
-        path: 'login',
-        type: 'auth',
-        element: <LoginPage />,
-        title: 'Iniciar Sesión',
-        description: 'Accede a tu cuenta'
-      },
-      {
-        path: 'register',
-        type: 'auth',
-        element: <RegisterPage />,
-        title: 'Registrarse',
-        description: 'Crea una nueva cuenta'
-      }
-    ]
-  },
+  /**
+   * Encuentra una ruta específica por su path
+   */
+  findRoute: (path: string) => RouteBuilder.findRouteByPath(routes, path),
 
-  // Rutas protegidas (Dashboard)
-  {
-    path: PATHS.DASHBOARD,
-    type: 'protected',
-    element: <DashboardLayout />,
-    isLayout: true,
-    meta: {
-      roles: ['user', 'admin'],
-      icon: <Home className='h-5 w-5' />
-    },
-    children: [
-      {
-        path: '',
-        index: true,
-        type: 'protected',
-        element: <DashboardPage />,
-        title: 'Dashboard',
-        description: 'Panel de control',
-        meta: {
-          roles: ['user', 'admin']
-        }
-      }
-    ]
-  },
+  /**
+   * Genera breadcrumbs para navegación
+   */
+  getBreadcrumbs: (currentPath: string) => RouteBuilder.generateBreadcrumbs(routes, currentPath),
 
-  // 404 - Siempre al final
-  {
-    path: '*',
-    type: 'public',
-    element: <NotFoundPage />,
-    title: 'Página no encontrada',
-    description: 'La página que buscas no existe'
-  }
-];
+  /**
+   * Filtra rutas por tipo
+   */
+  getRoutesByType: (type: 'public' | 'auth' | 'protected') =>
+    RouteBuilder.filterRoutes(routes, route => route.type === type)
+};

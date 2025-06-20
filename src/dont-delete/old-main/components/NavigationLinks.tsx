@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 
-import { PATHS } from '@/router/paths.router';
-import { Button } from '@/shared/components/ui';
+import { Button } from '@/shared/components';
 import { combineClassNames } from '@/shared/utils';
+
+import { PATHS } from '@paths';
 
 const items = [
   { text: 'Inicio', to: PATHS.HOME },

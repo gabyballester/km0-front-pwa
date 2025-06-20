@@ -1,7 +1,10 @@
+// import { Button } from '@/shared/components';
+// import { useAuth } from '@contexts/AuthContext';
 import { LogOut } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { useAuth } from '@/shared/contexts/AuthContext';
+import { Button } from '@components';
+
+import { useAuth } from '@contexts';
 
 interface LogoutButtonProps {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';

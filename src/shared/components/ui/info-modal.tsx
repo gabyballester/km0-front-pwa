@@ -2,8 +2,7 @@ import type { ReactNode } from 'react';
 
 import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
-import { Modal } from '@/shared/components/ui/modal';
+import { Button, Modal } from '@/shared/components';
 
 export interface InfoModalProps {
   /** Indica si el modal está abierto */

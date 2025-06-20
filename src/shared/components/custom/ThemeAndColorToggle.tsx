@@ -12,8 +12,9 @@ import { useState } from 'react';
 import { Moon, Palette, Sun, XIcon } from 'lucide-react';
 
 import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@/shared/components';
-import { type ThemeColor, useTheme } from '@/shared/contexts/theme-context/ThemeProvider';
 import { capitalize, combineClassNames } from '@/shared/utils';
+
+import { type ThemeColor, useTheme } from '@contexts';
 
 interface AvailableThemeColor {
   name: ThemeColor;

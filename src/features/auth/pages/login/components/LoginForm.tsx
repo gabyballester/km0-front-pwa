@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Loader2 } from 'lucide-react';
 
-import { PATHS } from '@/router/paths.router';
 import {
   Button,
   Card,
@@ -17,10 +16,15 @@ import {
   CardTitle,
   Input,
   Label
-} from '@/shared/components/ui';
-import { useAuth } from '@/shared/contexts/AuthContext';
-import { useToast } from '@/shared/hooks/useToast';
-import { logger } from '@/shared/utils/logger';
+} from '@/shared/components';
+// import { useAuth } from '@/shared/contexts';
+import { logger } from '@/shared/utils';
+
+import { useToast } from '@hooks';
+
+import { useAuth } from '@contexts';
+
+import { PATHS } from '@paths';
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -57,7 +61,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className='w-full max-w-sm mx-auto border-2 border-green-500'>
+    <Card className='w-full max-w-sm mx-auto border-2'>
       <CardHeader className='space-y-1'>
         <CardTitle className='text-2xl text-center'>{t('auth.login')}</CardTitle>
         <CardDescription className='text-center'>{t('auth.loginCredentials')}</CardDescription>

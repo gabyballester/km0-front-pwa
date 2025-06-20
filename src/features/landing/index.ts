@@ -1,2 +1,2 @@
-// Skeletons
-export * from './pages/skeletons';
+export * from './pages/LandingPage';
+export * from './pages/skeletons/LandingPageSkeleton';
