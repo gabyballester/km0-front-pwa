@@ -262,33 +262,55 @@ export const PWAUpdateComponent = () => {
     }
   }, []);
 
-  // Verificar actualizaciones al montar el componente
+  // Verificación inicial y periódica de actualizaciones
   useEffect(() => {
-    // Verificar manualmente si hay una nueva versión
-    const checkForUpdates = async () => {
+    // Verificación inmediata al cargar la app
+    const initialCheck = async () => {
+      logger.info('Initial update check on app load...');
+      
       try {
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-          logger.info('Checking for updates manually...');
-          
-          // Enviar mensaje al service worker para verificar actualizaciones
-          navigator.serviceWorker.controller.postMessage({ type: 'CHECK_FOR_UPDATES' });
-          
-          // También intentar actualizar directamente
           await updateServiceWorker(false);
-          logger.info('Manual update check completed');
+          
+          if (needRefresh && preferences.showNotifications) {
+            logger.info('Update available on initial check');
+            setShowUpdateDialog(true);
+          }
         }
       } catch (error) {
-        logger.error('Error checking for updates:', error);
+        logger.error('Error during initial update check:', error);
       }
     };
 
-    // Verificar actualizaciones después de un delay para asegurar que el SW esté registrado
-    const checkTimer = setTimeout(() => {
-      checkForUpdates();
-    }, 2000);
+    // Ejecutar verificación inicial después de un pequeño delay
+    const initialTimeout = setTimeout(initialCheck, 2000); // 2 segundos después de cargar
 
-    return () => clearTimeout(checkTimer);
-  }, [updateServiceWorker]);
+    // Verificación periódica automática cada 30 segundos
+    const periodicCheck = async () => {
+      logger.info('Periodic update check...');
+      
+      try {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          await updateServiceWorker(false);
+          
+          if (needRefresh && preferences.showNotifications) {
+            logger.info('Update available during periodic check');
+            setShowUpdateDialog(true);
+          }
+        }
+      } catch (error) {
+        logger.error('Error during periodic update check:', error);
+      }
+    };
+
+    // Iniciar verificación periódica cada 30 segundos
+    const intervalId = setInterval(periodicCheck, 30000); // 30 segundos
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(intervalId);
+    };
+  }, [needRefresh, preferences.showNotifications, updateServiceWorker]);
 
   // Detectar cuando la app vuelve a primer plano
   useEffect(() => {
@@ -299,10 +321,8 @@ export const PWAUpdateComponent = () => {
         
         try {
           if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            // Verificar si hay una nueva versión disponible
             await updateServiceWorker(false);
             
-            // Si hay una actualización disponible, mostrar el diálogo
             if (needRefresh && preferences.showNotifications) {
               logger.info('Update available after bringing app to foreground');
               setShowUpdateDialog(true);
@@ -337,7 +357,14 @@ export const PWAUpdateComponent = () => {
 
     window.addEventListener('focus', handleFocus);
 
-    // Escuchar mensajes del service worker
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [needRefresh, preferences.showNotifications, updateServiceWorker]);
+
+  // Escuchar mensajes del service worker
+  useEffect(() => {
     const handleServiceWorkerMessage = (event: MessageEvent) => {
       const { type, version } = event.data;
       
@@ -362,11 +389,9 @@ export const PWAUpdateComponent = () => {
     navigator.serviceWorker?.addEventListener('message', handleServiceWorkerMessage);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', handleFocus);
       navigator.serviceWorker?.removeEventListener('message', handleServiceWorkerMessage);
     };
-  }, [needRefresh, preferences.showNotifications, updateServiceWorker]);
+  }, [updateServiceWorker]);
 
   // Mostrar mensaje de error de recurso
   if (resourceErrorDetected) {
