@@ -24,3 +24,18 @@ export const TOAST_MESSAGES = {
     INFO: 'Información'
   }
 } as const;
+
+/**
+ * Constantes para claves de sessionStorage
+ */
+export const SESSION_KEYS = {
+  APP_INITIALIZED: 'app-initialized',
+  SW_RELOADED: 'sw-reloaded'
+} as const;
+
+/**
+ * Constantes para claves de localStorage
+ */
+export const STORAGE_KEYS = {
+  PWA_UPDATE_PREFERENCES: 'pwa-update-preferences'
+} as const;

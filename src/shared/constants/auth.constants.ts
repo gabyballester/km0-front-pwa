@@ -2,7 +2,7 @@
  * Constantes relacionadas con la autenticación
  */
 
-export const STORAGE_KEYS = {
+export const AUTH_STORAGE_KEYS = {
   USER: 'user'
 } as const;
 
