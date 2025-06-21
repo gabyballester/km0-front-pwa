@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { clearServiceWorkerSessionData, logger, restartServiceWorker } from '@/shared/utils';
+import { clearServiceWorkerSessionData, logger, restartServiceWorker } from '@utils';
 
 interface ServiceWorkerMessage {
   type: string;
@@ -8,6 +8,77 @@ interface ServiceWorkerMessage {
   error?: string;
 }
 
+/**
+ * Hook para manejar el Service Worker de la aplicación PWA
+ * 
+ * Proporciona funcionalidades para gestionar el Service Worker, incluyendo
+ * detección de errores, recuperación automática, actualización forzada
+ * y limpieza de caché.
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en App.tsx
+ * function App() {
+ *   const { forceUpdate, restart, clearCache } = useServiceWorker();
+ * 
+ *   return (
+ *     <div>
+ *       <AppContent />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Uso con controles manuales
+ * function ServiceWorkerControls() {
+ *   const { forceUpdate, restart, clearCache, clearSessionData } = useServiceWorker();
+ * 
+ *   return (
+ *     <div className="space-y-2">
+ *       <Button onClick={forceUpdate}>
+ *         Forzar Actualización
+ *       </Button>
+ *       <Button onClick={restart}>
+ *         Reiniciar Service Worker
+ *       </Button>
+ *       <Button onClick={clearCache}>
+ *         Limpiar Caché
+ *       </Button>
+ *       <Button onClick={clearSessionData}>
+ *         Limpiar Datos de Sesión
+ *       </Button>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Uso con notificaciones de estado
+ * function ServiceWorkerStatus() {
+ *   const { forceUpdate } = useServiceWorker();
+ *   const [hasUpdate, setHasUpdate] = useState(false);
+ * 
+ *   useEffect(() => {
+ *     // Escuchar actualizaciones del service worker
+ *     navigator.serviceWorker?.addEventListener('controllerchange', () => {
+ *       setHasUpdate(true);
+ *     });
+ *   }, []);
+ * 
+ *   if (hasUpdate) {
+ *     return (
+ *       <div className="bg-blue-100 p-4 rounded">
+ *         <p>Hay una nueva versión disponible</p>
+ *         <Button onClick={forceUpdate}>
+ *           Actualizar Ahora
+ *         </Button>
+ *       </div>
+ *     );
+ *   }
+ * 
+ *   return null;
+ * }
+ * ```
+ * 
+ * @returns Objeto con funciones para gestionar el Service Worker
+ */
 export const useServiceWorker = () => {
   const hasReloaded = useRef(false);
   const retryCount = useRef(0);
