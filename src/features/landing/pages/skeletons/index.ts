@@ -1,1 +1,2 @@
-export { default as LandingPageSkeleton } from './LandingPageSkeleton';
+export * from './LandingPageSkeleton';
+

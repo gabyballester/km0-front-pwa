@@ -1,1 +1,2 @@
-export { default as AuthFormSkeleton } from './AuthFormSkeleton';
+export * from './AuthFormSkeleton';
+

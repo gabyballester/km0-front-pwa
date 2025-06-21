@@ -16,9 +16,9 @@ import {
   CardTitle,
   Input,
   Label
-} from '@/shared/components';
-// import { useAuth } from '@/shared/contexts';
-import { logger } from '@/shared/utils';
+} from '@components';
+
+import { logger } from '@utils';
 
 import { useToast } from '@hooks';
 
@@ -26,6 +26,64 @@ import { useAuth } from '@contexts';
 
 import { PATHS } from '@paths';
 
+/**
+ * Componente de formulario de inicio de sesión
+ * 
+ * Este componente proporciona una interfaz completa para el inicio de sesión,
+ * incluyendo validación de formulario, manejo de estados de carga y
+ * integración con el sistema de autenticación.
+ * 
+ * Características:
+ * - Formulario de login con email y contraseña
+ * - Validación de campos requeridos
+ * - Estado de carga durante la autenticación
+ * - Manejo de errores con notificaciones
+ * - Navegación automática tras login exitoso
+ * - Redirección a página de registro
+ * - Soporte para i18n
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en página de login
+ * function LoginPage() {
+ *   return (
+ *     <div className="min-h-screen flex items-center justify-center">
+ *       <LoginForm />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con layout personalizado
+ * function AuthLayout() {
+ *   return (
+ *     <div className="grid grid-cols-1 md:grid-cols-2">
+ *       <div className="bg-gradient-to-br from-blue-500 to-purple-600">
+ *         <div className="p-8 text-white">
+ *           <h1>Bienvenido de vuelta</h1>
+ *           <p>Inicia sesión para continuar</p>
+ *         </div>
+ *       </div>
+ *       <div className="flex items-center justify-center p-8">
+ *         <LoginForm />
+ *       </div>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con redirección personalizada
+ * function ProtectedLoginPage() {
+ *   const location = useLocation();
+ *   
+ *   return (
+ *     <div>
+ *       <h1>Acceso requerido</h1>
+ *       <p>Necesitas iniciar sesión para acceder a {location.state?.from?.pathname}</p>
+ *       <LoginForm />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function LoginForm() {
   const navigate = useNavigate();
   const location = useLocation();

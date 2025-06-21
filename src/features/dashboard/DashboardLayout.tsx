@@ -4,14 +4,15 @@ import { Bell, Home, Settings } from 'lucide-react';
 
 import { MobileNav } from '@/features/dashboard/components/MobileNav';
 import { UserNav } from '@/features/dashboard/components/UserNav';
+
 import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  SimpleBreadcrumbs
-} from '@/shared/components';
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    SimpleBreadcrumbs
+} from '@components';
 
 import { useAuth } from '@contexts';
 

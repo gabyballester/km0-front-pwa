@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 
 import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 
-import { PATHS } from '@/router';
+import type { User } from '@/shared/types/auth.types';
+
 import {
   Avatar,
   AvatarFallback,
@@ -14,15 +15,86 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/shared/components';
-import type { User } from '@/shared/types/auth.types';
+} from '@components';
 
 import { useAuth } from '@contexts';
 
+import { PATHS } from '@paths';
+
+/**
+ * Props del componente UserNav
+ */
 interface UserNavProps {
+  /** Usuario autenticado */
   user: User | null;
 }
 
+/**
+ * Componente de navegación de usuario
+ * 
+ * Este componente proporciona un menú desplegable con información del usuario
+ * y opciones de navegación relacionadas con la cuenta del usuario.
+ * 
+ * Características:
+ * - Avatar del usuario con iniciales como fallback
+ * - Menú desplegable con información del usuario
+ * - Enlaces a perfil y configuración
+ * - Opción de cerrar sesión
+ * - Integración con el sistema de autenticación
+ * - Manejo de usuarios no autenticados
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en header
+ * function DashboardHeader() {
+ *   const { user } = useAuth();
+ *   
+ *   return (
+ *     <header className="flex justify-between items-center p-4">
+ *       <h1>Dashboard</h1>
+ *       <UserNav user={user} />
+ *     </header>
+ *   );
+ * }
+ * 
+ * // Con layout responsive
+ * function DashboardLayout() {
+ *   const { user } = useAuth();
+ *   
+ *   return (
+ *     <div className="min-h-screen">
+ *       <header className="border-b">
+ *         <div className="flex justify-between items-center p-4">
+ *           <div className="hidden md:block">
+ *             <DesktopNav />
+ *           </div>
+ *           <div className="flex items-center gap-2">
+ *             <MobileNav />
+ *             <UserNav user={user} />
+ *           </div>
+ *         </div>
+ *       </header>
+ *       <main className="p-4">
+ *         <Outlet />
+ *       </main>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // En sidebar móvil
+ * function MobileSidebar() {
+ *   const { user } = useAuth();
+ *   
+ *   return (
+ *     <aside className="p-4">
+ *       <div className="border-t pt-4">
+ *         <UserNav user={user} />
+ *       </div>
+ *     </aside>
+ *   );
+ * }
+ * ```
+ */
 export function UserNav({ user }: UserNavProps) {
   const { logout } = useAuth();
 
@@ -30,7 +102,7 @@ export function UserNav({ user }: UserNavProps) {
 
   const initials = user.name
     .split(' ')
-    .map(n => n[0])
+    .map((n: string) => n[0])
     .join('')
     .toUpperCase();
 

@@ -1,1 +1,2 @@
-export { default as GoogleMapsPageSkeleton } from './GoogleMapsPageSkeleton';
+export * from './GoogleMapsPageSkeleton';
+

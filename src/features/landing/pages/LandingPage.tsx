@@ -10,7 +10,7 @@ import { LogIn, UserPlus } from 'lucide-react';
 import introVideoEN from '@/assets/videos/landing/intro-en.mp4';
 import introVideoES from '@/assets/videos/landing/intro-es.mp4';
 
-import { Button, LanguageSection } from '@components';
+import { Button, LanguageSection, VersionDisplay } from '@components';
 
 import { usePageLoading } from '@hooks';
 
@@ -109,6 +109,9 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Version Display - Bottom Left */}
+      <VersionDisplay position='bottom-left' showDetails />
     </div>
   );
 };
