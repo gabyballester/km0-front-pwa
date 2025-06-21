@@ -27,6 +27,68 @@
     "details": "Detalles",
     "viewDetails": "Ver Detalles"
   },
+  "loading": {
+    "appInit": {
+      "title": "Inicializando aplicación...",
+      "description": "Preparando todo para ti"
+    },
+    "routeLoad": {
+      "title": "Cargando página...",
+      "description": "Preparando el contenido"
+    },
+    "error": {
+      "title": "Error de carga",
+      "description": "Hubo un problema al cargar la aplicación"
+    },
+    "actions": {
+      "reloadPage": "Recargar página",
+      "restartSW": "Reiniciar SW",
+      "clearCache": "Limpiar caché"
+    }
+  },
+  "pwa": {
+    "error": {
+      "title": "Error de carga detectado",
+      "description": "Se detectó un problema al cargar la aplicación. Esto se resolverá automáticamente.",
+      "understood": "Entendido"
+    },
+    "offline": {
+      "title": "App lista para usar offline",
+      "description": "La aplicación ahora puede funcionar sin conexión a internet. Los datos se sincronizarán cuando vuelvas a estar online.",
+      "understood": "Entendido"
+    },
+    "update": {
+      "title": "Actualización disponible",
+      "description": "Hay una nueva versión de la aplicación disponible.",
+      "message": "Se ha detectado una nueva versión de la aplicación. ¿Deseas actualizar ahora?",
+      "updateAndRemember": "Actualizar y recordar",
+      "updateOnce": "Actualizar solo esta vez",
+      "dontShowAgain": "No mostrar de nuevo"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stats": {
+      "totalSales": "Total Ventas",
+      "totalPurchases": "Total Compras",
+      "activeOrders": "Pedidos Activos",
+      "performance": "Rendimiento",
+      "sinceLastMonth": "+0% desde el mes pasado",
+      "pending": "0 pendientes"
+    },
+    "actions": {
+      "buyer": {
+        "title": "Acciones de Comprador",
+        "exploreProducts": "Explorar Productos",
+        "viewOrders": "Ver Mis Pedidos"
+      },
+      "seller": {
+        "title": "Acciones de Vendedor",
+        "addProduct": "Añadir Producto",
+        "viewStats": "Ver Estadísticas"
+      }
+    }
+  },
   "customers": {
     "title": "Clientes",
     "list": "Lista de Clientes",
