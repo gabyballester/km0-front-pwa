@@ -1,18 +1,18 @@
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { resolveFromRoot } from './scripts/utils.cjs';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 // Calcula la revisión de index.html (útil para evitar problemas de caché en producción)
 const htmlRevision = !isDev
   ? createHash('md5')
-      .update(readFileSync(resolve(__dirname, 'index.html')))
+      .update(readFileSync(resolveFromRoot('index.html')))
       .digest('hex')
   : 'dev-html-revision';
 
@@ -36,18 +36,18 @@ export default defineConfig({
   assetsInclude: ['**/*.svg'],
   resolve: {
     alias: {
-      '@hooks': resolve(__dirname, './src/shared/hooks'),
-      '@components': resolve(__dirname, './src/shared/components'),
-      '@utils': resolve(__dirname, './src/shared/utils'),
-      '@constants': resolve(__dirname, './src/shared/constants'),
-      '@contexts': resolve(__dirname, './src/shared/contexts'),
-      '@types': resolve(__dirname, './src/shared/types'),
-      '@pages': resolve(__dirname, './src/shared/pages'),
-      '@router': resolve(__dirname, './src/router'),
-      '@paths': resolve(__dirname, './src/router/paths.router'),
-      '@features': resolve(__dirname, './src/features'),
-      '@assets': resolve(__dirname, './src/assets'),
-      '@': resolve(__dirname, './src')
+      '@hooks': resolveFromRoot('./src/shared/hooks'),
+      '@components': resolveFromRoot('./src/shared/components'),
+      '@utils': resolveFromRoot('./src/shared/utils'),
+      '@constants': resolveFromRoot('./src/shared/constants'),
+      '@contexts': resolveFromRoot('./src/shared/contexts'),
+      '@types': resolveFromRoot('./src/shared/types'),
+      '@pages': resolveFromRoot('./src/shared/pages'),
+      '@router': resolveFromRoot('./src/router'),
+      '@paths': resolveFromRoot('./src/router/paths.router'),
+      '@features': resolveFromRoot('./src/features'),
+      '@assets': resolveFromRoot('./src/assets'),
+      '@': resolveFromRoot('./src')
     }
   },
 
@@ -67,8 +67,8 @@ export default defineConfig({
         short_name: 'km0-pwa-react-ts',
         description: 'km0-pwa-react-ts',
         theme_color: '#ffffff',
-        display: 'standalone',
         background_color: '#ffffff',
+        display: 'standalone',
         display_override: ['window-controls-overlay'],
         start_url: '/',
         scope: '/',

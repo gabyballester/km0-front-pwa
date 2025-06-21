@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run version:bump && tsc -b && vite build",
-    "version:bump": "node scripts/version-bump.js",
+    "build": "tsc -b && vite build",
+    "build:with-version": "npm run version:bump && tsc -b && vite build",
+    "version:bump": "node scripts/version-bump.cjs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:staged": "eslint --fix --cache --cache-location node_modules/.cache/.eslintcache",

@@ -35,8 +35,7 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json", "prepend": false },
-    { "path": "./tsconfig.eslint.json" }
+    { "path": "./tsconfig.node.json" }
   ],
   "ts-node": {
     "compilerOptions": {

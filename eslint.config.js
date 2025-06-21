@@ -33,7 +33,7 @@ const baseConfig = {
     'import/resolver': {
       typescript: {
         ...importResolverBase,
-        project: ['./tsconfig.json', './tsconfig.app.json', './tsconfig.eslint.json']
+        project: ['./tsconfig.app.json', './tsconfig.node.json']
       }
     }
   }
@@ -341,7 +341,7 @@ export default tseslint.config(
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', 'src/__test__/**/*'],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.jest.json',
+        project: './tsconfig.app.json',
         warnOnMultipleProjects: false,
         EXPERIMENTAL_useProjectService: true,
         noWarnOnMultipleProjects: true

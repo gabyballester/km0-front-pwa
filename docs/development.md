@@ -64,10 +64,21 @@ chore(deps): update dependencies
 
 ### Desarrollo
 ```bash
-npm run dev          # Servidor de desarrollo
-npm run build        # Build de producción
-npm run preview      # Preview del build
+npm run dev              # Servidor de desarrollo
+npm run build            # Build de producción (sin incrementar versión)
+npm run build:with-version # Build de producción + incrementar versión
+npm run preview          # Preview del build
 ```
+
+### Versionado
+```bash
+npm run version:bump     # Solo incrementar versión (sin build)
+```
+
+**Nota sobre versionado**: 
+- `npm run build` - Build normal sin afectar la versión
+- `npm run build:with-version` - Build que también incrementa la versión
+- El versionado automático solo ocurre en push a master (via hook pre-push)
 
 ### Linting y Formateo
 ```bash
@@ -237,7 +248,7 @@ npm run test:prod
 - [ ] Commits siguen Conventional Commits
 - [ ] Build de producción exitoso
 
-## 🎯 Mejores Prácticas
+## �� Mejores Prácticas
 
 1. **Commits pequeños y frecuentes**
 2. **Siempre incluir tests para nuevas características**

@@ -20,8 +20,14 @@ const { glob } = globPkg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Función auxiliar para resolver rutas desde la raíz del proyecto
+function resolveFromRoot(relativePath) {
+  const baseDir = __dirname.includes('scripts') ? '../' : './';
+  return path.resolve(__dirname, baseDir, relativePath);
+}
+
 // Configuración
-const SRC_DIR = path.join(__dirname, '..', 'src');
+const SRC_DIR = resolveFromRoot('src');
 const IGNORE_PATTERNS = [
   '**/node_modules/**',
   '**/dist/**',
@@ -55,14 +61,9 @@ function hasJSDoc(content) {
   return jsdocPatterns.some(pattern => pattern.test(content));
 }
 
-// Función para verificar si tiene ejemplos
-function hasExamples(content) {
-  return /@example/.test(content);
-}
-
-// Función para analizar archivos
-function analyzeFiles(pattern, category) {
-  const files = glob.sync(pattern, {
+// Función para analizar archivos de un tipo específico
+async function analyzeFiles(pattern, type) {
+  const files = await glob(pattern, {
     cwd: SRC_DIR,
     ignore: IGNORE_PATTERNS,
     absolute: true
@@ -70,106 +71,86 @@ function analyzeFiles(pattern, category) {
 
   const results = {
     total: files.length,
-    withJSDoc: 0,
-    withExamples: 0,
-    withoutJSDoc: [],
-    withoutExamples: []
+    documented: 0,
+    undocumented: [],
+    documentedFiles: []
   };
 
-  files.forEach(file => {
+  for (const file of files) {
     try {
       const content = fs.readFileSync(file, 'utf8');
       const relativePath = path.relative(SRC_DIR, file);
       
       if (hasJSDoc(content)) {
-        results.withJSDoc++;
-        if (hasExamples(content)) {
-          results.withExamples++;
-        } else {
-          results.withoutExamples.push(relativePath);
-        }
+        results.documented++;
+        results.documentedFiles.push(relativePath);
       } else {
-        results.withoutJSDoc.push(relativePath);
+        results.undocumented.push(relativePath);
       }
     } catch (error) {
-      console.error(`Error reading file ${file}:`, error.message);
+      console.warn(`Error leyendo archivo ${file}:`, error.message);
     }
-  });
+  }
 
   return results;
 }
 
-// Función principal
-function main() {
-  console.log('🔍 Analizando documentación JSDoc...\n');
-
-  const categories = {
-    'Componentes': analyzeFiles(PATTERNS.components, 'components'),
-    'Hooks': analyzeFiles(PATTERNS.hooks, 'hooks'),
-    'Utilidades': analyzeFiles(PATTERNS.utils, 'utils'),
-    'Contextos': analyzeFiles(PATTERNS.contexts, 'contexts'),
-    'Tipos': analyzeFiles(PATTERNS.types, 'types')
-  };
+// Función para generar reporte
+function generateReport(results) {
+  console.log('\n📊 REPORTE DE DOCUMENTACIÓN JSDOC\n');
+  console.log('=' .repeat(50));
 
   let totalFiles = 0;
-  let totalWithJSDoc = 0;
-  let totalWithExamples = 0;
+  let totalDocumented = 0;
 
-  // Mostrar resultados por categoría
-  Object.entries(categories).forEach(([category, results]) => {
-    if (results.total === 0) return;
-
-    console.log(`📁 ${category}:`);
-    console.log(`   Total: ${results.total}`);
-    console.log(`   Con JSDoc: ${results.withJSDoc}/${results.total} (${Math.round(results.withJSDoc/results.total*100)}%)`);
-    console.log(`   Con ejemplos: ${results.withExamples}/${results.total} (${Math.round(results.withExamples/results.total*100)}%)`);
+  for (const [type, result] of Object.entries(results)) {
+    const percentage = result.total > 0 ? ((result.documented / result.total) * 100).toFixed(1) : 0;
+    const status = percentage >= 80 ? '✅' : percentage >= 50 ? '⚠️' : '❌';
     
-    if (results.withoutJSDoc.length > 0) {
-      console.log(`   ❌ Sin JSDoc:`);
-      results.withoutJSDoc.forEach(file => {
-        console.log(`      - ${file}`);
-      });
+    console.log(`\n${status} ${type.toUpperCase()}:`);
+    console.log(`   Total: ${result.total} archivos`);
+    console.log(`   Documentados: ${result.documented} (${percentage}%)`);
+    
+    if (result.undocumented.length > 0) {
+      console.log(`   Sin documentar: ${result.undocumented.length}`);
+      if (result.undocumented.length <= 5) {
+        result.undocumented.forEach(file => console.log(`     - ${file}`));
+      } else {
+        console.log(`     - ${result.undocumented.slice(0, 5).join(', ')}... y ${result.undocumented.length - 5} más`);
+      }
     }
-    
-    if (results.withoutExamples.length > 0) {
-      console.log(`   ⚠️  Sin ejemplos:`);
-      results.withoutExamples.forEach(file => {
-        console.log(`      - ${file}`);
-      });
-    }
-    
-    console.log('');
 
-    totalFiles += results.total;
-    totalWithJSDoc += results.withJSDoc;
-    totalWithExamples += results.withExamples;
-  });
+    totalFiles += result.total;
+    totalDocumented += result.documented;
+  }
 
-  // Resumen general
-  console.log('📊 Resumen General:');
-  console.log(`   Total de archivos: ${totalFiles}`);
-  console.log(`   Con JSDoc: ${totalWithJSDoc}/${totalFiles} (${Math.round(totalWithJSDoc/totalFiles*100)}%)`);
-  console.log(`   Con ejemplos: ${totalWithExamples}/${totalFiles} (${Math.round(totalWithExamples/totalFiles*100)}%)`);
-
-  // Recomendaciones
-  console.log('\n💡 Recomendaciones:');
+  const overallPercentage = totalFiles > 0 ? ((totalDocumented / totalFiles) * 100).toFixed(1) : 0;
+  console.log('\n' + '=' .repeat(50));
+  console.log(`📈 TOTAL GENERAL: ${totalDocumented}/${totalFiles} (${overallPercentage}%)`);
   
-  if (totalWithJSDoc/totalFiles < 0.8) {
-    console.log('   ⚠️  Menos del 80% de archivos tienen JSDoc. Considera documentar más archivos.');
+  if (overallPercentage >= 80) {
+    console.log('🎉 ¡Excelente cobertura de documentación!');
+  } else if (overallPercentage >= 50) {
+    console.log('⚠️  Cobertura de documentación moderada. Considera mejorar la documentación.');
+  } else {
+    console.log('❌ Cobertura de documentación baja. Es recomendable documentar más archivos.');
+  }
+}
+
+// Función principal
+async function main() {
+  console.log('🔍 Analizando documentación JSDoc...');
+  
+  const results = {};
+  
+  for (const [type, pattern] of Object.entries(PATTERNS)) {
+    results[type] = await analyzeFiles(pattern, type);
   }
   
-  if (totalWithExamples/totalFiles < 0.6) {
-    console.log('   ⚠️  Menos del 60% de archivos tienen ejemplos. Considera añadir más ejemplos de uso.');
-  }
-
-  if (totalWithJSDoc/totalFiles >= 0.8 && totalWithExamples/totalFiles >= 0.6) {
-    console.log('   ✅ Excelente cobertura de documentación!');
-  }
-
-  console.log('\n📚 Para más información sobre documentación:');
-  console.log('   - Ver src/shared/docs/README.md');
-  console.log('   - Seguir las convenciones de JSDoc del proyecto');
+  generateReport(results);
 }
 
 // Ejecutar si es llamado directamente
-main(); 
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(console.error);
+} 

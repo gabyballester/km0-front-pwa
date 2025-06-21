@@ -60,3 +60,9 @@ export * from './cacheUtils';
 
 // Build info utilities
 export * from './buildInfo';
+
+// Path utilities (frontend only)
+export * from './fromPublic';
+export * from './fromSrc';
+export * from './joinPath';
+

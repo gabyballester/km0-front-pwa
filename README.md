@@ -627,3 +627,15 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 ---
 
 **Desarrollado con ❤️ usando React, TypeScript y Vite**
+
+## 🛠️ Nota sobre TypeScript y ESLint
+
+> ⚠️ **Advertencia esperada:**
+>
+> Si ves el mensaje:
+> 
+> `Multiple projects found, consider using a single tsconfig with references to speed up, or use noWarnOnMultipleProjects to suppress this warning`
+>
+> Es completamente normal en proyectos grandes con referencias y múltiples tsconfig. No afecta el funcionamiento, el build ni el lint. Puedes ignorarlo con seguridad.
+>
+> La configuración del proyecto ya está optimizada y es estándar para monorepos o proyectos grandes con references.
