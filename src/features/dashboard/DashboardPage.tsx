@@ -10,9 +10,18 @@ import { LogoutButton } from './components/LogoutButton';
 import DashboardPageSkeleton from './pages/skeletons/DashboardPageSkeleton';
 
 /**
- * Componente principal del dashboard
- *
- * @example
+ * DashboardPage Component
+ * 
+ * This component displays the main dashboard for authenticated users.
+ * It shows various statistics and action cards for buyers and sellers.
+ * 
+ * Features:
+ * - Displays user statistics (sales, purchases, orders, performance)
+ * - Provides action cards for buyer and seller functionalities
+ * - Shows logout button
+ * - Handles loading states with skeleton
+ * 
+ * Usage:
  * ```tsx
  * <DashboardPage />
  * ```

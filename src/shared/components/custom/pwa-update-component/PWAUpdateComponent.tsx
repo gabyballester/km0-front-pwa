@@ -337,9 +337,34 @@ export const PWAUpdateComponent = () => {
 
     window.addEventListener('focus', handleFocus);
 
+    // Escuchar mensajes del service worker
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      const { type, version } = event.data;
+      
+      switch (type) {
+        case 'SW_UPDATE_AVAILABLE':
+          logger.info('Service worker update available:', version);
+          // Forzar verificación de actualización
+          updateServiceWorker(false);
+          break;
+          
+        case 'SW_CONTROLLER_CHANGED':
+          logger.info('Service worker controller changed:', version);
+          // La nueva versión se ha activado
+          break;
+          
+        case 'SW_ACTIVATED':
+          logger.info('Service worker activated:', version);
+          break;
+      }
+    };
+
+    navigator.serviceWorker?.addEventListener('message', handleServiceWorkerMessage);
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('focus', handleFocus);
+      navigator.serviceWorker?.removeEventListener('message', handleServiceWorkerMessage);
     };
   }, [needRefresh, preferences.showNotifications, updateServiceWorker]);
 

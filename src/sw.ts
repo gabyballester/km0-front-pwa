@@ -265,9 +265,10 @@ self.addEventListener('unhandledrejection', event => {
   }
 });
 
-// Manejar mensajes de los clientes
+// Detectar cuando hay una nueva versión disponible
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
+    log('Skip waiting requested', 'info');
     self.skipWaiting();
   }
 
@@ -308,4 +309,34 @@ self.addEventListener('message', event => {
       });
     });
   }
+});
+
+// Detectar cuando el service worker se actualiza
+self.addEventListener('updatefound', () => {
+  log('Service worker update found!', 'warn');
+  
+  // Notificar a todos los clientes que hay una actualización disponible
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SW_UPDATE_AVAILABLE',
+        version: SW_VERSION
+      });
+    });
+  });
+});
+
+// Detectar cuando el controlador cambia (nueva versión activada)
+self.addEventListener('controllerchange', () => {
+  log('Service worker controller changed!', 'warn');
+  
+  // Notificar a todos los clientes que se ha activado una nueva versión
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'SW_CONTROLLER_CHANGED',
+        version: SW_VERSION
+      });
+    });
+  });
 });

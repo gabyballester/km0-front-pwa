@@ -63,76 +63,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      // Configuración simplificada para producción
+      // Configuración para usar service worker personalizado
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'sw.ts',
-      registerType: 'autoUpdate', // Permite actualizaciones automáticas
-      injectRegister: 'auto', // Auto-registro del SW mediante el módulo virtual
-      // Configuración adicional para mejorar detección de actualizaciones
-      includeManifestIcons: false,
-      includeAssets: [
-        'favicon.ico',
-        'apple-touch-icon-180x180.png',
-        'pwa-192x192.png',
-        'pwa-512x512.png',
-        'maskable-icon-512x512.png'
-      ],
-      // Configuración para forzar actualizaciones
-      workbox: {
-        // Configuración de Workbox para producción
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
-        globIgnores: [
-          '**/node_modules/**',
-          '**/@vite/**',
-          '**/sw*.js',
-          '**/workbox-*.js',
-          '**/*.map',
-          '**/chunk-*.js',
-          '**/*.mjs'
-        ],
-        dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-        // Configuración para mejorar detección de actualizaciones
-        skipWaiting: true,
-        clientsClaim: true,
-        // Estrategias de caché más agresivas para actualizaciones
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
-              }
-            }
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'images-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 días
-              }
-            }
-          }
-        ]
-      },
+      registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      
+      // Configuración del manifest
       manifest: {
         id: 'Km0-PWA',
         name: 'km0-pwa-react-ts',
@@ -182,6 +120,16 @@ export default defineConfig({
           }
         ]
       },
+
+      // Configuración para desarrollo
+      devOptions: {
+        enabled: true,
+        suppressWarnings: true,
+        type: 'module',
+        navigateFallback: 'index.html'
+      },
+
+      // Configuración de injectManifest para el service worker personalizado
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
         globIgnores: [
@@ -205,12 +153,15 @@ export default defineConfig({
           }
         ]
       },
-      devOptions: {
-        enabled: true, // Habilitado en desarrollo para testing
-        suppressWarnings: true,
-        type: 'module',
-        navigateFallback: 'index.html'
-      }
+
+      // Assets a incluir
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon-180x180.png',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
+        'maskable-icon-512x512.png'
+      ]
     })
   ],
 

@@ -78,6 +78,16 @@ const LandingPage = () => {
       {/* Main Content - Positioned in lower third */}
       <div className='relative z-10 min-h-screen w-full flex items-end justify-center p-4 pb-[20vh]'>
         <div className='text-center space-y-8 max-w-md w-full'>
+          {/* Main Title */}
+          <div className='space-y-4'>
+            <h1 className='text-3xl md:text-4xl font-bold text-white drop-shadow-lg'>
+              ¡KM0 PWA v2.0! 🚀
+            </h1>
+            <p className='text-lg text-white/90 drop-shadow-lg'>
+              Aplicación PWA moderna con actualizaciones automáticas
+            </p>
+          </div>
+
           {/* Main Action Buttons */}
           <div className='space-y-4'>
             <Button

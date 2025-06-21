@@ -23,4 +23,5 @@
  * ```
  */
 export * from './PWAUpdateComponent';
+export { PWAUpdateDebug } from './PWAUpdateDebug';
 
