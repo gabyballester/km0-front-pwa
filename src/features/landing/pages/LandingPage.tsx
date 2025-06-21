@@ -81,7 +81,7 @@ const LandingPage = () => {
           {/* Main Title */}
           <div className='space-y-4'>
             <h1 className='text-3xl md:text-4xl font-bold text-white drop-shadow-lg'>
-              ¡KM0 PWA v23! 🚀
+              ¡KM0 PWA v24! 🚀
             </h1>
           </div>
 
