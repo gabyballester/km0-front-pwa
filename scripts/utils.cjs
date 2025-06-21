@@ -5,6 +5,23 @@
  * 
  * Este archivo contiene funciones auxiliares que se usan en múltiples scripts
  * para evitar duplicación de código y seguir el principio DRY.
+ * 
+ * Principios aplicados:
+ * - DRY (Don't Repeat Yourself): Funciones centralizadas
+ * - Single Responsibility: Cada función tiene una responsabilidad específica
+ * - Open/Closed: Fácil de extender sin modificar código existente
+ * - Dependency Inversion: Los scripts dependen de abstracciones, no de implementaciones concretas
+ * 
+ * Estructura de archivos:
+ * - scripts/utils.cjs: Utilidades centralizadas para scripts (CommonJS)
+ * - scripts/docs-check.cjs: Script de análisis de documentación (CommonJS)
+ * - scripts/version-bump.cjs: Script de versionado (CommonJS)
+ * - vite.config.ts: Configuración de Vite con pathResolver interno
+ * 
+ * Separación de responsabilidades:
+ * - Scripts: Usan módulos de Node.js (path, fs, etc.) - CommonJS
+ * - Frontend: Usa utilidades compatibles con navegador - ESM
+ * - Configuración: Funciones específicas para cada herramienta
  */
 
 const { resolve } = require('path');
@@ -27,8 +44,8 @@ const { resolve } = require('path');
  * ```
  */
 function resolveFromRoot(relativePath) {
-  const baseDir = __dirname.includes('scripts') ? '../' : './';
-  return resolve(__dirname, baseDir, relativePath);
+  // __dirname apunta al directorio scripts/, necesitamos ir un nivel arriba
+  return resolve(__dirname, '..', relativePath);
 }
 
 /**

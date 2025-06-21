@@ -11,11 +11,9 @@
  */
 
 const fs = require('fs');
-const globPkg = require('glob');
+const { glob } = require('glob');
 const path = require('path');
 const { resolveFromRoot } = require('./utils.cjs');
-
-const { glob } = globPkg;
 
 // Configuración
 const SRC_DIR = resolveFromRoot('src');
@@ -54,36 +52,46 @@ function hasJSDoc(content) {
 
 // Función para analizar archivos de un tipo específico
 async function analyzeFiles(pattern, type) {
-  const files = await glob(pattern, {
-    cwd: SRC_DIR,
-    ignore: IGNORE_PATTERNS,
-    absolute: true
-  });
+  try {
+    const files = glob.sync(pattern, {
+      cwd: SRC_DIR,
+      ignore: IGNORE_PATTERNS,
+      absolute: true
+    });
 
-  const results = {
-    total: files.length,
-    documented: 0,
-    undocumented: [],
-    documentedFiles: []
-  };
+    const results = {
+      total: files.length,
+      documented: 0,
+      undocumented: [],
+      documentedFiles: []
+    };
 
-  for (const file of files) {
-    try {
-      const content = fs.readFileSync(file, 'utf8');
-      const relativePath = path.relative(SRC_DIR, file);
-      
-      if (hasJSDoc(content)) {
-        results.documented++;
-        results.documentedFiles.push(relativePath);
-      } else {
-        results.undocumented.push(relativePath);
+    for (const file of files) {
+      try {
+        const content = fs.readFileSync(file, 'utf8');
+        const relativePath = path.relative(SRC_DIR, file);
+        
+        if (hasJSDoc(content)) {
+          results.documented++;
+          results.documentedFiles.push(relativePath);
+        } else {
+          results.undocumented.push(relativePath);
+        }
+      } catch (error) {
+        console.warn(`Error leyendo archivo ${file}:`, error.message);
       }
-    } catch (error) {
-      console.warn(`Error leyendo archivo ${file}:`, error.message);
     }
-  }
 
-  return results;
+    return results;
+  } catch (error) {
+    console.warn(`Error procesando patrón ${pattern}:`, error.message);
+    return {
+      total: 0,
+      documented: 0,
+      undocumented: [],
+      documentedFiles: []
+    };
+  }
 }
 
 // Función para generar reporte
