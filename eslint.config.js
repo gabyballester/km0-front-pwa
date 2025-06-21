@@ -301,7 +301,8 @@ export default tseslint.config(
         project: './tsconfig.app.json',
         warnOnMultipleProjects: false, // Suprimir warning para project references
         ecmaFeatures: { jsx: true },
-        EXPERIMENTAL_useProjectService: true
+        EXPERIMENTAL_useProjectService: true,
+        noWarnOnMultipleProjects: true // Opción adicional para mayor compatibilidad
       }
     },
     ...baseConfig,
@@ -314,7 +315,8 @@ export default tseslint.config(
       parserOptions: {
         project: './tsconfig.node.json',
         warnOnMultipleProjects: false,
-        EXPERIMENTAL_useProjectService: true
+        EXPERIMENTAL_useProjectService: true,
+        noWarnOnMultipleProjects: true
       }
     },
     plugins: {
@@ -341,7 +343,8 @@ export default tseslint.config(
       parserOptions: {
         project: './tsconfig.jest.json',
         warnOnMultipleProjects: false,
-        EXPERIMENTAL_useProjectService: true
+        EXPERIMENTAL_useProjectService: true,
+        noWarnOnMultipleProjects: true
       }
     },
     plugins: {
