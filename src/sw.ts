@@ -2,9 +2,9 @@
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import {
-  cleanupOutdatedCaches,
-  createHandlerBoundToURL,
-  precacheAndRoute
+    cleanupOutdatedCaches,
+    createHandlerBoundToURL,
+    precacheAndRoute
 } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
@@ -286,5 +286,26 @@ self.addEventListener('message', event => {
       .then(() => {
         event.ports[0]?.postMessage({ success: true });
       });
+  }
+
+  // Manejar verificación manual de actualizaciones
+  if (event.data && event.data.type === 'CHECK_FOR_UPDATES') {
+    log('Manual update check requested', 'info');
+    
+    // Forzar verificación de actualizaciones
+    self.registration?.update().then(() => {
+      log('Manual update check completed', 'info');
+      // Notificar al cliente
+      event.ports[0]?.postMessage({ 
+        success: true, 
+        message: 'Update check completed' 
+      });
+    }).catch(error => {
+      log(`Manual update check failed: ${error}`, 'error');
+      event.ports[0]?.postMessage({ 
+        success: false, 
+        error: error.message 
+      });
+    });
   }
 });

@@ -60,8 +60,8 @@
     "update": {
       "title": "Actualización disponible",
       "description": "Hay una nueva versión de la aplicación disponible.",
-      "message": "Se ha detectado una nueva versión de la aplicación. ¿Deseas actualizar ahora?",
-      "updateAndRemember": "Actualizar y recordar",
+      "message": "Se ha detectado una nueva versión de la aplicación. ¿Cómo quieres manejar las actualizaciones futuras?",
+      "updateAndRemember": "Actualizar y hacer automático",
       "updateOnce": "Actualizar solo esta vez",
       "dontShowAgain": "No mostrar de nuevo"
     }

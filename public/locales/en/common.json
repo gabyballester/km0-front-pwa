@@ -48,7 +48,7 @@
   },
   "pwa": {
     "error": {
-      "title": "Loading error detected",
+      "title": "Load Error Detected",
       "description": "A problem was detected while loading the application. This will be resolved automatically.",
       "understood": "Understood"
     },
@@ -58,11 +58,11 @@
       "understood": "Understood"
     },
     "update": {
-      "title": "Update available",
+      "title": "Update Available",
       "description": "A new version of the application is available.",
-      "message": "A new version of the application has been detected. Do you want to update now?",
-      "updateAndRemember": "Update and remember",
-      "updateOnce": "Update just this time",
+      "message": "A new version of the application has been detected. How do you want to handle future updates?",
+      "updateAndRemember": "Update and make automatic",
+      "updateOnce": "Update only this time",
       "dontShowAgain": "Don't show again"
     }
   },
