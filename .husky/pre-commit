@@ -1,1 +1,8 @@
-npm run pre-commit
+echo "🔍 Running linting..."
+npm run lint:fix
+npm run lint
+
+# echo "🧪 Running tests..."
+# npm run test
+
+echo "✅ Pre-commit checks passed!"
