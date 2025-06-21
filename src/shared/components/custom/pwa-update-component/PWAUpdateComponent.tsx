@@ -42,7 +42,7 @@ interface UpdatePreferences {
 }
 
 const DEFAULT_PREFERENCES: UpdatePreferences = {
-  autoUpdate: false, // Siempre preguntar primero
+  autoUpdate: true, // Actualizar automáticamente
   showNotifications: true
 };
 
@@ -94,6 +94,8 @@ export const PWAUpdateComponent = () => {
   const { t } = useTranslation();
   const [preferences, setPreferences] = useState<UpdatePreferences>(DEFAULT_PREFERENCES);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [showUpdateNotification, setShowUpdateNotification] = useState(false);
+  const [newVersion, setNewVersion] = useState<string>('');
   const [resourceErrorDetected, setResourceErrorDetected] = useState(false);
 
   const {
@@ -172,11 +174,35 @@ export const PWAUpdateComponent = () => {
   useEffect(() => {
     if (needRefresh && preferences.autoUpdate) {
       logger.info('Auto-updating PWA (user preference)...');
-      updateServiceWorker(true);
+      
+      const performAutoUpdate = async () => {
+        try {
+          // Obtener la nueva versión antes de actualizar
+          const currentVersion = await getCurrentVersion();
+          setNewVersion(currentVersion);
+          
+          // Actualizar automáticamente
+          await updateServiceWorker(true);
+          
+          // Mostrar notificación de actualización exitosa
+          setShowUpdateNotification(true);
+          
+          // Ocultar notificación después de 5 segundos
+          setTimeout(() => {
+            setShowUpdateNotification(false);
+          }, 5000);
+          
+          logger.info('PWA auto-updated successfully to version:', currentVersion);
+        } catch (error) {
+          logger.error('Error auto-updating PWA:', error);
+        }
+      };
+      
+      performAutoUpdate();
     }
   }, [needRefresh, preferences.autoUpdate, updateServiceWorker]);
 
-  // Mostrar diálogo de actualización manual
+  // Mostrar diálogo de actualización manual (solo si no es automático)
   useEffect(() => {
     if (needRefresh && !preferences.autoUpdate && preferences.showNotifications) {
       logger.info('Update available, showing dialog...');
@@ -195,13 +221,6 @@ export const PWAUpdateComponent = () => {
     }
   };
 
-  // Manejar actualización automática (usuario eligió "Actualizar y hacer automático")
-  const handleAutoUpdate = () => {
-    logger.info('User chose automatic updates for future');
-    updatePreferences({ autoUpdate: true, showNotifications: true });
-    handleUpdate();
-  };
-
   // Manejar actualización manual (usuario eligió "Actualizar solo esta vez")
   const handleManualUpdate = () => {
     logger.info('User chose manual updates for future');
@@ -214,6 +233,18 @@ export const PWAUpdateComponent = () => {
     logger.info('User disabled update notifications');
     updatePreferences({ autoUpdate: false, showNotifications: false });
     setShowUpdateDialog(false);
+  };
+
+  // Función para obtener la versión actual
+  const getCurrentVersion = async (): Promise<string> => {
+    try {
+      const response = await fetch('/version.json', { cache: 'no-cache' });
+      const versionData = await response.json();
+      return versionData.version || 'v0';
+    } catch (error) {
+      logger.error('Error fetching version:', error);
+      return 'v0';
+    }
   };
 
   // Función para resetear preferencias a los valores por defecto (útil para debugging)
@@ -377,14 +408,45 @@ export const PWAUpdateComponent = () => {
           </p>
 
           <div className='flex flex-col gap-2'>
-            <Button onClick={handleAutoUpdate} className='w-full'>
-              {t('pwa.update.updateAndRemember')}
-            </Button>
             <Button onClick={handleManualUpdate} variant='outline' className='w-full'>
               {t('pwa.update.updateOnce')}
             </Button>
             <Button onClick={handleDisableNotifications} variant='ghost' className='w-full'>
               {t('pwa.update.dontShowAgain')}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
+
+  // Mostrar notificación de actualización exitosa
+  if (showUpdateNotification) {
+    return (
+      <Modal
+        open={showUpdateNotification}
+        onOpenChange={setShowUpdateNotification}
+        title={t('pwa.updateSuccess.title')}
+        description={t('pwa.updateSuccess.description', { version: newVersion })}
+      >
+        <div className='space-y-4'>
+          <div className='flex items-center gap-3 p-4 bg-green-50 rounded-lg'>
+            <div className='flex-shrink-0'>
+              <span className='text-2xl'>✅</span>
+            </div>
+            <div className='flex-1'>
+              <p className='text-sm text-green-800'>
+                {t('pwa.updateSuccess.description', { version: newVersion })}
+              </p>
+            </div>
+          </div>
+
+          <div className='flex justify-end'>
+            <Button 
+              onClick={() => setShowUpdateNotification(false)}
+              className='bg-green-600 hover:bg-green-700'
+            >
+              {t('pwa.updateSuccess.understood')}
             </Button>
           </div>
         </div>

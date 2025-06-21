@@ -136,10 +136,10 @@ export function AppLoader({
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center ${config.bgColor} ${className}`}>
-      <div className='text-center space-y-4'>
+      <div className='flex flex-col items-center justify-center gap-6 max-w-sm mx-auto px-4'>
         <div className='text-4xl'>{icon || config.icon}</div>
         
-        <div className='space-y-2'>
+        <div className='flex flex-col text-center gap-4'>
           <h2 className='text-xl font-semibold text-foreground'>
             {title || config.title}
           </h2>
@@ -149,11 +149,13 @@ export function AppLoader({
         </div>
         
         {variant !== 'error' && (
-          <Loader variant={config.loaderVariant} size="lg" />
+          <div className='flex justify-center'>
+            <Loader variant={config.loaderVariant} size="lg" />
+          </div>
         )}
         
         {actions && (
-          <div className='space-y-2'>
+          <div className='flex flex-col items-center gap-3 w-full'>
             {actions}
           </div>
         )}

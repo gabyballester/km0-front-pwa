@@ -7,17 +7,17 @@
 import type { VersionInfo } from '@constants';
 
 export const BUILD_INFO: VersionInfo = {
-  "versionNumber": 11,
-  "version": "v11",
+  "versionNumber": 12,
+  "version": "v12",
   "buildDate": "2025-06-21",
-  "buildTime": "17:07",
-  "timestamp": 1750518466391,
+  "buildTime": "17:27",
+  "timestamp": 1750519624419,
   "environment": "development"
 };
 
-export const VERSION_NUMBER = 11;
-export const VERSION_STRING = 'v11';
+export const VERSION_NUMBER = 12;
+export const VERSION_STRING = 'v12';
 export const BUILD_DATE = '2025-06-21';
-export const BUILD_TIME = '17:07';
-export const BUILD_TIMESTAMP = 1750518466391;
+export const BUILD_TIME = '17:27';
+export const BUILD_TIMESTAMP = 1750519624419;
 export const BUILD_ENVIRONMENT = 'development';

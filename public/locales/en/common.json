@@ -64,6 +64,11 @@
       "updateAndRemember": "Update and make automatic",
       "updateOnce": "Update only this time",
       "dontShowAgain": "Don't show again"
+    },
+    "updateSuccess": {
+      "title": "Application Updated",
+      "description": "The application has been updated to the new version {{version}}.",
+      "understood": "Understood"
     }
   },
   "dashboard": {
