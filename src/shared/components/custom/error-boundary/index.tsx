@@ -2,21 +2,54 @@ import { type ReactNode } from 'react';
 
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
-import { Button } from '@/shared/components';
-import { logger } from '@/shared/utils';
+import { Button } from '@components';
+
+import { logger } from '@utils';
 
 import { PATHS } from '@paths';
 
+/**
+ * Props del componente ErrorBoundary
+ */
 interface ErrorBoundaryProps {
+  /** Componentes hijos a proteger */
   children: ReactNode;
+  /** Componente de fallback personalizado */
   fallback?: ReactNode;
 }
 
+/**
+ * Props del componente ErrorFallback
+ */
 interface ErrorFallbackProps {
+  /** Error capturado */
   error: Error;
+  /** Función para resetear el error boundary */
   resetErrorBoundary: () => void;
 }
 
+/**
+ * Componente de fallback por defecto para errores
+ * 
+ * Muestra una interfaz amigable cuando ocurre un error,
+ * con opciones para reintentar o volver al inicio.
+ * 
+ * @param error - Error capturado
+ * @param resetErrorBoundary - Función para resetear el error boundary
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico
+ * <ErrorBoundary>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ * 
+ * // Con fallback personalizado
+ * <ErrorBoundary fallback={<CustomErrorPage />}>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ * ```
+ */
 function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   return (
     <div className='min-h-screen flex items-center justify-center bg-background px-4'>
@@ -44,6 +77,65 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   );
 }
 
+/**
+ * Componente ErrorBoundary para capturar errores de React
+ * 
+ * Este componente envuelve la aplicación o componentes específicos
+ * para capturar errores de JavaScript y mostrar una interfaz de error
+ * en lugar de que la aplicación se rompa completamente.
+ * 
+ * Características:
+ * - Captura errores de JavaScript en componentes hijos
+ * - Muestra una interfaz de error amigable
+ * - Permite reintentar la operación
+ * - Registra errores para debugging
+ * - Soporte para fallback personalizado
+ * 
+ * @example
+ * ```tsx
+ * // Proteger toda la aplicación
+ * function App() {
+ *   return (
+ *     <ErrorBoundary>
+ *       <Router>
+ *         <Routes>
+ *           <Route path="/" element={<HomePage />} />
+ *         </Routes>
+ *       </Router>
+ *     </ErrorBoundary>
+ *   );
+ * }
+ * 
+ * // Proteger componentes específicos
+ * function Dashboard() {
+ *   return (
+ *     <div>
+ *       <Header />
+ *       <ErrorBoundary>
+ *         <ComplexChart />
+ *       </ErrorBoundary>
+ *       <Footer />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con fallback personalizado
+ * function MyApp() {
+ *   const CustomError = () => (
+ *     <div className="p-4 bg-red-50 border border-red-200 rounded">
+ *       <h2>Error personalizado</h2>
+ *       <p>Algo salió mal en esta sección</p>
+ *     </div>
+ *   );
+ * 
+ *   return (
+ *     <ErrorBoundary fallback={<CustomError />}>
+ *       <MyComponent />
+ *     </ErrorBoundary>
+ *   );
+ * }
+ * ```
+ */
 export function ErrorBoundary({ children, fallback }: ErrorBoundaryProps) {
   return (
     <ReactErrorBoundary

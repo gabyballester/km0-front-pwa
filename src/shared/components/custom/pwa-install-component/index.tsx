@@ -1,13 +1,56 @@
 import { useEffect, useState } from 'react';
 
-import { Button, Modal } from '@/shared/components';
-import { logger } from '@/shared/utils';
+import { Button, Modal } from '@components';
+
+import { logger } from '@utils';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+/**
+ * Componente PWAInstallComponent para mostrar botones de instalación de PWA
+ * 
+ * Este componente detecta automáticamente si la PWA puede ser instalada y muestra
+ * un botón o modal de instalación. Maneja diferentes navegadores y estados de instalación.
+ * 
+ * @example
+ * // Uso básico en App.tsx
+ * function App() {
+ *   return (
+ *     <div>
+ *       <header>
+ *         <PWAInstallComponent />
+ *       </header>
+ *       <main>
+ *         Contenido de la app
+ *       </main>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Uso en una página específica
+ * function HomePage() {
+ *   return (
+ *     <div>
+ *       <h1>Bienvenido</h1>
+ *       <p>Instala nuestra app para una mejor experiencia</p>
+ *       <PWAInstallComponent />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con configuración personalizada
+ * function CustomInstallButton() {
+ *   return (
+ *     <div className="fixed bottom-4 right-4 z-50">
+ *       <PWAInstallComponent />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export const PWAInstallComponent = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallModal, setShowInstallModal] = useState(false);

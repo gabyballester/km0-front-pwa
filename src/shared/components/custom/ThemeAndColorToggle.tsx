@@ -9,10 +9,11 @@
  */
 import { useState } from 'react';
 
-import { Moon, Palette, Sun, XIcon } from 'lucide-react';
+import { Moon, Palette, Sun, X as XIcon } from 'lucide-react';
 
-import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@/shared/components';
-import { capitalize, combineClassNames } from '@/shared/utils';
+import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@components';
+
+import { capitalize, combineClassNames } from '@utils';
 
 import { type ThemeColor, useTheme } from '@contexts';
 

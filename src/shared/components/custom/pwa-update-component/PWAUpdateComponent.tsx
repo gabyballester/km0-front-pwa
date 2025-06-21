@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-import { Button, Modal } from '@/shared/components';
-import { logger } from '@/shared/utils';
+import { Button, Modal } from '@components';
 
+import { logger } from '@utils';
+
+import { STORAGE_KEYS } from '@constants';
+
+/**
+ * Preferencias de actualización del PWA
+ */
 interface UpdatePreferences {
+  /** Actualización automática */
   autoUpdate: boolean;
+  /** Mostrar notificaciones */
   showNotifications: boolean;
 }
 
@@ -15,9 +24,52 @@ const DEFAULT_PREFERENCES: UpdatePreferences = {
   showNotifications: true
 };
 
-const STORAGE_KEY = 'pwa-update-preferences';
-
+/**
+ * Componente para manejar actualizaciones de PWA
+ * 
+ * Este componente gestiona las actualizaciones de la Progressive Web App,
+ * incluyendo detección de nuevas versiones, actualización automática/manual,
+ * y notificaciones al usuario.
+ * 
+ * Características:
+ * - Detección automática de actualizaciones
+ * - Actualización automática o manual
+ * - Persistencia de preferencias del usuario
+ * - Notificaciones de estado offline
+ * - Manejo de errores de recursos
+ * - Interfaz de usuario para control de actualizaciones
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en el punto de entrada de la aplicación
+ * function App() {
+ *   return (
+ *     <div>
+ *       <PWAUpdateComponent />
+ *       <Router>
+ *         <Routes>
+ *           <Route path="/" element={<HomePage />} />
+ *         </Routes>
+ *       </Router>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con configuración personalizada
+ * function App() {
+ *   return (
+ *     <ErrorBoundary>
+ *       <ThemeProvider>
+ *         <PWAUpdateComponent />
+ *         <AppContent />
+ *       </ThemeProvider>
+ *     </ErrorBoundary>
+ *   );
+ * }
+ * ```
+ */
 export const PWAUpdateComponent = () => {
+  const { t } = useTranslation();
   const [preferences, setPreferences] = useState<UpdatePreferences>(DEFAULT_PREFERENCES);
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
   const [resourceErrorDetected, setResourceErrorDetected] = useState(false);
@@ -48,7 +100,7 @@ export const PWAUpdateComponent = () => {
 
   // Cargar preferencias al montar el componente
   useEffect(() => {
-    const savedPreferences = localStorage.getItem(STORAGE_KEY);
+    const savedPreferences = localStorage.getItem(STORAGE_KEYS.PWA_UPDATE_PREFERENCES);
     if (savedPreferences) {
       try {
         const parsed = JSON.parse(savedPreferences);
@@ -63,7 +115,7 @@ export const PWAUpdateComponent = () => {
   const updatePreferences = (newPreferences: Partial<UpdatePreferences>) => {
     const updated = { ...preferences, ...newPreferences };
     setPreferences(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    localStorage.setItem(STORAGE_KEYS.PWA_UPDATE_PREFERENCES, JSON.stringify(updated));
   };
 
   // Manejar actualización automática
@@ -119,15 +171,15 @@ export const PWAUpdateComponent = () => {
             <span className='text-lg'>⚠️</span>
           </div>
           <div className='flex-1'>
-            <h4 className='mb-1 text-sm font-medium'>Error de carga detectado</h4>
+            <h4 className='mb-1 text-sm font-medium'>{t('pwa.error.title')}</h4>
             <p className='mb-3 text-xs text-red-100'>
-              Se detectó un problema al cargar la aplicación. Esto se resolverá automáticamente.
+              {t('pwa.error.description')}
             </p>
             <Button
               onClick={() => setResourceErrorDetected(false)}
               className='h-6 rounded bg-red-700 px-2 py-1 text-xs hover:bg-red-800'
             >
-              Entendido
+              {t('pwa.error.understood')}
             </Button>
           </div>
         </div>
@@ -144,16 +196,15 @@ export const PWAUpdateComponent = () => {
             <span className='text-lg'>📱</span>
           </div>
           <div className='flex-1'>
-            <h4 className='mb-1 text-sm font-medium'>App lista para usar offline</h4>
+            <h4 className='mb-1 text-sm font-medium'>{t('pwa.offline.title')}</h4>
             <p className='mb-3 text-xs text-blue-100'>
-              La aplicación ahora puede funcionar sin conexión a internet. Los datos se
-              sincronizarán cuando vuelvas a estar online.
+              {t('pwa.offline.description')}
             </p>
             <Button
               onClick={() => setOfflineReady(false)}
               className='h-6 rounded bg-blue-700 px-2 py-1 text-xs hover:bg-blue-800'
             >
-              Entendido
+              {t('pwa.offline.understood')}
             </Button>
           </div>
         </div>
@@ -167,23 +218,23 @@ export const PWAUpdateComponent = () => {
       <Modal
         open={showUpdateDialog}
         onOpenChange={setShowUpdateDialog}
-        title='Actualización disponible'
-        description='Hay una nueva versión de la aplicación disponible.'
+        title={t('pwa.update.title')}
+        description={t('pwa.update.description')}
       >
         <div className='space-y-4'>
           <p className='text-sm text-gray-600'>
-            Se ha detectado una nueva versión de la aplicación. ¿Deseas actualizar ahora?
+            {t('pwa.update.message')}
           </p>
 
           <div className='flex flex-col gap-2'>
             <Button onClick={handleAutoUpdate} className='w-full'>
-              Actualizar y recordar
+              {t('pwa.update.updateAndRemember')}
             </Button>
             <Button onClick={handleManualUpdate} variant='outline' className='w-full'>
-              Actualizar solo esta vez
+              {t('pwa.update.updateOnce')}
             </Button>
             <Button onClick={handleDisableNotifications} variant='ghost' className='w-full'>
-              No mostrar de nuevo
+              {t('pwa.update.dontShowAgain')}
             </Button>
           </div>
         </div>

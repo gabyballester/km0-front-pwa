@@ -1,30 +1,80 @@
 import { useEffect, useState } from 'react';
 
-import { useServiceWorker } from '@/shared/hooks';
-import { clearBrowserCache, logger, verifyMainFiles } from '@/shared/utils';
+import { useTranslation } from 'react-i18next';
+
+import { clearBrowserCache, logger, verifyMainFiles } from '@utils';
+
+import { useServiceWorker } from '@hooks';
+
+import { SESSION_KEYS } from '@constants';
+
+import { AppLoader } from './AppLoader';
 
 interface AppInitializerProps {
   children: React.ReactNode;
 }
 
+/**
+ * Componente AppInitializer para gestionar la inicialización de la aplicación
+ * 
+ * Este componente se encarga de:
+ * - Verificar la integridad de archivos principales
+ * - Detectar y manejar errores de MIME type
+ * - Gestionar el service worker
+ * - Mostrar pantallas de carga y error apropiadas
+ * - Prevenir inicializaciones múltiples en la misma sesión
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en el punto de entrada de la aplicación
+ * function App() {
+ *   return (
+ *     <AppInitializer>
+ *       <Router>
+ *         <Routes>
+ *           <Route path="/" element={<HomePage />} />
+ *         </Routes>
+ *       </Router>
+ *     </AppInitializer>
+ *   );
+ * }
+ * 
+ * // Con configuración adicional
+ * function App() {
+ *   return (
+ *     <ThemeProvider>
+ *       <AppInitializer>
+ *         <AuthProvider>
+ *           <Router>
+ *             <AppContent />
+ *           </Router>
+ *         </AuthProvider>
+ *       </AppInitializer>
+ *     </ThemeProvider>
+ *   );
+ * }
+ * ```
+ */
 export const AppInitializer = ({ children }: AppInitializerProps) => {
-  const [isInitialized, setIsInitialized] = useState(false);
+  const { t } = useTranslation();
   const [hasError, setHasError] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const { forceUpdate, restart, clearCache } = useServiceWorker();
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         // Verificar si ya se ha inicializado en esta sesión
-        const sessionInitialized = sessionStorage.getItem('app-initialized');
+        const sessionInitialized = sessionStorage.getItem(SESSION_KEYS.APP_INITIALIZED);
         if (sessionInitialized === 'true') {
-          setIsInitialized(true);
-          setIsVerifying(false);
+          setIsLoading(false);
           return;
         }
 
-        // Verificar integridad de archivos principales
+        // Proceso de inicialización unificado
+        logger.info(t('loading.appInit.title'));
+
+        // 1. Verificar integridad de archivos principales
         const filesValid = await verifyMainFiles();
         if (!filesValid) {
           logger.warn('Main files verification failed, clearing cache...');
@@ -38,7 +88,7 @@ export const AppInitializer = ({ children }: AppInitializerProps) => {
           return;
         }
 
-        // Verificar si hay errores de MIME type en la consola
+        // 2. Verificar si hay errores de MIME type en la consola
         const originalError = console.error;
         let resourceErrorDetected = false;
 
@@ -51,18 +101,18 @@ export const AppInitializer = ({ children }: AppInitializerProps) => {
           originalError.apply(console, args);
         };
 
-        // Esperar un poco para que se carguen todos los módulos
+        // 3. Esperar un poco para que se carguen todos los módulos
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Restaurar console.error original
         console.error = originalError;
 
-        // Si se detectó un error de recurso, intentar recargar
+        // 4. Si se detectó un error de recurso, intentar recargar
         if (resourceErrorDetected) {
           logger.info('Attempting to recover from resource error...');
 
           // Marcar que se ha intentado inicializar
-          sessionStorage.setItem('app-initialized', 'true');
+          sessionStorage.setItem(SESSION_KEYS.APP_INITIALIZED, 'true');
 
           // Intentar forzar actualización del service worker primero
           forceUpdate();
@@ -79,78 +129,44 @@ export const AppInitializer = ({ children }: AppInitializerProps) => {
           return;
         }
 
-        // Si no hay errores, marcar como inicializado
-        sessionStorage.setItem('app-initialized', 'true');
-        setIsInitialized(true);
-        setIsVerifying(false);
+        // 5. Si no hay errores, marcar como inicializado
+        sessionStorage.setItem(SESSION_KEYS.APP_INITIALIZED, 'true');
+        setIsLoading(false);
 
         logger.info('App initialized successfully');
       } catch (error) {
         logger.error('Error during app initialization:', error);
         setHasError(true);
-        setIsVerifying(false);
+        setIsLoading(false);
       }
     };
 
     initializeApp();
-  }, [forceUpdate, clearCache]);
+  }, [forceUpdate, clearCache, t]);
 
   // Mostrar pantalla de carga mientras se inicializa
-  if (isVerifying) {
-    return (
-      <div className='fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900'>
-        <div className='text-center'>
-          <div className='mb-4 text-4xl'>🔍</div>
-          <h2 className='mb-2 text-xl font-semibold text-gray-900 dark:text-white'>
-            Verificando aplicación...
-          </h2>
-          <p className='text-sm text-gray-600 dark:text-gray-400'>
-            Comprobando integridad de archivos
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Mostrar pantalla de carga mientras se inicializa
-  if (!isInitialized && !hasError) {
-    return (
-      <div className='fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900'>
-        <div className='text-center'>
-          <div className='mb-4 text-4xl'>🚀</div>
-          <h2 className='mb-2 text-xl font-semibold text-gray-900 dark:text-white'>
-            Inicializando aplicación...
-          </h2>
-          <p className='text-sm text-gray-600 dark:text-gray-400'>Preparando todo para ti</p>
-        </div>
-      </div>
-    );
+  if (isLoading) {
+    return <AppLoader variant="app-init" />;
   }
 
   // Mostrar pantalla de error si algo salió mal
   if (hasError) {
     return (
-      <div className='fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900'>
-        <div className='text-center'>
-          <div className='mb-4 text-4xl'>⚠️</div>
-          <h2 className='mb-2 text-xl font-semibold text-gray-900 dark:text-white'>
-            Error de inicialización
-          </h2>
-          <p className='mb-4 text-sm text-gray-600 dark:text-gray-400'>
-            Hubo un problema al cargar la aplicación
-          </p>
+      <AppLoader
+        variant="error"
+        actions={
           <div className='space-y-2'>
             <button
               onClick={() => window.location.reload()}
               className='rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700'
             >
-              Recargar página
+              {t('loading.actions.reloadPage')}
             </button>
             <button
               onClick={() => restart()}
               className='ml-2 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700'
             >
-              Reiniciar SW
+              {t('loading.actions.restartSW')}
             </button>
             <button
               onClick={async () => {
@@ -160,11 +176,11 @@ export const AppInitializer = ({ children }: AppInitializerProps) => {
               }}
               className='ml-2 rounded bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700'
             >
-              Limpiar caché
+              {t('loading.actions.clearCache')}
             </button>
           </div>
-        </div>
-      </div>
+        }
+      />
     );
   }
 

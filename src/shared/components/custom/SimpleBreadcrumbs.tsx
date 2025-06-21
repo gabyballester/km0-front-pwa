@@ -6,12 +6,72 @@ import { ChevronRight, Home } from 'lucide-react';
 
 import { PATHS } from '@paths';
 
+/**
+ * Interfaz para un elemento de breadcrumb
+ */
 interface BreadcrumbItem {
+  /** Etiqueta del breadcrumb */
   label: string;
+  /** Ruta del breadcrumb */
   path: string;
+  /** Icono opcional del breadcrumb */
   icon?: React.ReactNode;
 }
 
+/**
+ * Componente SimpleBreadcrumbs para mostrar la navegación jerárquica
+ * 
+ * Este componente genera automáticamente breadcrumbs basándose en la ruta actual,
+ * mostrando la jerarquía de navegación desde el home hasta la página actual.
+ * Solo se muestra cuando no estamos en la página principal.
+ * 
+ * Características:
+ * - Generación automática basada en la ruta actual
+ * - Soporte para iconos
+ * - Traducción automática de etiquetas
+ * - Navegación funcional entre niveles
+ * - Oculto automáticamente en la página principal
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico en un layout
+ * function AppLayout() {
+ *   return (
+ *     <div>
+ *       <SimpleBreadcrumbs />
+ *       <main>
+ *         <Outlet />
+ *       </main>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // En una página específica
+ * function DashboardPage() {
+ *   return (
+ *     <div>
+ *       <SimpleBreadcrumbs />
+ *       <h1>Dashboard</h1>
+ *       Contenido del dashboard
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con estilos personalizados
+ * function CustomLayout() {
+ *   return (
+ *     <div className="min-h-screen bg-gray-50">
+ *       <header className="bg-white border-b">
+ *         <SimpleBreadcrumbs />
+ *       </header>
+ *       <main className="p-4">
+ *         <Outlet />
+ *       </main>
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function SimpleBreadcrumbs() {
   const location = useLocation();
   const { t } = useTranslation();

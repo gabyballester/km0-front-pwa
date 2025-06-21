@@ -1,3 +1,55 @@
+/**
+ * Componente MapSkeleton para mostrar un placeholder de mapa mientras se carga
+ * 
+ * Este componente simula la estructura de un mapa con header, contenedor,
+ * pines de ubicación y controles, proporcionando una experiencia de carga
+ * visualmente atractiva para componentes de mapas.
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico
+ * <MapSkeleton />
+ * 
+ * // En una página de mapas
+ * function MapPage() {
+ *   const [loading, setLoading] = useState(true);
+ *   const [mapData, setMapData] = useState(null);
+ * 
+ *   if (loading) {
+ *     return (
+ *       <div className="p-4">
+ *         <h1 className="text-2xl font-bold mb-4">Mapa de Ubicaciones</h1>
+ *         <MapSkeleton />
+ *       </div>
+ *     );
+ *   }
+ * 
+ *   return (
+ *     <div className="p-4">
+ *       <h1 className="text-2xl font-bold mb-4">Mapa de Ubicaciones</h1>
+ *       <GoogleMap data={mapData} />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con contenido adicional
+ * function MapWithSidebar() {
+ *   const [loading, setLoading] = useState(true);
+ * 
+ *   return (
+ *     <div className="flex">
+ *       <div className="w-1/3 p-4">
+ *         <h2>Ubicaciones</h2>
+ *         <ListSkeleton items={5} />
+ *       </div>
+ *       <div className="w-2/3 p-4">
+ *         {loading ? <MapSkeleton /> : <GoogleMap />}
+ *       </div>
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function MapSkeleton() {
   return (
     <div className='animate-pulse space-y-4'>

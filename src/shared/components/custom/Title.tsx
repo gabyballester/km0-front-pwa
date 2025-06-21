@@ -14,7 +14,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 const titleVariants = cva('scroll-m-20 font-semibold tracking-tight', {
   variants: {
@@ -61,3 +61,4 @@ const Title = forwardRef<HTMLHeadingElement, TitleProps>(
 Title.displayName = 'Title';
 
 export { Title, titleVariants };
+

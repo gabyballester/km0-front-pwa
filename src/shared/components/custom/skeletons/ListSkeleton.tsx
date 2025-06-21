@@ -1,10 +1,70 @@
+/**
+ * Props para el componente ListSkeleton
+ */
 interface ListSkeletonProps {
+  /** Número de elementos de la lista a mostrar */
   items?: number;
+  /** Mostrar o no el avatar de cada elemento */
   showAvatar?: boolean;
+  /** Mostrar o no el texto secundario de cada elemento */
   showSecondaryText?: boolean;
+  /** Mostrar o no las acciones de cada elemento */
   showActions?: boolean;
 }
 
+/**
+ * Componente ListSkeleton para mostrar un placeholder de lista mientras se carga el contenido
+ * 
+ * Este componente simula la estructura de una lista con avatares, texto principal,
+ * texto secundario y acciones opcionales.
+ * 
+ * @example
+ * ```tsx
+ * // Skeleton básico
+ * <ListSkeleton />
+ * 
+ * // Skeleton con más elementos
+ * <ListSkeleton items={10} />
+ * 
+ * // Skeleton sin avatar
+ * <ListSkeleton showAvatar={false} />
+ * 
+ * // Skeleton con acciones
+ * <ListSkeleton showActions={true} />
+ * 
+ * // Skeleton personalizado
+ * <ListSkeleton 
+ *   items={8}
+ *   showAvatar={true}
+ *   showSecondaryText={false}
+ *   showActions={true}
+ * />
+ * 
+ * // En una lista de usuarios
+ * function UserList() {
+ *   const [loading, setLoading] = useState(true);
+ *   const [users, setUsers] = useState([]);
+ * 
+ *   if (loading) {
+ *     return (
+ *       <div className="space-y-4">
+ *         <h2 className="text-xl font-semibold">Usuarios</h2>
+ *         <ListSkeleton items={6} showActions={true} />
+ *       </div>
+ *     );
+ *   }
+ * 
+ *   return (
+ *     <div className="space-y-4">
+ *       <h2 className="text-xl font-semibold">Usuarios</h2>
+ *       {users.map(user => (
+ *         <UserItem key={user.id} user={user} />
+ *       ))}
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function ListSkeleton({
   items = 5,
   showAvatar = true,

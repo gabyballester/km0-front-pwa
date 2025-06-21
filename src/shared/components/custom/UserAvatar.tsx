@@ -1,4 +1,12 @@
-import { Building2, LogOut, Settings, Shield, User as UserIcon } from 'lucide-react';
+import {
+  Building2,
+  LogOut,
+  Settings,
+  Shield,
+  User as UserIcon
+} from 'lucide-react';
+
+import type { User } from '@/shared/types/auth.types';
 
 import {
   Avatar,
@@ -12,14 +20,75 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/shared/components';
-import type { User } from '@/shared/types/auth.types';
+} from '@components';
 
 interface UserAvatarProps {
+  /** Usuario a mostrar (null para no mostrar nada) */
   user: User | null;
+  /** Tamaño del avatar */
   size?: 'sm' | 'md' | 'lg';
 }
 
+/**
+ * Componente UserAvatar para mostrar información del usuario
+ * 
+ * Muestra un avatar clickeable que abre un dropdown con información
+ * del usuario, tipo de cuenta y acciones disponibles.
+ * 
+ * @example
+ * ```tsx
+ * // Uso básico
+ * function Header() {
+ *   const { user } = useAuth();
+ * 
+ *   return (
+ *     <header className="flex items-center justify-between p-4">
+ *       <Logo />
+ *       <UserAvatar user={user} />
+ *     </header>
+ *   );
+ * }
+ * 
+ * // Con tamaño personalizado
+ * function Sidebar() {
+ *   const { user } = useAuth();
+ * 
+ *   return (
+ *     <aside className="p-4">
+ *       <UserAvatar user={user} size="lg" />
+ *     </aside>
+ *   );
+ * }
+ * 
+ * // En dashboard
+ * function DashboardHeader() {
+ *   const { user } = useAuth();
+ * 
+ *   return (
+ *     <div className="flex items-center gap-4">
+ *       <h1>Dashboard</h1>
+ *       <div className="ml-auto">
+ *         <UserAvatar user={user} size="sm" />
+ *       </div>
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Con manejo de estado nulo
+ * function ConditionalAvatar() {
+ *   const { user, isLoading } = useAuth();
+ * 
+ *   if (isLoading) {
+ *     return <Skeleton className="w-8 h-8 rounded-full" />;
+ *   }
+ * 
+ *   return <UserAvatar user={user} />;
+ * }
+ * ```
+ * 
+ * @param props - Propiedades del componente
+ * @returns Componente de avatar de usuario o null si no hay usuario
+ */
 export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
   if (!user) return null;
 
