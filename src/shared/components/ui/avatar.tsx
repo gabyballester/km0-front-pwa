@@ -2,8 +2,39 @@ import * as React from 'react';
 
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Avatar para mostrar imágenes de perfil de usuario
+ * 
+ * @example
+ * ```tsx
+ * // Avatar básico con imagen
+ * <Avatar>
+ *   <AvatarImage src="/path/to/image.jpg" alt="Usuario" />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ * 
+ * // Avatar con fallback (iniciales)
+ * <Avatar>
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ * 
+ * // Avatar con imagen y fallback personalizado
+ * <Avatar>
+ *   <AvatarImage src="/path/to/image.jpg" alt="Usuario" />
+ *   <AvatarFallback>
+ *     <User className="w-4 h-4" />
+ *   </AvatarFallback>
+ * </Avatar>
+ * 
+ * // Avatar con tamaño personalizado
+ * <Avatar className="w-12 h-12">
+ *   <AvatarImage src="/path/to/image.jpg" alt="Usuario" />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ * ```
+ */
 function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
     <AvatarPrimitive.Root
@@ -17,6 +48,17 @@ function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimi
   );
 }
 
+/**
+ * Imagen del avatar
+ * 
+ * @example
+ * ```tsx
+ * <Avatar>
+ *   <AvatarImage src="/path/to/image.jpg" alt="Usuario" />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ * ```
+ */
 function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
     <AvatarPrimitive.Image
@@ -27,6 +69,22 @@ function AvatarImage({ className, ...props }: React.ComponentProps<typeof Avatar
   );
 }
 
+/**
+ * Fallback del avatar (se muestra cuando la imagen no carga)
+ * 
+ * @example
+ * ```tsx
+ * <Avatar>
+ *   <AvatarImage src="/path/to/image.jpg" alt="Usuario" />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ * 
+ * // Con icono
+ * <AvatarFallback>
+ *   <User className="w-4 h-4" />
+ * </AvatarFallback>
+ * ```
+ */
 function AvatarFallback({
   className,
   ...props
@@ -44,3 +102,4 @@ function AvatarFallback({
 }
 
 export { Avatar, AvatarFallback, AvatarImage };
+

@@ -1,5 +1,53 @@
 import { Toaster as SonnerToaster } from 'sonner';
 
+/**
+ * Componente Toaster para mostrar notificaciones toast
+ * 
+ * Este componente utiliza Sonner para mostrar notificaciones toast con estilos
+ * personalizados que coinciden con el tema de la aplicación.
+ * 
+ * @example
+ * ```tsx
+ * // En el layout principal de la aplicación
+ * function AppLayout() {
+ *   return (
+ *     <div>
+ *       <main>Contenido de la app</main>
+ *       <Toaster />
+ *     </div>
+ *   );
+ * }
+ * 
+ * // Uso con el hook useToast
+ * import { useToast } from '@hooks';
+ * 
+ * function MyComponent() {
+ *   const { toast } = useToast();
+ *   
+ *   const handleSuccess = () => {
+ *     toast({
+ *       title: "Éxito",
+ *       description: "Operación completada correctamente"
+ *     });
+ *   };
+ *   
+ *   const handleError = () => {
+ *     toast({
+ *       title: "Error",
+ *       description: "Algo salió mal",
+ *       variant: "destructive"
+ *     });
+ *   };
+ *   
+ *   return (
+ *     <div>
+ *       <button onClick={handleSuccess}>Mostrar éxito</button>
+ *       <button onClick={handleError}>Mostrar error</button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function Toaster() {
   return (
     <SonnerToaster

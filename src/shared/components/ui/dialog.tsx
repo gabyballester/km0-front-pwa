@@ -4,24 +4,75 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 import { XIcon } from 'lucide-react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Dialog base (wrapper de Radix UI Dialog)
+ * 
+ * @example
+ * ```tsx
+ * <Dialog open={isOpen} onOpenChange={setIsOpen}>
+ *   <DialogContent>
+ *     <DialogHeader>
+ *       <DialogTitle>Confirmar acción</DialogTitle>
+ *       <DialogDescription>
+ *         ¿Estás seguro de que quieres continuar?
+ *       </DialogDescription>
+ *     </DialogHeader>
+ *     <DialogFooter>
+ *       <Button variant="outline" onClick={() => setIsOpen(false)}>
+ *         Cancelar
+ *       </Button>
+ *       <Button onClick={handleConfirm}>
+ *         Confirmar
+ *       </Button>
+ *     </DialogFooter>
+ *   </DialogContent>
+ * </Dialog>
+ * ```
+ */
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot='dialog' {...props} />;
 }
 
+/**
+ * Trigger para abrir el dialog
+ * 
+ * @example
+ * ```tsx
+ * <DialogTrigger asChild>
+ *   <Button>Abrir Dialog</Button>
+ * </DialogTrigger>
+ * ```
+ */
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot='dialog-trigger' {...props} />;
 }
 
+/**
+ * Portal para renderizar el dialog fuera del flujo normal del DOM
+ */
 function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot='dialog-portal' {...props} />;
 }
 
+/**
+ * Botón para cerrar el dialog
+ * 
+ * @example
+ * ```tsx
+ * <DialogClose asChild>
+ *   <Button variant="ghost" size="sm">Cerrar</Button>
+ * </DialogClose>
+ * ```
+ */
 function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot='dialog-close' {...props} />;
 }
 
+/**
+ * Overlay del dialog (fondo oscuro)
+ */
 function DialogOverlay({
   className,
   ...props
@@ -39,6 +90,23 @@ function DialogOverlay({
   );
 }
 
+/**
+ * Contenido principal del dialog
+ * 
+ * @example
+ * ```tsx
+ * <DialogContent className="max-w-md">
+ *   <DialogHeader>
+ *     <DialogTitle>Título</DialogTitle>
+ *     <DialogDescription>Descripción</DialogDescription>
+ *   </DialogHeader>
+ *   <p>Contenido del dialog</p>
+ *   <DialogFooter>
+ *     <Button>Acción</Button>
+ *   </DialogFooter>
+ * </DialogContent>
+ * ```
+ */
 function DialogContent({
   className,
   children,
@@ -80,6 +148,17 @@ function DialogContent({
   );
 }
 
+/**
+ * Header del dialog (título y descripción)
+ * 
+ * @example
+ * ```tsx
+ * <DialogHeader>
+ *   <DialogTitle>Título del dialog</DialogTitle>
+ *   <DialogDescription>Descripción detallada</DialogDescription>
+ * </DialogHeader>
+ * ```
+ */
 function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -90,6 +169,17 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * Footer del dialog (botones de acción)
+ * 
+ * @example
+ * ```tsx
+ * <DialogFooter>
+ *   <Button variant="outline">Cancelar</Button>
+ *   <Button>Confirmar</Button>
+ * </DialogFooter>
+ * ```
+ */
 function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -103,6 +193,14 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * Título del dialog
+ * 
+ * @example
+ * ```tsx
+ * <DialogTitle>Confirmar eliminación</DialogTitle>
+ * ```
+ */
 function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
@@ -113,6 +211,16 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
   );
 }
 
+/**
+ * Descripción del dialog
+ * 
+ * @example
+ * ```tsx
+ * <DialogDescription>
+ *   Esta acción no se puede deshacer. ¿Estás seguro?
+ * </DialogDescription>
+ * ```
+ */
 function DialogDescription({
   className,
   ...props
@@ -127,14 +235,15 @@ function DialogDescription({
 }
 
 export {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogOverlay,
+    DialogPortal,
+    DialogTitle,
+    DialogTrigger
 };
+

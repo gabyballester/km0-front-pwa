@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -33,6 +33,44 @@ const buttonVariants = cva(
   }
 );
 
+/**
+ * Componente Button personalizado con múltiples variantes y tamaños
+ * 
+ * @example
+ * ```tsx
+ * // Botón primario (default)
+ * <Button onClick={handleClick}>
+ *   Click me
+ * </Button>
+ * 
+ * // Botón con variante y tamaño
+ * <Button variant="destructive" size="lg">
+ *   Delete Item
+ * </Button>
+ * 
+ * // Botón con icono
+ * <Button variant="outline" size="sm">
+ *   <Plus className="w-4 h-4" />
+ *   Add Item
+ * </Button>
+ * 
+ * // Botón icono
+ * <Button variant="ghost" size="icon">
+ *   <Settings className="w-4 h-4" />
+ * </Button>
+ * 
+ * // Botón como enlace
+ * <Button variant="link" asChild>
+ *   <Link href="/dashboard">Go to Dashboard</Link>
+ * </Button>
+ * 
+ * // Botón con loading
+ * <Button disabled={isLoading}>
+ *   {isLoading && <Loader size="sm" />}
+ *   Submit
+ * </Button>
+ * ```
+ */
 function Button({
   className,
   variant,
@@ -41,6 +79,7 @@ function Button({
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
+    /** Renderiza el botón como un elemento hijo usando Radix Slot */
     asChild?: boolean;
   }) {
   const Comp = asChild ? Slot : 'button';
@@ -55,3 +94,4 @@ function Button({
 }
 
 export { Button, buttonVariants };
+

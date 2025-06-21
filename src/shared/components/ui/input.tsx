@@ -1,7 +1,50 @@
 import * as React from 'react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Input para campos de entrada de texto
+ * 
+ * @example
+ * ```tsx
+ * // Input básico
+ * <Input placeholder="Escribe tu nombre" />
+ * 
+ * // Input con label
+ * <div>
+ *   <Label htmlFor="email">Email</Label>
+ *   <Input id="email" type="email" placeholder="tu@email.com" />
+ * </div>
+ * 
+ * // Input con validación
+ * <Input 
+ *   type="email" 
+ *   placeholder="Email" 
+ *   aria-invalid={!isValidEmail}
+ *   required 
+ * />
+ * 
+ * // Input deshabilitado
+ * <Input 
+ *   placeholder="Campo deshabilitado" 
+ *   disabled 
+ * />
+ * 
+ * // Input con valor controlado
+ * <Input 
+ *   value={value} 
+ *   onChange={(e) => setValue(e.target.value)}
+ *   placeholder="Valor controlado" 
+ * />
+ * 
+ * // Input de archivo
+ * <Input 
+ *   type="file" 
+ *   accept="image/*"
+ *   onChange={handleFileChange} 
+ * />
+ * ```
+ */
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
     <input
@@ -24,3 +67,4 @@ function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
 }
 
 export { Input };
+

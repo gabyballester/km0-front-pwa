@@ -1,12 +1,31 @@
-import React from 'react';
+import * as React from 'react';
 
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 import { cva } from 'class-variance-authority';
 
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente NavigationMenu base (wrapper de Radix UI NavigationMenu)
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenu>
+ *   <NavigationMenuList>
+ *     <NavigationMenuItem>
+ *       <NavigationMenuTrigger>Productos</NavigationMenuTrigger>
+ *       <NavigationMenuContent>
+ *         <NavigationMenuLink href="/productos">
+ *           Ver todos los productos
+ *         </NavigationMenuLink>
+ *       </NavigationMenuContent>
+ *     </NavigationMenuItem>
+ *   </NavigationMenuList>
+ * </NavigationMenu>
+ * ```
+ */
 function NavigationMenu({
   className,
   children,
@@ -31,6 +50,18 @@ function NavigationMenu({
   );
 }
 
+/**
+ * Lista de elementos del menú de navegación
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenuList>
+ *   <NavigationMenuItem>Inicio</NavigationMenuItem>
+ *   <NavigationMenuItem>Productos</NavigationMenuItem>
+ *   <NavigationMenuItem>Contacto</NavigationMenuItem>
+ * </NavigationMenuList>
+ * ```
+ */
 function NavigationMenuList({
   className,
   ...props
@@ -47,6 +78,21 @@ function NavigationMenuList({
   );
 }
 
+/**
+ * Elemento individual del menú de navegación
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenuItem>
+ *   <NavigationMenuTrigger>Productos</NavigationMenuTrigger>
+ *   <NavigationMenuContent>
+ *     <NavigationMenuLink href="/productos">
+ *       Ver todos
+ *     </NavigationMenuLink>
+ *   </NavigationMenuContent>
+ * </NavigationMenuItem>
+ * ```
+ */
 function NavigationMenuItem({
   className,
   ...props
@@ -64,6 +110,16 @@ const navigationMenuTriggerStyle = cva(
   'group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-accent data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1'
 );
 
+/**
+ * Trigger para abrir el menú de navegación
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenuTrigger>
+ *   Productos
+ * </NavigationMenuTrigger>
+ * ```
+ */
 function NavigationMenuTrigger({
   className,
   children,
@@ -76,7 +132,7 @@ function NavigationMenuTrigger({
       {...props}
     >
       {children}
-      <ChevronDownIcon
+      <ChevronDown
         className='relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180'
         aria-hidden='true'
       />
@@ -84,6 +140,21 @@ function NavigationMenuTrigger({
   );
 }
 
+/**
+ * Contenido del menú de navegación
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenuContent>
+ *   <NavigationMenuLink href="/productos">
+ *     Ver todos los productos
+ *   </NavigationMenuLink>
+ *   <NavigationMenuLink href="/productos/nuevos">
+ *     Productos nuevos
+ *   </NavigationMenuLink>
+ * </NavigationMenuContent>
+ * ```
+ */
 function NavigationMenuContent({
   className,
   ...props
@@ -120,6 +191,9 @@ function NavigationMenuContent({
   );
 }
 
+/**
+ * Viewport del menú de navegación
+ */
 function NavigationMenuViewport({
   className,
   ...props
@@ -141,6 +215,21 @@ function NavigationMenuViewport({
   );
 }
 
+/**
+ * Enlace del menú de navegación
+ * 
+ * @example
+ * ```tsx
+ * <NavigationMenuLink href="/productos">
+ *   <div className="flex flex-col gap-1">
+ *     <span className="font-medium">Productos</span>
+ *     <span className="text-sm text-muted-foreground">
+ *       Explora nuestra colección
+ *     </span>
+ *   </div>
+ * </NavigationMenuLink>
+ * ```
+ */
 function NavigationMenuLink({
   className,
   ...props
@@ -162,6 +251,9 @@ function NavigationMenuLink({
   );
 }
 
+/**
+ * Indicador del menú de navegación
+ */
 function NavigationMenuIndicator({
   className,
   ...props
@@ -182,13 +274,14 @@ function NavigationMenuIndicator({
 }
 
 export {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-  NavigationMenuViewport
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
+    NavigationMenuViewport
 };
+

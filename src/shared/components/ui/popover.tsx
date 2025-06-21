@@ -2,16 +2,65 @@ import * as React from 'react';
 
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Popover base (wrapper de Radix UI Popover)
+ * 
+ * @example
+ * ```tsx
+ * <Popover>
+ *   <PopoverTrigger asChild>
+ *     <Button variant="outline">Abrir Popover</Button>
+ *   </PopoverTrigger>
+ *   <PopoverContent>
+ *     <div className="space-y-2">
+ *       <h4 className="font-medium">Información</h4>
+ *       <p className="text-sm text-muted-foreground">
+ *         Contenido del popover
+ *       </p>
+ *     </div>
+ *   </PopoverContent>
+ * </Popover>
+ * ```
+ */
 function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot='popover' {...props} />;
 }
 
+/**
+ * Trigger para abrir el popover
+ * 
+ * @example
+ * ```tsx
+ * <PopoverTrigger asChild>
+ *   <Button>Abrir</Button>
+ * </PopoverTrigger>
+ * ```
+ */
 function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
   return <PopoverPrimitive.Trigger data-slot='popover-trigger' {...props} />;
 }
 
+/**
+ * Contenido del popover
+ * 
+ * @example
+ * ```tsx
+ * <PopoverContent className="w-80">
+ *   <div className="space-y-2">
+ *     <h4 className="font-medium">Título</h4>
+ *     <p className="text-sm text-muted-foreground">
+ *       Descripción detallada
+ *     </p>
+ *     <div className="flex gap-2">
+ *       <Button size="sm">Acción 1</Button>
+ *       <Button size="sm" variant="outline">Acción 2</Button>
+ *     </div>
+ *   </div>
+ * </PopoverContent>
+ * ```
+ */
 function PopoverContent({
   className,
   align = 'center',
@@ -39,8 +88,12 @@ function PopoverContent({
   );
 }
 
+/**
+ * Anchor del popover para posicionamiento personalizado
+ */
 function PopoverAnchor({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
   return <PopoverPrimitive.Anchor data-slot='popover-anchor' {...props} />;
 }
 
 export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger };
+

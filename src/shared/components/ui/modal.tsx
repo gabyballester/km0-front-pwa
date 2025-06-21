@@ -2,16 +2,16 @@ import * as React from 'react';
 
 import { X } from 'lucide-react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 import { Button } from './button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogOverlay,
+    DialogPortal,
+    DialogTitle
 } from './dialog';
 
 export interface ModalProps {

@@ -4,20 +4,84 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Select base (wrapper de Radix UI Select)
+ * 
+ * @example
+ * ```tsx
+ * <Select>
+ *   <SelectTrigger>
+ *     <SelectValue placeholder="Selecciona una opción" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="option1">Opción 1</SelectItem>
+ *     <SelectItem value="option2">Opción 2</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ * ```
+ */
 function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot='select' {...props} />;
 }
 
+/**
+ * Grupo de elementos del select
+ * 
+ * @example
+ * ```tsx
+ * <SelectGroup>
+ *   <SelectLabel>Frutas</SelectLabel>
+ *   <SelectItem value="apple">Manzana</SelectItem>
+ *   <SelectItem value="banana">Plátano</SelectItem>
+ * </SelectGroup>
+ * ```
+ */
 function SelectGroup({ ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot='select-group' {...props} />;
 }
 
+/**
+ * Valor mostrado en el trigger del select
+ * 
+ * @example
+ * ```tsx
+ * <SelectTrigger>
+ *   <SelectValue placeholder="Selecciona una opción" />
+ * </SelectTrigger>
+ * ```
+ */
 function SelectValue({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot='select-value' {...props} />;
 }
 
+/**
+ * Trigger del select (botón que abre el dropdown)
+ * 
+ * @example
+ * ```tsx
+ * // Trigger básico
+ * <SelectTrigger>
+ *   <SelectValue placeholder="Selecciona una opción" />
+ * </SelectTrigger>
+ * 
+ * // Trigger con tamaño personalizado
+ * <SelectTrigger size="sm">
+ *   <SelectValue placeholder="Opción" />
+ * </SelectTrigger>
+ * 
+ * // Trigger con contenido personalizado
+ * <SelectTrigger>
+ *   <SelectValue>
+ *     <div className="flex items-center gap-2">
+ *       <Flag className="w-4 h-4" />
+ *       <span>España</span>
+ *     </div>
+ *   </SelectValue>
+ * </SelectTrigger>
+ * ```
+ */
 function SelectTrigger({
   className,
   size = 'default',
@@ -53,6 +117,19 @@ function SelectTrigger({
   );
 }
 
+/**
+ * Contenido del select (dropdown)
+ * 
+ * @example
+ * ```tsx
+ * <SelectContent>
+ *   <SelectItem value="option1">Opción 1</SelectItem>
+ *   <SelectItem value="option2">Opción 2</SelectItem>
+ *   <SelectSeparator />
+ *   <SelectItem value="option3">Opción 3</SelectItem>
+ * </SelectContent>
+ * ```
+ */
 function SelectContent({
   className,
   children,
@@ -95,6 +172,14 @@ function SelectContent({
   );
 }
 
+/**
+ * Etiqueta del grupo de elementos
+ * 
+ * @example
+ * ```tsx
+ * <SelectLabel>Frutas</SelectLabel>
+ * ```
+ */
 function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
@@ -105,6 +190,26 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
   );
 }
 
+/**
+ * Elemento individual del select
+ * 
+ * @example
+ * ```tsx
+ * // Elemento básico
+ * <SelectItem value="option1">Opción 1</SelectItem>
+ * 
+ * // Elemento con icono
+ * <SelectItem value="spain">
+ *   <Flag className="w-4 h-4" />
+ *   España
+ * </SelectItem>
+ * 
+ * // Elemento deshabilitado
+ * <SelectItem value="disabled" disabled>
+ *   Opción deshabilitada
+ * </SelectItem>
+ * ```
+ */
 function SelectItem({
   className,
   children,
@@ -133,6 +238,16 @@ function SelectItem({
   );
 }
 
+/**
+ * Separador entre elementos del select
+ * 
+ * @example
+ * ```tsx
+ * <SelectItem value="option1">Opción 1</SelectItem>
+ * <SelectSeparator />
+ * <SelectItem value="option2">Opción 2</SelectItem>
+ * ```
+ */
 function SelectSeparator({
   className,
   ...props
@@ -146,6 +261,9 @@ function SelectSeparator({
   );
 }
 
+/**
+ * Botón para hacer scroll hacia arriba en el select
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -164,6 +282,9 @@ function SelectScrollUpButton({
   );
 }
 
+/**
+ * Botón para hacer scroll hacia abajo en el select
+ */
 function SelectScrollDownButton({
   className,
   ...props
@@ -183,14 +304,15 @@ function SelectScrollDownButton({
 }
 
 export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectScrollDownButton,
+    SelectScrollUpButton,
+    SelectSeparator,
+    SelectTrigger,
+    SelectValue
 };
+

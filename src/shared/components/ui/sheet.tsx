@@ -4,24 +4,72 @@ import * as SheetPrimitive from '@radix-ui/react-dialog';
 
 import { XIcon } from 'lucide-react';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Componente Sheet base (wrapper de Radix UI Dialog)
+ * 
+ * @example
+ * ```tsx
+ * <Sheet>
+ *   <SheetTrigger>Open Sheet</SheetTrigger>
+ *   <SheetContent>
+ *     <SheetHeader>
+ *       <SheetTitle>Title</SheetTitle>
+ *       <SheetDescription>Description</SheetDescription>
+ *     </SheetHeader>
+ *     Content here
+ *   </SheetContent>
+ * </Sheet>
+ * ```
+ */
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot='sheet' {...props} />;
 }
 
+/**
+ * Trigger para abrir el sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetTrigger asChild>
+ *   <Button>Open Sheet</Button>
+ * </SheetTrigger>
+ * ```
+ */
 function SheetTrigger({ ...props }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot='sheet-trigger' {...props} />;
 }
 
+/**
+ * Botón para cerrar el sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetClose asChild>
+ *   <Button variant="ghost">Close</Button>
+ * </SheetClose>
+ * ```
+ */
 function SheetClose({ ...props }: React.ComponentProps<typeof SheetPrimitive.Close>) {
   return <SheetPrimitive.Close data-slot='sheet-close' {...props} />;
 }
 
+/**
+ * Portal para renderizar el sheet
+ */
 function SheetPortal({ ...props }: React.ComponentProps<typeof SheetPrimitive.Portal>) {
   return <SheetPrimitive.Portal data-slot='sheet-portal' {...props} />;
 }
 
+/**
+ * Overlay del sheet (fondo oscuro)
+ * 
+ * @example
+ * ```tsx
+ * <SheetOverlay className="bg-black/80" />
+ * ```
+ */
 function SheetOverlay({
   className,
   ...props
@@ -39,6 +87,46 @@ function SheetOverlay({
   );
 }
 
+/**
+ * Contenido principal del sheet
+ * 
+ * @example
+ * ```tsx
+ * // Sheet desde la derecha (por defecto)
+ * <SheetContent>
+ *   <SheetHeader>
+ *     <SheetTitle>Configuración</SheetTitle>
+ *     <SheetDescription>Gestiona tus preferencias</SheetDescription>
+ *   </SheetHeader>
+ *   <div className="p-4">
+ *     Contenido del sheet
+ *   </div>
+ * </SheetContent>
+ * 
+ * // Sheet desde la izquierda
+ * <SheetContent side="left">
+ *   <SheetHeader>
+ *     <SheetTitle>Navegación</SheetTitle>
+ *   </SheetHeader>
+ *   <nav className="p-4">
+ *     <ul>
+ *       <li>Inicio</li>
+ *       <li>Perfil</li>
+ *     </ul>
+ *   </nav>
+ * </SheetContent>
+ * 
+ * // Sheet desde abajo
+ * <SheetContent side="bottom">
+ *   <SheetHeader>
+ *     <SheetTitle>Acciones</SheetTitle>
+ *   </SheetHeader>
+ *   <SheetFooter>
+ *     <Button>Guardar</Button>
+ *   </SheetFooter>
+ * </SheetContent>
+ * ```
+ */
 function SheetContent({
   className,
   children,
@@ -86,6 +174,17 @@ function SheetContent({
   );
 }
 
+/**
+ * Header del sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetHeader>
+ *   <SheetTitle>Configuración</SheetTitle>
+ *   <SheetDescription>Gestiona tus preferencias</SheetDescription>
+ * </SheetHeader>
+ * ```
+ */
 function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -96,6 +195,17 @@ function SheetHeader({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * Footer del sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetFooter>
+ *   <Button variant="outline">Cancelar</Button>
+ *   <Button>Guardar</Button>
+ * </SheetFooter>
+ * ```
+ */
 function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
@@ -106,6 +216,14 @@ function SheetFooter({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
+/**
+ * Título del sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetTitle>Configuración de la cuenta</SheetTitle>
+ * ```
+ */
 function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {
   return (
     <SheetPrimitive.Title
@@ -116,6 +234,16 @@ function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPr
   );
 }
 
+/**
+ * Descripción del sheet
+ * 
+ * @example
+ * ```tsx
+ * <SheetDescription>
+ *   Gestiona tus preferencias y configuración personal
+ * </SheetDescription>
+ * ```
+ */
 function SheetDescription({
   className,
   ...props
@@ -130,12 +258,13 @@ function SheetDescription({
 }
 
 export {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger
 };
+

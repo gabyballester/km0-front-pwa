@@ -2,8 +2,21 @@ import * as React from 'react';
 
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
+/**
+ * Provider del tooltip (necesario para el contexto)
+ * 
+ * @example
+ * ```tsx
+ * <TooltipProvider>
+ *   <Tooltip>
+ *     <TooltipTrigger>Hover me</TooltipTrigger>
+ *     <TooltipContent>Tooltip content</TooltipContent>
+ *   </Tooltip>
+ * </TooltipProvider>
+ * ```
+ */
 function TooltipProvider({
   delayDuration = 0,
   ...props
@@ -17,6 +30,17 @@ function TooltipProvider({
   );
 }
 
+/**
+ * Componente Tooltip base (wrapper de Radix UI Tooltip)
+ * 
+ * @example
+ * ```tsx
+ * <Tooltip>
+ *   <TooltipTrigger>Hover me</TooltipTrigger>
+ *   <TooltipContent>Información adicional</TooltipContent>
+ * </Tooltip>
+ * ```
+ */
 function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return (
     <TooltipProvider>
@@ -25,10 +49,50 @@ function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root
   );
 }
 
+/**
+ * Trigger del tooltip (elemento que activa el tooltip)
+ * 
+ * @example
+ * ```tsx
+ * // Trigger básico
+ * <TooltipTrigger>Hover me</TooltipTrigger>
+ * 
+ * // Trigger con componente personalizado
+ * <TooltipTrigger asChild>
+ *   <Button>Botón con tooltip</Button>
+ * </TooltipTrigger>
+ * 
+ * // Trigger con icono
+ * <TooltipTrigger asChild>
+ *   <InfoIcon className="w-4 h-4" />
+ * </TooltipTrigger>
+ * ```
+ */
 function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot='tooltip-trigger' {...props} />;
 }
 
+/**
+ * Contenido del tooltip
+ * 
+ * @example
+ * ```tsx
+ * // Tooltip básico
+ * <TooltipContent>
+ *   Información adicional sobre este elemento
+ * </TooltipContent>
+ * 
+ * // Tooltip con offset personalizado
+ * <TooltipContent sideOffset={10}>
+ *   Tooltip con espacio adicional
+ * </TooltipContent>
+ * 
+ * // Tooltip con estilos personalizados
+ * <TooltipContent className="bg-blue-500 text-white">
+ *   Tooltip con colores personalizados
+ * </TooltipContent>
+ * ```
+ */
 function TooltipContent({
   className,
   sideOffset = 0,
@@ -58,3 +122,4 @@ function TooltipContent({
 }
 
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
+

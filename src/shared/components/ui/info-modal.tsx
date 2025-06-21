@@ -1,8 +1,9 @@
+
 import type { ReactNode } from 'react';
 
-import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
+import { AlertCircle , CheckCircle, Info, XCircle } from 'lucide-react';
 
-import { Button, Modal } from '@/shared/components';
+import { Button, Modal } from '@components';
 
 export interface InfoModalProps {
   /** Indica si el modal está abierto */
