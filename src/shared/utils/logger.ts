@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import log from 'loglevel';
 
 // Configurar niveles por entorno
 if (import.meta.env.PROD) {
-  log.setLevel(log.levels.ERROR); // Solo errores en producción
+  log.setLevel(log.levels.INFO); // Info, warn y error en producción
 } else {
   log.setLevel(log.levels.DEBUG); // Todo en desarrollo
 }
@@ -59,26 +60,35 @@ const logger = {
   error: (...args: unknown[]) => {
     if (!import.meta.env.PROD) {
       console.error('%c[ERROR]', 'color: #ef4444; font-weight: bold;', ...args);
+    } else {
+      console.error('[ERROR]', ...args);
     }
     log.error('[ERROR]', ...args);
   },
 
   /**
    * Log de advertencias
-   * Visible en desarrollo, filtrado en producción
+   * Visible en desarrollo y producción
    */
   warn: (...args: unknown[]) => {
     if (!import.meta.env.PROD) {
       console.warn('%c[WARN]', 'color: #f59e0b; font-weight: bold;', ...args);
+    } else {
+      console.warn('[WARN]', ...args);
     }
     log.warn('[WARN]', ...args);
   },
 
   /**
    * Log de información general
-   * Visible en desarrollo, filtrado en producción
+   * Visible en desarrollo y producción
    */
   info: (...args: unknown[]) => {
+    if (!import.meta.env.PROD) {
+      console.info('%c[INFO]', 'color: #3b82f6; font-weight: bold;', ...args);
+    } else {
+      console.info('[INFO]', ...args);
+    }
     log.info('[INFO]', ...args);
   },
 

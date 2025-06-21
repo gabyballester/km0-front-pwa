@@ -187,8 +187,9 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: !isDev,
-        drop_debugger: !isDev
+        drop_console: false,
+        drop_debugger: !isDev,
+        pure_funcs: isDev ? [] : ['console.log']
       }
     },
     // Asegurar que los assets se generen correctamente

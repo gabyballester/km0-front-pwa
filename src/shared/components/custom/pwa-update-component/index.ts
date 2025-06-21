@@ -22,6 +22,5 @@
  * }
  * ```
  */
-export * from './PWAUpdateComponent';
-export { PWAUpdateDebug } from './PWAUpdateDebug';
+export { PWAUpdateComponent } from './PWAUpdateComponent';
 

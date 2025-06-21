@@ -58,30 +58,31 @@ export const PWAInstallComponent = () => {
   // const [debugInfo, setDebugInfo] = useState<string>(''); // Comentado: debug info ya no necesario
 
   useEffect(() => {
-    // Debug: Información inicial (comentado para producción)
-    // const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
-    // const isInStandaloneMode = window.navigator && 'standalone' in window.navigator && (window.navigator as { standalone?: boolean }).standalone;
-    // const userAgent = navigator.userAgent;
-    // const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
-    // const isEdge = /Edg/.test(userAgent);
-    // const isFirefox = /Firefox/.test(userAgent);
-    // const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+    // Debug: Información inicial para producción también
+    const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+    const isInStandaloneMode = window.navigator && 'standalone' in window.navigator && (window.navigator as { standalone?: boolean }).standalone;
+    const userAgent = navigator.userAgent;
+    const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
+    const isEdge = /Edg/.test(userAgent);
+    const isFirefox = /Firefox/.test(userAgent);
+    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
 
-    // const debugData = {
-    //   isStandalone,
-    //   isInStandaloneMode,
-    //   isChrome,
-    //   isEdge,
-    //   isFirefox,
-    //   isSafari,
-    //   userAgent: userAgent.substring(0, 100),
-    //   href: window.location.href,
-    //   protocol: window.location.protocol,
-    //   isSecure: window.location.protocol === 'https:' || window.location.hostname === 'localhost'
-    // };
+    const debugData = {
+      isStandalone,
+      isInStandaloneMode,
+      isChrome,
+      isEdge,
+      isFirefox,
+      isSafari,
+      userAgent: userAgent.substring(0, 100),
+      href: window.location.href,
+      protocol: window.location.protocol,
+      isSecure: window.location.protocol === 'https:' || window.location.hostname === 'localhost',
+      isLocalhost: window.location.hostname === 'localhost',
+      port: window.location.port
+    };
 
-    // setDebugInfo(JSON.stringify(debugData, null, 2));
-    // logger.info('PWA Install Component - Debug Info:', debugData);
+    logger.info('PWA Install Component - Debug Info:', debugData);
 
     const handleBeforeInstallPrompt = (e: Event) => {
       logger.info('beforeinstallprompt event fired!', e);
@@ -148,6 +149,18 @@ export const PWAInstallComponent = () => {
       const timeout = setTimeout(() => {
         if (!deferredPrompt) {
           logger.warn('beforeinstallprompt no se disparó después de 5 segundos');
+          
+          // Log adicional para debugging
+          logger.info('Posibles razones por las que beforeinstallprompt no se disparó:', {
+            isSecure: window.location.protocol === 'https:' || window.location.hostname === 'localhost',
+            isLocalhost: window.location.hostname === 'localhost',
+            port: window.location.port,
+            userAgent: navigator.userAgent.substring(0, 100),
+            hasManifest: Boolean(document.querySelector('link[rel="manifest"]')),
+            hasServiceWorker: 'serviceWorker' in navigator,
+            isStandalone: window.matchMedia && window.matchMedia('(display-mode: standalone)').matches
+          });
+          
           // En algunos casos, mostrar botón manualmente si cumple criterios
           const isStandalone =
             window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
@@ -163,7 +176,7 @@ export const PWAInstallComponent = () => {
             !isStandalone &&
             !isInStandaloneMode &&
             (isChrome || isEdge) &&
-            window.location.protocol === 'https:' &&
+            (window.location.protocol === 'https:' || window.location.hostname === 'localhost') &&
             sessionStorage.getItem('installButtonClosed') !== 'true'
           ) {
             logger.info('Mostrando botón de instalación manualmente (fallback)');
@@ -329,8 +342,8 @@ export const PWAInstallComponent = () => {
   // }
 
   // Lógica unificada para desarrollo y producción
-  // Solo mostrar si hay prompt disponible o si estamos en desarrollo
-  if (!showInstallButton && !import.meta.env.DEV) {
+  // Solo mostrar si hay prompt disponible
+  if (!showInstallButton && !showInstallModal) {
     return null;
   }
 

@@ -6,7 +6,6 @@ import {
   ErrorBoundary,
   PWAInstallComponent,
   PWAUpdateComponent,
-  PWAUpdateDebug,
   Toaster,
   VersionDisplay
 } from '@/shared/components';
@@ -30,11 +29,6 @@ export const App = () => {
           <Toaster />
           <PWAInstallComponent />
           <PWAUpdateComponent />
-          {import.meta.env.DEV && (
-            <div className="fixed bottom-4 right-4 z-50">
-              <PWAUpdateDebug />
-            </div>
-          )}
           <VersionDisplay position="bottom-left" showDetails />
         </VersionProvider>
       </ErrorBoundary>

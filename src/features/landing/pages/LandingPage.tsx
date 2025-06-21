@@ -81,10 +81,10 @@ const LandingPage = () => {
           {/* Main Title */}
           <div className='space-y-4'>
             <h1 className='text-3xl md:text-4xl font-bold text-white drop-shadow-lg'>
-              ¡KM0 PWA v18 - Actualización Automática! 🚀
+              ¡KM0 PWA v20 - Actualización Automática Funcionando! 🚀
             </h1>
             <p className='text-lg text-white/90 drop-shadow-lg'>
-              Aplicación PWA moderna con actualizaciones automáticas funcionando
+              Aplicación PWA moderna con verificaciones automáticas cada 30 segundos
             </p>
           </div>
 

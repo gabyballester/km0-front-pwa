@@ -100,7 +100,6 @@ export const PWAUpdateComponent = () => {
 
   const {
     needRefresh: [needRefresh],
-    offlineReady: [offlineReady, setOfflineReady],
     updateServiceWorker
   } = useRegisterSW({
     onRegistered(registration) {
@@ -411,31 +410,6 @@ export const PWAUpdateComponent = () => {
               className='h-6 rounded bg-red-700 px-2 py-1 text-xs hover:bg-red-800'
             >
               {t('pwa.error.understood')}
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Mostrar mensaje de offline ready
-  if (offlineReady) {
-    return (
-      <div className='fixed top-4 left-4 z-50 rounded-lg bg-blue-600 p-4 text-white shadow-lg max-w-sm'>
-        <div className='flex items-start gap-3'>
-          <div className='flex-shrink-0'>
-            <span className='text-lg'>📱</span>
-          </div>
-          <div className='flex-1'>
-            <h4 className='mb-1 text-sm font-medium'>{t('pwa.offline.title')}</h4>
-            <p className='mb-3 text-xs text-blue-100'>
-              {t('pwa.offline.description')}
-            </p>
-            <Button
-              onClick={() => setOfflineReady(false)}
-              className='h-6 rounded bg-blue-700 px-2 py-1 text-xs hover:bg-blue-800'
-            >
-              {t('pwa.offline.understood')}
             </Button>
           </div>
         </div>
