@@ -5,8 +5,8 @@ current_branch=$(git symbolic-ref --short HEAD)
 if [ "$current_branch" = "master" ]; then
   echo "🚀 Detectado push a master - incrementando versión..."
   
-  # Ejecutar el script de build con bump de versión
-  npm run build:with-version
+  # Ejecutar solo el script de bump de versión (sin build)
+  npm run version:bump
   
   # Añadir los archivos de versión al commit
   git add version.json
