@@ -7,6 +7,7 @@ import { usePageLoading } from '@/shared/hooks';
 
 import { useTheme } from '@contexts';
 
+import { GOOGLE_MAPS_CONFIG } from './constants';
 import GoogleMapsPageSkeleton from './pages/skeletons/GoogleMapsPageSkeleton';
 
 const markersData = [
@@ -66,8 +67,8 @@ function Markers({ onMarkerClick }: { onMarkerClick: (id: number) => void }) {
 }
 
 const GoogleMapsPage = () => {
-  const apiKey = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
-  const mapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID;
+  const apiKey = GOOGLE_MAPS_CONFIG.API_KEY;
+  const mapId = GOOGLE_MAPS_CONFIG.MAP_ID;
   const defaultCenter = { lat: 38.7937, lng: 0.0344 };
   const { themeMode } = useTheme();
 

@@ -14,6 +14,8 @@ import { Button, LanguageSection, VersionDisplay } from '@components';
 
 import { usePageLoading } from '@hooks';
 
+import { useVersion } from '@contexts';
+
 import { PATHS } from '@paths';
 
 import LandingPageSkeleton from './skeletons/LandingPageSkeleton';
@@ -21,6 +23,7 @@ import LandingPageSkeleton from './skeletons/LandingPageSkeleton';
 const LandingPage = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { displayVersion } = useVersion();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Determinar el video según el idioma actual
@@ -81,7 +84,7 @@ const LandingPage = () => {
           {/* Main Title */}
           <div className='space-y-4'>
             <h1 className='text-3xl md:text-4xl font-bold text-white drop-shadow-lg'>
-              ¡KM0 PWA v26-! 🚀
+              ¡KM0 PWA {displayVersion}! 🚀
             </h1>
           </div>
 
