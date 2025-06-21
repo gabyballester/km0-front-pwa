@@ -20,7 +20,9 @@ Una aplicación web progresiva (PWA) moderna construida con React, TypeScript y 
 - [🌐 Internacionalización](#-internacionalización)
 - [📱 PWA Features](#-pwa-features)
 - [🧪 Testing](#-testing)
+- [📚 Documentación](#-documentación)
 - [📝 Convenciones de Código](#-convenciones-de-código)
+- [📝 Conventional Commits](#-conventional-commits)
 - [🚀 Despliegue](#-despliegue)
 - [🤝 Contribución](#-contribución)
 - [📄 Licencia](#-licencia)
@@ -352,6 +354,99 @@ npm run test:prod
 - **Mocks para dependencias externas** - Aislamiento de tests
 - **Testing de accesibilidad** - Asegurar accesibilidad
 
+## 📚 Documentación
+
+### Estrategia de Documentación
+
+Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuente principal de verdad:
+
+#### **1. JSDoc (Prioridad Principal)**
+- **Documentación inline** en todos los componentes, hooks y utilidades
+- **Ejemplos de uso** directamente en el código
+- **TypeScript types** documentados automáticamente
+- **Autocompletado** en IDEs
+
+#### **2. README.md (Visión General)**
+- **Quick start** y instalación
+- **Arquitectura** de alto nivel
+- **Enlaces** a documentación específica
+- **Guías** de contribución
+
+#### **3. Documentación Especializada (Opcional)**
+- **Guías de migración** cuando sea necesario
+- **Arquitecturas complejas** que requieren explicación extensa
+- **Decisiones técnicas** importantes
+
+### Documentación Disponible
+
+#### **Componentes con JSDoc Completo**
+- `Button` - Componente con múltiples variantes y tamaños
+- `Modal` - Sistema de modales personalizado
+- `ConfirmDialog` - Confirmaciones con tipos
+- `useAuth` - Hook de autenticación completo
+- `useConfirmDialog` - Hook para confirmaciones
+- `combineClassNames` - Utilidad para clases CSS
+
+#### **Documentación Especializada**
+- [`src/shared/docs/README.md`](src/shared/docs/README.md) - Guía de documentación
+- [`src/shared/docs/loading-architecture.md`](src/shared/docs/loading-architecture.md) - Sistema de loading
+- [`src/shared/docs/path-aliases.md`](src/shared/docs/path-aliases.md) - Aliases de importación
+- [`src/shared/docs/loader-types.md`](src/shared/docs/loader-types.md) - Tipos del loader
+
+### Cómo Documentar
+
+#### **Para Componentes**
+```tsx
+/**
+ * Componente Button personalizado con variantes
+ * 
+ * @example
+ * ```tsx
+ * // Botón primario
+ * <Button variant="primary" size="lg">
+ *   Click me
+ * </Button>
+ * 
+ * // Botón con loading
+ * <Button disabled={isLoading}>
+ *   {isLoading && <Loader size="sm" />}
+ *   Submit
+ * </Button>
+ * ```
+ */
+export function Button({ variant, size, children, ...props }) {
+  // ...
+}
+```
+
+#### **Para Hooks**
+```tsx
+/**
+ * Hook para manejar estados de autenticación
+ * 
+ * @example
+ * ```tsx
+ * const { user, isLoading, login, logout } = useAuth();
+ * 
+ * if (isLoading) return <Loader />;
+ * if (!user) return <LoginForm />;
+ * 
+ * return <Dashboard user={user} />;
+ * ```
+ */
+export function useAuth() {
+  // ...
+}
+```
+
+### Beneficios de esta Estrategia
+
+1. **Documentación Cerca del Código** - JSDoc está junto al código que documenta
+2. **Autocompletado Mejorado** - IDEs muestran documentación al usar componentes
+3. **Mantenimiento Fácil** - Cambios en código y documentación van juntos
+4. **Ejemplos Prácticos** - Ejemplos de uso directamente en el código
+5. **TypeScript Integration** - Tipos documentados automáticamente
+
 ## 📝 Convenciones de Código
 
 ### TypeScript
@@ -395,6 +490,30 @@ npm run test:prod
 - **Lint Staged** - Linting solo en archivos modificados
 - **Import sorting** - Ordenamiento automático de imports
 
+## 📝 Conventional Commits
+
+### Tipos Simplificados (Solo 5)
+
+```bash
+feat: nueva característica
+fix: corrección de bug
+refactor: refactorización de código
+docs: documentación
+chore: tareas de mantenimiento
+```
+
+### Ejemplos:
+
+```bash
+feat: add user authentication
+fix: resolve navigation issue
+refactor: simplify component structure
+docs: update readme
+chore: update dependencies
+```
+
+**Ver [Guía Simplificada](./docs/commits-simple.md) para uso diario.**
+
 ## 🚀 Despliegue
 
 ### Netlify (Configurado)
@@ -437,7 +556,7 @@ VITE_PWA_ENABLED=true
 
 1. **Fork** el repositorio
 2. **Create** una rama feature (`git checkout -b feature/AmazingFeature`)
-3. **Commit** tus cambios (`git commit -m 'feat: add amazing feature'`)
+3. **Commit** tus cambios siguiendo [Conventional Commits](./docs/commits.md)
 4. **Push** a la rama (`git push origin feature/AmazingFeature`)
 5. **Open** un Pull Request
 
@@ -449,6 +568,37 @@ VITE_PWA_ENABLED=true
 - **Conventional Commits** - Mensajes de commit estandarizados
 - **TypeScript** - Tipado estricto requerido
 
+### Conventional Commits
+
+Este proyecto utiliza **Conventional Commits** para mantener un historial de commits limpio. Ver la [guía completa](./docs/commits.md) para detalles.
+
+#### Formato Básico:
+```bash
+<type>(<scope>): <description>
+
+# Ejemplos:
+feat(auth): add social login with Google
+fix(router): resolve navigation issue in mobile
+refactor(components): extract reusable hooks
+docs(readme): update installation guide
+```
+
+#### Tipos de Commit:
+- `feat` - Nuevas características
+- `fix` - Correcciones de bugs
+- `docs` - Documentación
+- `style` - Cambios de estilo
+- `refactor` - Refactorización
+- `perf` - Mejoras de rendimiento
+- `test` - Tests
+- `chore` - Tareas de mantenimiento
+
+### Documentación
+
+- [📝 Guía de Conventional Commits](./docs/commits.md) - Formato y ejemplos de commits
+- [🚀 Guía de Desarrollo](./docs/development.md) - Workflow y mejores prácticas
+- [📚 Documentación Técnica](./src/shared/docs/README.md) - Documentación del código
+
 ### Checklist de PR
 
 - [ ] Tests pasando (`npm run test`)
@@ -458,18 +608,7 @@ VITE_PWA_ENABLED=true
 - [ ] Screenshots (si aplica)
 - [ ] Descripción clara del cambio
 - [ ] Conventional commit message
-
-### Conventional Commits
-
-```bash
-feat: nueva funcionalidad
-fix: corrección de bug
-docs: documentación
-style: cambios de estilo
-refactor: refactorización
-test: tests
-chore: tareas de mantenimiento
-```
+- [ ] Scope apropiado en el commit
 
 ## 📄 Licencia
 
