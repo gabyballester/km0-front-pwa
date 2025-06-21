@@ -6,25 +6,29 @@ import {
   ErrorBoundary,
   PWAInstallComponent,
   PWAUpdateComponent,
-  Toaster
+  Toaster,
+  VersionDisplay
 } from '@/shared/components';
 
-import { AuthProvider, ThemeProvider } from '@contexts';
+import { AuthProvider, ThemeProvider, VersionProvider } from '@contexts';
 
 export const App = () => {
   return (
     <AppInitializer>
       <ErrorBoundary>
-        <ThemeProvider>
-          <BrowserRouter>
-            <AuthProvider>
-              <Router />
-            </AuthProvider>
-          </BrowserRouter>
-        </ThemeProvider>
-        <Toaster />
-        <PWAInstallComponent />
-        <PWAUpdateComponent />
+        <VersionProvider>
+          <ThemeProvider>
+            <BrowserRouter>
+              <AuthProvider>
+                <Router />
+              </AuthProvider>
+            </BrowserRouter>
+          </ThemeProvider>
+          <Toaster />
+          <PWAInstallComponent />
+          <PWAUpdateComponent />
+          <VersionDisplay position="bottom-left" showDetails />
+        </VersionProvider>
       </ErrorBoundary>
     </AppInitializer>
   );

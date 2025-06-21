@@ -2,20 +2,12 @@ import { Suspense } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
+import { AppLoader } from '@/shared/components/custom/AppLoader';
+
 import { RouteGuard } from '../components/RouteGuard';
 import { routes } from '../routes';
 
 import type { RouteConfig } from '../types';
-
-// Componente de carga optimizado
-const LoadingFallback = () => (
-  <div className='flex h-screen w-full items-center justify-center'>
-    <div className='flex flex-col items-center gap-4'>
-      <div className='h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent' />
-      <p className='text-sm text-muted-foreground'>Cargando...</p>
-    </div>
-  </div>
-);
 
 /**
  * Renderiza una ruta individual con su configuración
@@ -59,7 +51,7 @@ const renderRoute = (route: RouteConfig): JSX.Element => {
  */
 export function Router() {
   return (
-    <Suspense fallback={<LoadingFallback />}>
+    <Suspense fallback={<AppLoader variant="route-load" />}>
       <Routes>{routes.map(route => renderRoute(route))}</Routes>
     </Suspense>
   );
