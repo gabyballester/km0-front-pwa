@@ -27,6 +27,68 @@
     "details": "Details",
     "viewDetails": "View Details"
   },
+  "loading": {
+    "appInit": {
+      "title": "Initializing application...",
+      "description": "Preparing everything for you"
+    },
+    "routeLoad": {
+      "title": "Loading page...",
+      "description": "Preparing content"
+    },
+    "error": {
+      "title": "Loading error",
+      "description": "There was a problem loading the application"
+    },
+    "actions": {
+      "reloadPage": "Reload page",
+      "restartSW": "Restart SW",
+      "clearCache": "Clear cache"
+    }
+  },
+  "pwa": {
+    "error": {
+      "title": "Loading error detected",
+      "description": "A problem was detected while loading the application. This will be resolved automatically.",
+      "understood": "Understood"
+    },
+    "offline": {
+      "title": "App ready for offline use",
+      "description": "The application can now work without internet connection. Data will sync when you're back online.",
+      "understood": "Understood"
+    },
+    "update": {
+      "title": "Update available",
+      "description": "A new version of the application is available.",
+      "message": "A new version of the application has been detected. Do you want to update now?",
+      "updateAndRemember": "Update and remember",
+      "updateOnce": "Update just this time",
+      "dontShowAgain": "Don't show again"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stats": {
+      "totalSales": "Total Sales",
+      "totalPurchases": "Total Purchases",
+      "activeOrders": "Active Orders",
+      "performance": "Performance",
+      "sinceLastMonth": "+0% since last month",
+      "pending": "0 pending"
+    },
+    "actions": {
+      "buyer": {
+        "title": "Buyer Actions",
+        "exploreProducts": "Explore Products",
+        "viewOrders": "View My Orders"
+      },
+      "seller": {
+        "title": "Seller Actions",
+        "addProduct": "Add Product",
+        "viewStats": "View Statistics"
+      }
+    }
+  },
   "customers": {
     "title": "Customers",
     "list": "Customer List",
