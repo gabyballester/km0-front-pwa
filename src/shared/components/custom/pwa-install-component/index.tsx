@@ -4,6 +4,8 @@ import { Button, Modal } from '@components';
 
 import { logger } from '@utils';
 
+import { PWA_CONFIG } from '@constants';
+
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
@@ -183,7 +185,7 @@ export const PWAInstallComponent = () => {
             setShowInstallButton(true);
           }
         }
-      }, 5000);
+      }, PWA_CONFIG.INSTALL_PROMPT_TIMEOUT);
 
       return () => {
         clearTimeout(timeout);
@@ -205,15 +207,33 @@ export const PWAInstallComponent = () => {
           'Para instalar esta app en iOS:\n1. Toca el botón "Compartir" en Safari\n2. Selecciona "Agregar a pantalla de inicio"'
         );
       } else {
+        // En lugar de mostrar un alert, intentar forzar la instalación
+        logger.info('Intentando forzar instalación sin prompt...');
+        
+        // Verificar si hay un service worker registrado
+        if ('serviceWorker' in navigator) {
+          const registration = await navigator.serviceWorker.getRegistration();
+          if (registration) {
+            // Intentar activar el service worker
+            await registration.update();
+            logger.info('Service worker actualizado, intentando instalación...');
+          }
+        }
+        
+        // Mostrar instrucciones más específicas
         alert(
-          'Para instalar esta app:\n1. Busca el icono de instalación en la barra de direcciones\n2. O usa el menú del navegador > "Instalar aplicación"'
+          'Para instalar esta app:\n\n' +
+          '1. Busca el icono de instalación (📱) en la barra de direcciones\n' +
+          '2. O usa el menú del navegador (⋮) > "Instalar aplicación"\n' +
+          '3. O usa Ctrl+Shift+I > Application > Manifest > Install\n\n' +
+          'Si no ves estas opciones, la app ya podría estar instalada.'
         );
       }
       return;
     }
 
     try {
-      logger.info('Iniciando proceso de instalación');
+      logger.info('Iniciando proceso de instalación con prompt nativo');
       // Activar el prompt nativo
       await deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
@@ -255,95 +275,26 @@ export const PWAInstallComponent = () => {
     sessionStorage.setItem('installButtonClosed', 'true');
   };
 
-  // Función para mostrar debug info (comentado: ya no necesario)
-  // const showDebugInfo = () => {
-  //   if (import.meta.env.DEV) {
-  //     alert(`Debug Info:\n${debugInfo}`);
-  //   }
-  // };
+  // Función para forzar mostrar botón (útil para testing)
+  const forceShowButton = () => {
+    if (import.meta.env.DEV) {
+      setShowInstallButton(true);
+      setShowInstallModal(true);
+      logger.info('Forzando mostrar componentes de instalación (DEV)');
+    }
+  };
 
-  // Función para forzar mostrar botón (comentado: ya no necesario)
-  // const forceShowButton = () => {
-  //   if (import.meta.env.DEV) {
-  //     setShowInstallButton(true);
-  //     setShowInstallModal(true);
-  //     logger.info('Forzando mostrar componentes de instalación (DEV)');
-  //   }
-  // };
-
-  // En desarrollo, mostrar botones de debug (comentado)
-  // if (import.meta.env.DEV) {
-  //   return (
-  //     <>
-  //       {/* Modal de instalación */}
-  //       <Modal
-  //         open={showInstallModal}
-  //         onOpenChange={(open) => {
-  //           if (!open) {
-  //             handleLaterClick();
-  //           }
-  //         }}
-  //         title='¿Instalar la aplicación?'
-  //         description='Instala la aplicación para tener acceso más rápido y una mejor experiencia. Puedes instalarlo ahora o usar el botón verde más tarde.'
-  //         size='sm'
-  //       >
-  //         <Modal.Footer>
-  //           <Button variant='outline' onClick={handleLaterClick}>
-  //             Más tarde
-  //           </Button>
-  //           <Button onClick={handleInstallClick} className='bg-green-600 hover:bg-green-700'>
-  //             📱 Instalar
-  //           </Button>
-  //         </Modal.Footer>
-  //       </Modal>
-
-  //       {/* Botones de desarrollo */}
-  //       <div className='fixed top-4 left-4 z-50 flex flex-col gap-2'>
-  //         <Button
-  //           onClick={showDebugInfo}
-  //           variant='outline'
-  //           size='sm'
-  //           className='bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-  //         >
-  //           🐛 Debug Info
-  //         </Button>
-  //         <Button
-  //           onClick={forceShowButton}
-  //           variant='outline'
-  //           size='sm'
-  //           className='bg-blue-100 text-blue-800 hover:bg-blue-200'
-  //         >
-  //           🔧 Force Show
-  //         </Button>
-  //       </div>
-
-  //       {/* Botón flotante de instalación */}
-  //       {showInstallButton && (
-  //         <div className='fixed bottom-4 right-4 z-50 flex flex-col gap-2'>
-  //           <Button
-  //             onClick={handleInstallClick}
-  //             className='rounded-lg bg-green-600 px-4 py-2 text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105'
-  //           >
-  //             📱 Instalar App
-  //           </Button>
-  //           <Button
-  //             onClick={handleCloseButton}
-  //             variant='outline'
-  //             size='sm'
-  //             className='rounded-lg bg-white/90 px-2 py-1 text-xs text-gray-700 shadow-lg hover:bg-white'
-  //             title='Ocultar durante esta sesión'
-  //           >
-  //             ✕
-  //           </Button>
-  //         </div>
-  //       )}
-  //     </>
-  //   );
-  // }
+  // En desarrollo, agregar función global para testing
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      (window as Window & { forcePWAInstall?: () => void }).forcePWAInstall = forceShowButton;
+      logger.info('Función forcePWAInstall disponible en desarrollo: window.forcePWAInstall()');
+    }
+  }, []);
 
   // Lógica unificada para desarrollo y producción
-  // Solo mostrar si hay prompt disponible
-  if (!showInstallButton && !showInstallModal) {
+  // Solo mostrar si hay prompt disponible o estamos en desarrollo
+  if (!showInstallButton && !showInstallModal && !import.meta.env.DEV) {
     return null;
   }
 
@@ -389,6 +340,20 @@ export const PWAInstallComponent = () => {
             title='Ocultar durante esta sesión'
           >
             ✕
+          </Button>
+        </div>
+      )}
+
+      {/* Botón de debug en desarrollo */}
+      {import.meta.env.DEV && (
+        <div className='fixed top-4 left-4 z-50'>
+          <Button
+            onClick={forceShowButton}
+            variant='outline'
+            size='sm'
+            className='bg-blue-100 text-blue-800 hover:bg-blue-200'
+          >
+            🔧 Force Install
           </Button>
         </div>
       )}

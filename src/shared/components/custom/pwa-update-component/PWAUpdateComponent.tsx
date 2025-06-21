@@ -7,7 +7,7 @@ import { Button, Modal } from '@components';
 
 import { logger } from '@utils';
 
-import { STORAGE_KEYS } from '@constants';
+import { PWA_CONFIG, STORAGE_KEYS } from '@constants';
 
 /**
  * Preferencias de actualización del PWA
@@ -61,6 +61,9 @@ const DEFAULT_PREFERENCES: UpdatePreferences = {
  * - Manejo de errores de recursos
  * - Interfaz de usuario para control de actualizaciones
  * 
+ * Configuración:
+ * - VITE_PWA_UPDATE_INTERVAL: Intervalo de verificación en milisegundos (default: 10000)
+ * 
  * @example
  * ```tsx
  * // Uso básico en el punto de entrada de la aplicación
@@ -97,6 +100,9 @@ export const PWAUpdateComponent = () => {
   const [showUpdateNotification, setShowUpdateNotification] = useState(false);
   const [newVersion, setNewVersion] = useState<string>('');
   const [resourceErrorDetected, setResourceErrorDetected] = useState(false);
+
+  // Configuración del intervalo de verificación (configurable por variables de entorno)
+  const UPDATE_CHECK_INTERVAL = PWA_CONFIG.UPDATE_CHECK_INTERVAL;
 
   const {
     needRefresh: [needRefresh],
@@ -265,7 +271,7 @@ export const PWAUpdateComponent = () => {
 
   // Exponer función de reset en desarrollo para testing
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (PWA_CONFIG.DEV) {
       (window as Window & { resetPWAPreferences?: () => void }).resetPWAPreferences = resetPreferences;
       logger.info('PWA reset function available in development: window.resetPWAPreferences()');
     }
@@ -300,7 +306,7 @@ export const PWAUpdateComponent = () => {
     };
 
     // Ejecutar verificación inicial después de un pequeño delay
-    const initialTimeout = setTimeout(initialCheck, 1000); // 1 segundo después de cargar (más rápido)
+    const initialTimeout = setTimeout(initialCheck, PWA_CONFIG.INITIAL_CHECK_DELAY);
 
     // Verificación periódica automática cada 10 segundos (más frecuente)
     const periodicCheck = async () => {
@@ -329,13 +335,13 @@ export const PWAUpdateComponent = () => {
     };
 
     // Iniciar verificación periódica cada 10 segundos (más frecuente)
-    const intervalId = setInterval(periodicCheck, 10000); // 10 segundos
+    const intervalId = setInterval(periodicCheck, UPDATE_CHECK_INTERVAL);
 
     return () => {
       clearTimeout(initialTimeout);
       clearInterval(intervalId);
     };
-  }, [needRefresh, preferences.showNotifications, updateServiceWorker]);
+  }, [needRefresh, preferences.showNotifications, updateServiceWorker, UPDATE_CHECK_INTERVAL]);
 
   // Detectar cuando la app vuelve a primer plano
   useEffect(() => {
