@@ -5,9 +5,13 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "disableReferencedProjectLoad": true,
     "target": "ES2022",
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM"],
     "types": ["node", "@vite-pwa/assets-generator"]
   },
-  "include": ["vite.config.ts", "pwa-assets.config.ts"],
+  "include": [
+    "vite.config.ts",
+    "pwa-assets.config.ts",
+    "src/**/*"
+  ],
   "exclude": ["node_modules"]
 }

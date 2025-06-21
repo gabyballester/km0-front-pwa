@@ -312,6 +312,7 @@ export default tseslint.config(
   {
     files: ['vite.config.ts', 'pwa-assets.config.ts'],
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.node.json',
         warnOnMultipleProjects: false,
@@ -320,7 +321,8 @@ export default tseslint.config(
       }
     },
     plugins: {
-      import: eslintPluginImport
+      import: eslintPluginImport,
+      '@typescript-eslint': tseslint.plugin
     },
     settings: {
       'import/resolver': {

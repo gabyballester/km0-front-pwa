@@ -1,18 +1,26 @@
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { resolveFromRoot } from './scripts/utils.cjs';
 
 const isDev = process.env.NODE_ENV === 'development';
+
+/**
+ * Resuelve una ruta desde el directorio raíz del proyecto
+ * Función auxiliar específica para la configuración de Vite
+ */
+function pathResolver(relativePath: string): string {
+  return resolve(__dirname, relativePath);
+}
 
 // Calcula la revisión de index.html (útil para evitar problemas de caché en producción)
 const htmlRevision = !isDev
   ? createHash('md5')
-      .update(readFileSync(resolveFromRoot('index.html')))
+      .update(readFileSync(pathResolver('index.html')))
       .digest('hex')
   : 'dev-html-revision';
 
@@ -36,18 +44,18 @@ export default defineConfig({
   assetsInclude: ['**/*.svg'],
   resolve: {
     alias: {
-      '@hooks': resolveFromRoot('./src/shared/hooks'),
-      '@components': resolveFromRoot('./src/shared/components'),
-      '@utils': resolveFromRoot('./src/shared/utils'),
-      '@constants': resolveFromRoot('./src/shared/constants'),
-      '@contexts': resolveFromRoot('./src/shared/contexts'),
-      '@types': resolveFromRoot('./src/shared/types'),
-      '@pages': resolveFromRoot('./src/shared/pages'),
-      '@router': resolveFromRoot('./src/router'),
-      '@paths': resolveFromRoot('./src/router/paths.router'),
-      '@features': resolveFromRoot('./src/features'),
-      '@assets': resolveFromRoot('./src/assets'),
-      '@': resolveFromRoot('./src')
+      '@hooks': pathResolver('./src/shared/hooks'),
+      '@components': pathResolver('./src/shared/components'),
+      '@utils': pathResolver('./src/shared/utils'),
+      '@constants': pathResolver('./src/shared/constants'),
+      '@contexts': pathResolver('./src/shared/contexts'),
+      '@types': pathResolver('./src/shared/types'),
+      '@pages': pathResolver('./src/shared/pages'),
+      '@router': pathResolver('./src/router'),
+      '@paths': pathResolver('./src/router/paths.router'),
+      '@features': pathResolver('./src/features'),
+      '@assets': pathResolver('./src/assets'),
+      '@': pathResolver('./src')
     }
   },
 
