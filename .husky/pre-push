@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Obtener la rama actual
+current_branch=$(git symbolic-ref --short HEAD)
+
+# Verificar si estamos haciendo push a master
+if [ "$current_branch" = "master" ]; then
+  echo "🚀 Detectado push a master - incrementando versión..."
+  
+  # Ejecutar el script de build con bump de versión
+  npm run build:with-version
+  
+  # Añadir los archivos de versión al commit
+  git add version.json
+  git add public/version.json
+  git add src/shared/utils/build-info.generated.ts
+  git add package.json
+  
+  # Hacer commit con el bump de versión
+  git commit -m "chore: bump version for master push" --no-verify
+  
+  echo "✅ Versión incrementada y commiteada automáticamente"
+else
+  echo "ℹ️  Push a rama $current_branch - no se incrementa versión"
+fi 
