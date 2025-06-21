@@ -114,6 +114,14 @@ export const PWAUpdateComponent = () => {
         registration.addEventListener('controllerchange', () => {
           logger.info('Service Worker controller changed!');
         });
+
+        // Forzar verificación de actualización inmediatamente después del registro
+        setTimeout(() => {
+          logger.info('Forcing immediate update check after registration...');
+          registration.update().catch(error => {
+            logger.error('Error forcing update check:', error);
+          });
+        }, 1000);
       }
     },
     onRegisterError(error) {
@@ -136,7 +144,9 @@ export const PWAUpdateComponent = () => {
     },
     onOfflineReady() {
       logger.info('PWA is ready for offline use');
-    }
+    },
+    // Configuración para forzar actualizaciones más frecuentes
+    immediate: true
   });
 
   // Cargar preferencias al montar el componente
@@ -268,7 +278,15 @@ export const PWAUpdateComponent = () => {
       logger.info('Initial update check on app load...');
       
       try {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        if ('serviceWorker' in navigator) {
+          // Forzar verificación de actualización del service worker
+          const registration = await navigator.serviceWorker.getRegistration();
+          if (registration) {
+            await registration.update();
+            logger.info('Forced service worker update check on initial load');
+          }
+          
+          // También usar el método de virtual:pwa-register
           await updateServiceWorker(false);
           
           if (needRefresh && preferences.showNotifications) {
@@ -282,14 +300,22 @@ export const PWAUpdateComponent = () => {
     };
 
     // Ejecutar verificación inicial después de un pequeño delay
-    const initialTimeout = setTimeout(initialCheck, 2000); // 2 segundos después de cargar
+    const initialTimeout = setTimeout(initialCheck, 1000); // 1 segundo después de cargar (más rápido)
 
-    // Verificación periódica automática cada 30 segundos
+    // Verificación periódica automática cada 10 segundos (más frecuente)
     const periodicCheck = async () => {
       logger.info('Periodic update check...');
       
       try {
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        if ('serviceWorker' in navigator) {
+          // Forzar verificación de actualización del service worker
+          const registration = await navigator.serviceWorker.getRegistration();
+          if (registration) {
+            await registration.update();
+            logger.info('Forced service worker update check');
+          }
+          
+          // También usar el método de virtual:pwa-register
           await updateServiceWorker(false);
           
           if (needRefresh && preferences.showNotifications) {
@@ -302,8 +328,8 @@ export const PWAUpdateComponent = () => {
       }
     };
 
-    // Iniciar verificación periódica cada 30 segundos
-    const intervalId = setInterval(periodicCheck, 30000); // 30 segundos
+    // Iniciar verificación periódica cada 10 segundos (más frecuente)
+    const intervalId = setInterval(periodicCheck, 10000); // 10 segundos
 
     return () => {
       clearTimeout(initialTimeout);
