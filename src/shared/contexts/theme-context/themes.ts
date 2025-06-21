@@ -1,3 +1,49 @@
+/**
+ * Configuración de temas de la aplicación
+ * 
+ * Este archivo contiene todas las configuraciones de colores para los diferentes
+ * temas disponibles en la aplicación. Cada tema tiene versiones para modo claro
+ * y oscuro, definiendo variables CSS personalizadas que se aplican al DOM.
+ * 
+ * Los temas incluyen:
+ * - slate: Tema gris neutro (por defecto)
+ * - red: Tema rojo
+ * - rose: Tema rosa
+ * - orange: Tema naranja
+ * - blue: Tema azul
+ * - green: Tema verde
+ * - yellow: Tema amarillo
+ * - violet: Tema violeta
+ * 
+ * Cada tema define variables para:
+ * - Colores base (background, foreground, card, etc.)
+ * - Colores de estado (primary, secondary, muted, accent, destructive)
+ * - Elementos de UI (border, input, ring)
+ * - Gráficos (chart1-5)
+ * - Sidebar (sidebar, sidebarForeground, etc.)
+ * 
+ * @example
+ * ```tsx
+ * // Uso en ThemeProvider
+ * import { themes } from './themes';
+ * 
+ * // Aplicar tema específico
+ * const theme = themes.slate.light;
+ * Object.entries(theme).forEach(([key, value]) => {
+ *   document.documentElement.style.setProperty(`--${key}`, value);
+ * });
+ * 
+ * // Cambiar entre temas
+ * function applyTheme(color: ThemeColor, mode: ThemeMode) {
+ *   const theme = themes[color]?.[mode];
+ *   if (theme) {
+ *     Object.entries(theme).forEach(([key, value]) => {
+ *       document.documentElement.style.setProperty(`--${key}`, value);
+ *     });
+ *   }
+ * }
+ * ```
+ */
 export const themes = {
   slate: {
     light: {
