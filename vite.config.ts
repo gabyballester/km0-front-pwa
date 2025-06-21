@@ -41,8 +41,12 @@ export default defineConfig({
       '@utils': resolve(__dirname, './src/shared/utils'),
       '@constants': resolve(__dirname, './src/shared/constants'),
       '@contexts': resolve(__dirname, './src/shared/contexts'),
+      '@types': resolve(__dirname, './src/shared/types'),
+      '@pages': resolve(__dirname, './src/shared/pages'),
       '@router': resolve(__dirname, './src/router'),
       '@paths': resolve(__dirname, './src/router/paths.router'),
+      '@features': resolve(__dirname, './src/features'),
+      '@assets': resolve(__dirname, './src/assets'),
       '@': resolve(__dirname, './src')
     }
   },
