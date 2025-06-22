@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { APIProvider, ColorScheme, InfoWindow, Map, useMap } from '@vis.gl/react-google-maps';
 
-import { usePageLoading } from '@/shared/hooks';
+import { usePageLoading } from '@hooks';
 
 import { useTheme } from '@contexts';
 

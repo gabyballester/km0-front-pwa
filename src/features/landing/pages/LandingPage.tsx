@@ -6,24 +6,21 @@ import { useNavigate } from 'react-router-dom';
 
 import { LogIn, UserPlus } from 'lucide-react';
 
-// Import videos
-import introVideoEN from '@/assets/videos/landing/intro-en.mp4';
-import introVideoES from '@/assets/videos/landing/intro-es.mp4';
-
-import { Button, LanguageSection, VersionDisplay } from '@components';
+// Import videos from barrel
+import { introVideoEN, introVideoES } from '@/assets/videos';
 
 import { usePageLoading } from '@hooks';
 
-import { useVersion } from '@contexts';
-
 import { PATHS } from '@paths';
+
+import { LanguageSection, VersionDisplay } from '@custom-ui';
+import { Button } from '@ui';
 
 import LandingPageSkeleton from './skeletons/LandingPageSkeleton';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { displayVersion } = useVersion();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Determinar el video según el idioma actual
@@ -81,19 +78,12 @@ const LandingPage = () => {
       {/* Main Content - Positioned in lower third */}
       <div className='relative z-10 min-h-screen w-full flex items-end justify-center p-4 pb-[20vh]'>
         <div className='text-center space-y-8 max-w-md w-full'>
-          {/* Main Title */}
-          <div className='space-y-4'>
-            <h1 className='text-3xl md:text-4xl font-bold text-white drop-shadow-lg'>
-              ¡KM0 PWA {displayVersion}! 🚀
-            </h1>
-          </div>
 
           {/* Main Action Buttons */}
           <div className='space-y-4'>
             <Button
               onClick={handleGoToLogin}
-              size='lg'
-              className='w-full h-12 text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 backdrop-blur-sm border-2
+              className='w-full h-12 text-lg font-semibold bg-green-600 text-white hover:bg-blue-700 backdrop-blur-sm border-2
                 border-blue-500/20 shadow-lg'
             >
               <LogIn className='w-5 h-5 mr-2' />
@@ -103,8 +93,7 @@ const LandingPage = () => {
             <Button
               onClick={handleGoToRegister}
               variant='outline'
-              size='lg'
-              className='w-full h-12 text-lg font-semibold bg-gray-800/80 text-white hover:bg-gray-700/80 backdrop-blur-sm
+              className='w-full h-12 text-lg font-semibold bg-blue-600 text-white hover:bg-gray-700/80 backdrop-blur-sm
                 border-2 border-white/30 shadow-lg'
             >
               <UserPlus className='w-5 h-5 mr-2' />
@@ -113,7 +102,7 @@ const LandingPage = () => {
           </div>
 
           {/* Footer Info */}
-          <div className='pt-8 text-sm text-white space-y-2 backdrop-blur-sm bg-gray-800/70 rounded-lg p-4 shadow-xl'>
+          <div className='text-sm text-white space-y-2 backdrop-blur-sm bg-gray-300/10 rounded-lg p-4 shadow-xl'>
             <p className='drop-shadow-lg'>{t('landing.info.hasAccount')}</p>
             <p className='drop-shadow-lg'>{t('landing.info.newUser')}</p>
           </div>

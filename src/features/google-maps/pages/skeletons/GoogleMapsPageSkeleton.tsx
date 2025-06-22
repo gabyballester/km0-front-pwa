@@ -1,4 +1,4 @@
-import { MapSkeleton } from '@/shared/components';
+import { MapSkeleton } from '@custom-ui';
 
 function GoogleMapsPageSkeleton() {
   return (

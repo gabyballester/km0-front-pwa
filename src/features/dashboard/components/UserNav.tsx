@@ -1,32 +1,32 @@
 import { Link } from 'react-router-dom';
 
-import { LogOut, Settings, User as UserIcon } from 'lucide-react';
-
-import type { User } from '@/shared/types/auth.types';
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@components';
+import { LogOut, Settings, User } from 'lucide-react';
 
 import { useAuth } from '@contexts';
 
 import { PATHS } from '@paths';
+
+import type { User as UserType } from '@types';
+
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from '@ui';
 
 /**
  * Props del componente UserNav
  */
 interface UserNavProps {
   /** Usuario autenticado */
-  user: User | null;
+  user: UserType | null;
 }
 
 /**
@@ -126,7 +126,7 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to={PATHS.DASHBOARD} className='flex items-center'>
-            <UserIcon className='mr-2 h-4 w-4' />
+            <User className='mr-2 h-4 w-4' />
             <span>Perfil</span>
           </Link>
         </DropdownMenuItem>

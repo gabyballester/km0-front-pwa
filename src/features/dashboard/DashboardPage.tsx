@@ -2,9 +2,10 @@ import { useTranslation } from 'react-i18next';
 
 import { BarChart3, Package, ShoppingCart, Store, TrendingUp } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle, ContentLoader } from '@components';
-
 import { useAuth } from '@contexts';
+
+import { ContentLoader } from '@custom-ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@ui';
 
 import { LogoutButton } from './components/LogoutButton';
 import DashboardPageSkeleton from './pages/skeletons/DashboardPageSkeleton';

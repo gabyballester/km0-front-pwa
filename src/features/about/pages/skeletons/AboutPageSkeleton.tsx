@@ -1,4 +1,4 @@
-import { PageSkeleton } from '@/shared/components';
+import { PageSkeleton } from '@custom-ui';
 
 function AboutPageSkeleton() {
   return (

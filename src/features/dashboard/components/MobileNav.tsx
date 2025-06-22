@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom';
 
 import { Menu } from 'lucide-react';
 
-import {
-  Button,
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger
-} from '@components';
-
 import { useAuth } from '@contexts';
 
 import { PATHS } from '@paths';
+
+import {
+    Button,
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetTitle,
+    SheetTrigger
+} from '@ui';
 
 import { UserNav } from './UserNav';
 

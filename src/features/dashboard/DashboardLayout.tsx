@@ -1,22 +1,10 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import { Bell, Home, Settings } from 'lucide-react';
-
-import { MobileNav } from '@/features/dashboard/components/MobileNav';
-import { UserNav } from '@/features/dashboard/components/UserNav';
-
-import {
-    Button,
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    SimpleBreadcrumbs
-} from '@components';
+import { MobileNav, UserNav } from '@/features/dashboard/components';
 
 import { useAuth } from '@contexts';
 
-import { PATHS } from '@paths';
+import { InstallButton, SimpleBreadcrumbs } from '@custom-ui';
 
 export function DashboardLayout() {
   const { user } = useAuth();
@@ -24,47 +12,11 @@ export function DashboardLayout() {
   return (
     <div className='h-full w-full flex flex-col bg-background'>
       {/* Header */}
-      <header className='border-b flex-shrink-0'>
-        <div className='mx-auto px-4 h-16 flex items-center justify-between'>
-          <div className='flex items-center gap-4'>
-            <MobileNav />
-            <Link to={PATHS.DASHBOARD} className='text-xl font-semibold hidden md:block'>
-              KM0
-            </Link>
-            <nav className='hidden md:flex items-center gap-1'>
-              <Button variant='ghost' asChild className='gap-2'>
-                <Link to={PATHS.DASHBOARD}>
-                  <Home className='h-4 w-4' />
-                  <span>Inicio</span>
-                </Link>
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='ghost' className='gap-2'>
-                    <Settings className='h-4 w-4' />
-                    <span>Configuración</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='start' className='w-48'>
-                  <DropdownMenuItem asChild>
-                    <Link to='/settings/profile'>Perfil</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to='/settings/account'>Cuenta</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to='/settings/notifications'>Notificaciones</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </nav>
-          </div>
-          <div className='flex items-center gap-2'>
-            <Button variant='ghost' size='icon' className='relative'>
-              <Bell className='h-5 w-5' />
-              <span className='absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500' />
-              <span className='sr-only'>Notificaciones</span>
-            </Button>
+      <header className='sticky top-0 z-40 w-full border-b bg-background'>
+        <div className='container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0'>
+          <MobileNav />
+          <div className='flex flex-1 items-center justify-end space-x-4'>
+            <InstallButton />
             <UserNav user={user} />
           </div>
         </div>

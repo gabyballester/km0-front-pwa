@@ -6,18 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Loader2 } from 'lucide-react';
 
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label
-} from '@components';
-
 import { logger } from '@utils';
 
 import { useToast } from '@hooks';
@@ -25,6 +13,18 @@ import { useToast } from '@hooks';
 import { useAuth } from '@contexts';
 
 import { PATHS } from '@paths';
+
+import {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Input,
+    Label
+} from '@ui';
 
 /**
  * Componente de formulario de inicio de sesión

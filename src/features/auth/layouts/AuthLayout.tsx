@@ -4,10 +4,11 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import { ArrowLeft } from 'lucide-react';
 
-import { Button } from '@/shared/components';
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 import { PATHS } from '@paths';
+
+import { Button } from '@ui';
 
 export function AuthLayout() {
   const location = useLocation();

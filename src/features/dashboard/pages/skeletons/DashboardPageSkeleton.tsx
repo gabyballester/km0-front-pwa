@@ -1,4 +1,4 @@
-import { CardSkeleton, PageSkeleton } from '@/shared/components';
+import { CardSkeleton, PageSkeleton } from '@custom-ui';
 
 function DashboardPageSkeleton() {
   return (

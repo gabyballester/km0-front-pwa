@@ -1,10 +1,8 @@
-// import { Button } from '@/shared/components';
-// import { useAuth } from '@contexts/AuthContext';
 import { LogOut } from 'lucide-react';
 
-import { Button } from '@components';
-
 import { useAuth } from '@contexts';
+
+import { Button } from '@ui';
 
 /**
  * Props del componente LogoutButton
@@ -22,16 +20,16 @@ interface LogoutButtonProps {
 
 /**
  * Componente de botón para cerrar sesión
- * 
+ *
  * Este componente proporciona un botón configurable para cerrar sesión,
  * con opciones de personalización visual y comportamiento.
- * 
+ *
  * Características:
  * - Integración automática con el contexto de autenticación
  * - Personalización de variante y tamaño
  * - Control sobre icono y texto
  * - Manejo automático del logout
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico
@@ -43,7 +41,7 @@ interface LogoutButtonProps {
  *     </header>
  *   );
  * }
- * 
+ *
  * // Con variante personalizada
  * function Sidebar() {
  *   return (
@@ -56,7 +54,7 @@ interface LogoutButtonProps {
  *     </aside>
  *   );
  * }
- * 
+ *
  * // Solo icono
  * function CompactHeader() {
  *   return (
@@ -66,7 +64,7 @@ interface LogoutButtonProps {
  *     </header>
  *   );
  * }
- * 
+ *
  * // Solo texto
  * function Footer() {
  *   return (
