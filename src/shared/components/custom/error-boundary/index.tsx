@@ -2,11 +2,11 @@ import { type ReactNode } from 'react';
 
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 
-import { Button } from '@components';
-
 import { logger } from '@utils';
 
 import { PATHS } from '@paths';
+
+import { Button } from '@ui';
 
 /**
  * Props del componente ErrorBoundary
@@ -30,20 +30,20 @@ interface ErrorFallbackProps {
 
 /**
  * Componente de fallback por defecto para errores
- * 
+ *
  * Muestra una interfaz amigable cuando ocurre un error,
  * con opciones para reintentar o volver al inicio.
- * 
+ *
  * @param error - Error capturado
  * @param resetErrorBoundary - Función para resetear el error boundary
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico
  * <ErrorBoundary>
  *   <MyComponent />
  * </ErrorBoundary>
- * 
+ *
  * // Con fallback personalizado
  * <ErrorBoundary fallback={<CustomErrorPage />}>
  *   <MyComponent />
@@ -79,18 +79,18 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
 
 /**
  * Componente ErrorBoundary para capturar errores de React
- * 
+ *
  * Este componente envuelve la aplicación o componentes específicos
  * para capturar errores de JavaScript y mostrar una interfaz de error
  * en lugar de que la aplicación se rompa completamente.
- * 
+ *
  * Características:
  * - Captura errores de JavaScript en componentes hijos
  * - Muestra una interfaz de error amigable
  * - Permite reintentar la operación
  * - Registra errores para debugging
  * - Soporte para fallback personalizado
- * 
+ *
  * @example
  * ```tsx
  * // Proteger toda la aplicación
@@ -105,7 +105,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
  *     </ErrorBoundary>
  *   );
  * }
- * 
+ *
  * // Proteger componentes específicos
  * function Dashboard() {
  *   return (
@@ -118,7 +118,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
  *     </div>
  *   );
  * }
- * 
+ *
  * // Con fallback personalizado
  * function MyApp() {
  *   const CustomError = () => (
@@ -127,7 +127,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
  *       <p>Algo salió mal en esta sección</p>
  *     </div>
  *   );
- * 
+ *
  *   return (
  *     <ErrorBoundary fallback={<CustomError />}>
  *       <MyComponent />

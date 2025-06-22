@@ -1,11 +1,10 @@
-
 import type { ReactNode } from 'react';
 
 import { Loader2 } from 'lucide-react';
 
-import { Button, Modal } from '@components';
-
 import { logger } from '@utils';
+
+import { Button, Modal } from '@ui';
 
 export interface FormModalProps {
   /** Indica si el modal está abierto */
@@ -43,9 +42,11 @@ export interface FormModalProps {
 /**
  * Componente FormModal para formularios en modales
  *
+ * Utiliza Modal de @ui para mostrar el formulario en un modal.
+ * El logger se importa antes que los componentes UI.
+ *
  * @example
  * ```tsx
- * // Formulario básico
  * <FormModal
  *   open={isOpen}
  *   onOpenChange={setIsOpen}
@@ -126,6 +127,20 @@ export function FormModal({
     onOpenChange(false);
   };
 
+  const handleCloseOutside = () => {
+    if (preventCloseOnClickOutside) {
+      return;
+    }
+    handleCancel();
+  };
+
+  const handleCloseEscape = () => {
+    if (preventCloseOnEscape) {
+      return;
+    }
+    handleCancel();
+  };
+
   const footer = (
     <div className='flex gap-2 justify-end'>
       <Button variant='outline' onClick={handleCancel} disabled={isLoading}>
@@ -142,13 +157,13 @@ export function FormModal({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
+      onCloseOutside={handleCloseOutside}
+      onCloseEscape={handleCloseEscape}
       title={title}
       description={description}
       footer={footer}
       size={size}
       className={className}
-      preventCloseOnClickOutside={preventCloseOnClickOutside}
-      preventCloseOnEscape={preventCloseOnEscape}
     >
       {children}
     </Modal>

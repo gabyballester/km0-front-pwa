@@ -1,11 +1,10 @@
-
 import type { ReactNode } from 'react';
 
 import { AlertTriangle, CheckCircle, Info, XCircle } from 'lucide-react';
 
-import { Button, Modal } from '@components';
-
 import { logger } from '@utils';
+
+import { Button, Modal } from '@ui';
 
 export interface ConfirmDialogProps {
   /** Indica si el modal está abierto */
@@ -66,9 +65,11 @@ const typeConfig = {
 /**
  * Componente ConfirmDialog para confirmaciones de acciones
  *
+ * Utiliza Modal de @ui para mostrar el diálogo de confirmación.
+ * El logger se importa antes que los componentes UI.
+ *
  * @example
  * ```tsx
- * // Confirmación básica
  * <ConfirmDialog
  *   open={isOpen}
  *   onOpenChange={setIsOpen}
@@ -159,6 +160,20 @@ export function ConfirmDialog({
     onOpenChange(false);
   };
 
+  const handleCloseOutside = () => {
+    if (preventCloseOnClickOutside) {
+      return;
+    }
+    handleCancel();
+  };
+
+  const handleCloseEscape = () => {
+    if (preventCloseOnEscape) {
+      return;
+    }
+    handleCancel();
+  };
+
   const footer = (
     <div className='flex gap-2 justify-end'>
       <Button variant='outline' onClick={handleCancel} disabled={isLoading}>
@@ -178,12 +193,12 @@ export function ConfirmDialog({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
+      onCloseOutside={handleCloseOutside}
+      onCloseEscape={handleCloseEscape}
       title={title}
       description={description}
       footer={footer}
       size={size}
-      preventCloseOnClickOutside={preventCloseOnClickOutside}
-      preventCloseOnEscape={preventCloseOnEscape}
     >
       <div className='flex items-start gap-3'>
         <IconComponent className={`w-5 h-5 mt-0.5 ${config.iconColor}`} />

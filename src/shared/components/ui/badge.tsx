@@ -30,37 +30,36 @@ export interface BadgeProps
 
 /**
  * Componente Badge para mostrar etiquetas, estados o categorías
- * 
+ *
  * @example
  * ```tsx
  * // Badge básico
  * <Badge>Nuevo</Badge>
- * 
+ *
  * // Badge con variantes
  * <Badge variant="secondary">En progreso</Badge>
  * <Badge variant="destructive">Error</Badge>
  * <Badge variant="outline">Borrador</Badge>
- * 
+ *
  * // Badge con icono
  * <Badge>
  *   <CheckCircle className="w-3 h-3 mr-1" />
  *   Completado
  * </Badge>
- * 
+ *
  * // Badge con contenido personalizado
  * <Badge className="bg-blue-500 text-white">
  *   <span className="font-bold">PRO</span>
  * </Badge>
- * 
+ *
  * // Badge para estados
  * <Badge variant={status === 'active' ? 'default' : 'secondary'}>
  *   {status === 'active' ? 'Activo' : 'Inactivo'}
  * </Badge>
  * ```
  */
-function Badge({ className, variant, ...props }: BadgeProps) {
+function BadgeComponent({ className, variant, ...props }: BadgeProps) {
   return <div className={combineClassNames(badgeVariants({ variant }), className)} {...props} />;
 }
 
-export { Badge, badgeVariants };
-
+export { BadgeComponent, badgeVariants };

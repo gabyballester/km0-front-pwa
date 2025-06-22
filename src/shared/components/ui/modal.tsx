@@ -6,12 +6,12 @@ import { combineClassNames } from '@utils';
 
 import { Button } from './button';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogOverlay,
-    DialogPortal,
-    DialogTitle
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle
 } from './dialog';
 
 export interface ModalProps {
@@ -43,6 +43,14 @@ export interface ModalProps {
   preventCloseOnClickOutside?: boolean;
   /** Indica si se debe prevenir el cierre al presionar Escape */
   preventCloseOnEscape?: boolean;
+  /** Callback personalizado para el cierre al hacer clic fuera */
+  onCloseOutside?: () => void;
+  /** Callback personalizado para el cierre al presionar Escape */
+  onCloseEscape?: () => void;
+  /** Callback personalizado para el cierre con el botón X */
+  onCloseButton?: () => void;
+  /** Callback que se ejecuta antes de cualquier cierre (retorna true para permitir, false para prevenir) */
+  onBeforeClose?: () => boolean | Promise<boolean>;
 }
 
 const sizeClasses = {
@@ -77,11 +85,49 @@ const sizeClasses = {
  *   title="Confirmación requerida"
  *   preventCloseOnClickOutside
  *   preventCloseOnEscape
- *   onBeforeClose={async () => {
- *     return window.confirm("¿Estás seguro?");
- *   }}
  * >
  *   <p>Contenido importante que requiere confirmación</p>
+ * </Modal>
+ *
+ * // Modal con callbacks personalizados
+ * <Modal
+ *   open={isOpen}
+ *   onOpenChange={setIsOpen}
+ *   title="Instalación PWA"
+ *   onCloseOutside={() => {
+ *     // Comportamiento personalizado al hacer clic fuera
+ *     console.log('Usuario cerró haciendo clic fuera');
+ *     setIsOpen(false);
+ *   }}
+ *   onCloseEscape={() => {
+ *     // Comportamiento personalizado al presionar Escape
+ *     console.log('Usuario cerró presionando Escape');
+ *     setIsOpen(false);
+ *   }}
+ *   onCloseButton={() => {
+ *     // Comportamiento personalizado al hacer clic en X
+ *     console.log('Usuario cerró con el botón X');
+ *     setIsOpen(false);
+ *   }}
+ * >
+ *   <p>Contenido del modal</p>
+ * </Modal>
+ *
+ * // Modal con verificación previa al cerrar
+ * <Modal
+ *   open={isOpen}
+ *   onOpenChange={setIsOpen}
+ *   title="Formulario con cambios"
+ *   onBeforeClose={async () => {
+ *     // Verificar si hay cambios sin guardar
+ *     if (hasUnsavedChanges) {
+ *       const confirmed = await window.confirm('¿Deseas salir sin guardar?');
+ *       return confirmed;
+ *     }
+ *     return true;
+ *   }}
+ * >
+ *   <form>...</form>
  * </Modal>
  *
  * // Modal con formulario
@@ -115,18 +161,65 @@ export function Modal({
   size = 'md',
   className,
   preventCloseOnClickOutside = false,
-  preventCloseOnEscape = false
+  preventCloseOnEscape = false,
+  onCloseOutside,
+  onCloseEscape,
+  onCloseButton,
+  onBeforeClose
 }: ModalProps) {
   // Función para manejar el cierre
-  const handleOpenChange = (newOpen: boolean) => {
+  const handleOpenChange = async (newOpen: boolean) => {
     if (!newOpen) {
       // Si se está cerrando, verificar si está permitido
       if (preventCloseOnClickOutside || preventCloseOnEscape) {
         // En este caso, no permitimos el cierre automático
         return;
       }
+
+      // Ejecutar callback de verificación previa si existe
+      if (onBeforeClose) {
+        const shouldClose = await onBeforeClose();
+        if (!shouldClose) {
+          return;
+        }
+      }
     }
     onOpenChange(newOpen);
+  };
+
+  // Función para manejar el cierre con el botón X
+  const handleCloseButton = () => {
+    if (onCloseButton) {
+      onCloseButton();
+    } else {
+      onOpenChange(false);
+    }
+  };
+
+  // Función para manejar el cierre al hacer clic fuera
+  const handleCloseOutside = () => {
+    if (preventCloseOnClickOutside) {
+      return;
+    }
+
+    if (onCloseOutside) {
+      onCloseOutside();
+    } else {
+      onOpenChange(false);
+    }
+  };
+
+  // Función para manejar el cierre al presionar Escape
+  const handleCloseEscape = () => {
+    if (preventCloseOnEscape) {
+      return;
+    }
+
+    if (onCloseEscape) {
+      onCloseEscape();
+    } else {
+      onOpenChange(false);
+    }
   };
 
   // Si bare, solo backdrop y children
@@ -134,7 +227,7 @@ export function Modal({
     return (
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogPortal>
-          <DialogOverlay className='z-50 fixed inset-0 bg-black/60' />
+          <DialogOverlay className='z-50 fixed inset-0 bg-black/60' onClick={handleCloseOutside} />
           <div className='fixed inset-0 z-50 flex items-center justify-center'>{children}</div>
         </DialogPortal>
       </Dialog>
@@ -144,7 +237,7 @@ export function Modal({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
-        <DialogOverlay className='z-50 fixed inset-0 bg-black/60' />
+        <DialogOverlay className='z-50 fixed inset-0 bg-black/60' onClick={handleCloseOutside} />
         <DialogContent
           className={combineClassNames(
             sizeClasses[size],
@@ -154,6 +247,7 @@ export function Modal({
             className
           )}
           showCloseButton={false} // Controlamos manualmente la X
+          onEscapeKeyDown={handleCloseEscape}
         >
           {/* DialogTitle es requerido para accesibilidad */}
           <DialogTitle className={title ? 'text-lg leading-none font-semibold' : 'sr-only'}>
@@ -180,7 +274,7 @@ export function Modal({
                   variant='ghost'
                   size='icon'
                   className='absolute right-4 top-4'
-                  onClick={() => onOpenChange(false)}
+                  onClick={handleCloseButton}
                 >
                   <X className='h-4 w-4' />
                   <span className='sr-only'>Cerrar</span>

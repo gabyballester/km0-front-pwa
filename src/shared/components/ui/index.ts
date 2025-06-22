@@ -1,43 +1,19 @@
 /**
  * Barrel export para componentes UI
- * 
+ *
  * Este archivo exporta todos los componentes de interfaz de usuario
  * disponibles en la aplicación, organizados por categorías.
- * 
+ *
  * REGLAS DE EXPORTACIÓN:
  * - Usar SIEMPRE 'export * from' para evitar errores de exportación
  * - NO usar exportaciones nombradas individuales (export { Component } from './path')
  * - Los componentes default deben ser exportados como nombrados en sus archivos originales
- * - Mantener imports cortos usando alias (@components, @ui, etc.)
- * 
+ * - Mantener imports cortos usando alias (@ui)
+ *
+ * Modal y todos los componentes de UI deben importarse desde @ui.
+ *
  * @example
- * ```tsx
- * // Importar componentes individuales
- * import { Button, Card, Input } from '@components';
- * 
- * // Importar componentes específicos
- * import { 
- *   Dialog, 
- *   DialogContent, 
- *   DialogHeader, 
- *   DialogTitle 
- * } from '@components';
- * 
- * // Uso en componentes
- * function MyComponent() {
- *   return (
- *     <Card>
- *       <CardHeader>
- *         <CardTitle>Mi Título</CardTitle>
- *       </CardHeader>
- *       <CardContent>
- *         <Input placeholder="Escribe algo..." />
- *         <Button>Enviar</Button>
- *       </CardContent>
- *     </Card>
- *   );
- * }
- * ```
+ * import { Modal, Button, Card } from '@ui';
  */
 
 // Componentes básicos
@@ -69,4 +45,3 @@ export * from './loader';
 export * from './separator';
 export * from './toaster';
 export * from './tooltip';
-

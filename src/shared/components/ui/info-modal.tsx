@@ -1,9 +1,8 @@
-
 import type { ReactNode } from 'react';
 
-import { AlertCircle , CheckCircle, Info, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
 
-import { Button, Modal } from '@components';
+import { Button, Modal } from '@ui';
 
 export interface InfoModalProps {
   /** Indica si el modal está abierto */
@@ -54,9 +53,10 @@ const typeConfig = {
 /**
  * Componente InfoModal para mostrar información en modales
  *
+ * Utiliza Modal de @ui para mostrar la información.
+ *
  * @example
  * ```tsx
- * // Información básica
  * <InfoModal
  *   open={isOpen}
  *   onOpenChange={setIsOpen}
@@ -128,6 +128,20 @@ export function InfoModal({
     onOpenChange(false);
   };
 
+  const handleCloseOutside = () => {
+    if (preventCloseOnClickOutside) {
+      return;
+    }
+    handleClose();
+  };
+
+  const handleCloseEscape = () => {
+    if (preventCloseOnEscape) {
+      return;
+    }
+    handleClose();
+  };
+
   const footer = (
     <div className='flex justify-end'>
       <Button onClick={handleClose}>{closeText}</Button>
@@ -138,13 +152,13 @@ export function InfoModal({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
+      onCloseOutside={handleCloseOutside}
+      onCloseEscape={handleCloseEscape}
       title={title}
       description={description}
       footer={footer}
       size={size}
       className={className}
-      preventCloseOnClickOutside={preventCloseOnClickOutside}
-      preventCloseOnEscape={preventCloseOnEscape}
     >
       <div className='flex items-start gap-3'>
         <IconComponent className={`w-5 h-5 mt-0.5 ${config.iconColor}`} />
