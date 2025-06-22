@@ -1,5 +1,7 @@
-echo "🔍 Running linting..."
-npm run lint:fix
+echo "🔍 Running linting on staged files..."
+npx lint-staged
+
+echo "🔍 Running full lint check..."
 npm run lint
 
 # echo "🧪 Running tests..."
