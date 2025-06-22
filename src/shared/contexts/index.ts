@@ -18,10 +18,25 @@
  *
  * // Importar y usar el contexto de tema
  * import { useTheme, ThemeProvider } from '@contexts';
+ *
+ * // Usar el Context Aggregator para todos los providers
+ * import { AppProviders } from '@contexts';
+ *
+ * function App() {
+ *   return (
+ *     <AppProviders>
+ *       <MyRoutes />
+ *     </AppProviders>
+ *   );
+ * }
+ *
+ * // Importar y usar el contexto PWA
+ * import { usePWAInstall, PWAInstallProvider } from '@contexts';
  * ```
  */
 
+export * from './AppProviders';
 export * from './auth-context/AuthContext';
+export * from './pwa-install-context';
 export * from './theme-context';
 export * from './version-context';
-

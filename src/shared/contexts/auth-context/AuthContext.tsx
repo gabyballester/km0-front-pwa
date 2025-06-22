@@ -6,17 +6,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { LogIn, Shield, UserPlus } from 'lucide-react';
 
-import { Button, Modal } from '@components';
-
 import { useToast } from '@hooks';
 
-import { AUTH_STORAGE_KEYS, EXPIRATION_TIMES } from '@constants';
+import { AUTH_MESSAGES, AUTH_STORAGE_KEYS, EXPIRATION_TIMES } from '@constants';
 
 import { PATHS } from '@paths';
 
-import { createMockUser } from './auth.mock';
+import type { User } from '@types';
 
-import type { User } from '../../types';
+import { Button, Modal } from '@ui';
+
+import { createMockUser } from './auth.mock';
 
 /**
  * Interfaz del contexto de autenticación
@@ -58,19 +58,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 /**
  * Hook para manejar estados de autenticación y operaciones de usuario
- * 
+ *
  * Proporciona funcionalidades completas de autenticación incluyendo login, registro,
  * logout, persistencia de sesión y modal de autenticación.
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico en componente
  * function MyComponent() {
  *   const { user, isLoading, login, logout } = useAuth();
- * 
+ *
  *   if (isLoading) return <Loader />;
  *   if (!user) return <LoginForm onLogin={login} />;
- * 
+ *
  *   return (
  *     <div>
  *       <p>Bienvenido, {user.name}!</p>
@@ -78,11 +78,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  *     </div>
  *   );
  * }
- * 
+ *
  * // Uso con modal de autenticación
  * function ProtectedComponent() {
  *   const { user, showAuthModal } = useAuth();
- * 
+ *
  *   const handleProtectedAction = () => {
  *     if (!user) {
  *       showAuthModal({
@@ -93,14 +93,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  *     }
  *     // Realizar acción protegida
  *   };
- * 
+ *
  *   return <Button onClick={handleProtectedAction}>Acción protegida</Button>;
  * }
- * 
+ *
  * // Uso con redirección
  * function LoginPage() {
  *   const { login, isLoading } = useAuth();
- * 
+ *
  *   const handleSubmit = async (email: string, password: string) => {
  *     try {
  *       await login(email, password);
@@ -109,7 +109,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  *       // Error manejado por el contexto
  *     }
  *   };
- * 
+ *
  *   return (
  *     <form onSubmit={handleSubmit}>
  *       <Input disabled={isLoading} />
@@ -121,7 +121,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  *   );
  * }
  * ```
- * 
+ *
  * @returns Objeto con estado de autenticación y métodos
  * @throws Error si se usa fuera de AuthProvider
  */
@@ -143,10 +143,10 @@ interface AuthProviderProps {
 
 /**
  * Provider del contexto de autenticación
- * 
+ *
  * Este componente proporciona funcionalidad de autenticación para toda la aplicación,
  * incluyendo login, registro, logout, persistencia de sesión y modal de autenticación.
- * 
+ *
  * Características:
  * - Gestión de estado de usuario
  * - Persistencia en localStorage
@@ -154,7 +154,7 @@ interface AuthProviderProps {
  * - Redirección automática
  * - Notificaciones de toast
  * - Detección de logout reciente
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico en el punto de entrada de la aplicación
@@ -170,7 +170,7 @@ interface AuthProviderProps {
  *     </AuthProvider>
  *   );
  * }
- * 
+ *
  * // Con otros providers
  * function App() {
  *   return (
@@ -183,7 +183,7 @@ interface AuthProviderProps {
  *     </ThemeProvider>
  *   );
  * }
- * 
+ *
  * // Con configuración personalizada
  * function App() {
  *   return (
@@ -242,7 +242,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setTimeout(resolve, 1000);
       });
 
-      const mockUser = createMockUser(email, 'Usuario Demo');
+      const mockUser = createMockUser(email, AUTH_MESSAGES.DEMO.USER_NAME);
 
       localStorage.setItem(AUTH_STORAGE_KEYS.USER, JSON.stringify(mockUser));
       setUser(mockUser);
@@ -379,6 +379,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       <Modal
         open={authModalOpen}
         onOpenChange={setAuthModalOpen}
+        onCloseOutside={() => {
+          // Si hay función de cancelación, ejecutarla
+          if (onCancel) {
+            onCancel();
+          }
+          setAuthModalOpen(false);
+        }}
+        onCloseEscape={() => {
+          // Si hay función de cancelación, ejecutarla
+          if (onCancel) {
+            onCancel();
+          }
+          setAuthModalOpen(false);
+        }}
         title={title}
         description={description}
         size='sm'

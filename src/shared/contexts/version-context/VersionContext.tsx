@@ -1,6 +1,6 @@
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
-import type { VersionInfo } from '@constants';
+import { ENV_CONFIG, VERSION_MESSAGES, type VersionInfo } from '@constants';
 
 interface VersionContextType {
   /** Información completa de la versión */
@@ -30,9 +30,9 @@ const ENVIRONMENT_SUFFIXES = {
 
 /**
  * Proveedor del contexto de versionado
- * 
+ *
  * Maneja la lógica de obtención y cacheo de la información de versión.
- * 
+ *
  * @example
  * ```tsx
  * function App() {
@@ -45,9 +45,7 @@ const ENVIRONMENT_SUFFIXES = {
  * }
  * ```
  */
-export function VersionProvider({ 
-  children
-}: VersionProviderProps) {
+export function VersionProvider({ children }: VersionProviderProps) {
   const [versionInfo, setVersionInfo] = useState<VersionInfo>({
     versionNumber: 0,
     version: 'v0',
@@ -56,43 +54,52 @@ export function VersionProvider({
     environment: import.meta.env.DEV ? 'development' : 'production',
     timestamp: Date.now()
   });
-  
+
   const [isLoading, setIsLoading] = useState(true);
 
   /**
    * Obtiene la información de versión desde el archivo
    */
-  const fetchVersionInfo = async (): Promise<VersionInfo | null> => {
+  const fetchVersionInfo = async (): Promise<VersionInfo> => {
     try {
-      const response = await fetch('/version.json');
+      const response = await fetch('/version.json', { cache: 'no-cache' });
       if (response.ok) {
         const data = await response.json();
         return {
-          versionNumber: data.versionNumber || 0,
           version: data.version || 'v0',
+          versionNumber: data.versionNumber || 0,
           buildDate: data.buildDate || new Date().toISOString().split('T')[0],
           buildTime: data.buildTime || '00:00:00',
-          environment: import.meta.env.DEV ? 'development' : 'production',
+          environment: ENV_CONFIG.IS_DEV ? 'development' : 'production',
           timestamp: Date.now()
         };
       }
     } catch (error) {
-      console.warn('No se pudo leer version.json:', error);
+      console.warn(VERSION_MESSAGES.ERROR.FETCH_VERSION, error);
     }
-    return null;
+
+    // Fallback si no se puede obtener la versión
+    return {
+      version: 'v0',
+      versionNumber: 0,
+      buildDate: new Date().toISOString().split('T')[0],
+      buildTime: new Date().toTimeString().split(' ')[0],
+      environment: ENV_CONFIG.IS_DEV ? 'development' : 'production',
+      timestamp: Date.now()
+    };
   };
 
   /**
    * Genera información de versión por defecto
    */
-  const generateDefaultVersionInfo = (): VersionInfo => {
+  const generateVersionInfo = (): VersionInfo => {
     const now = new Date();
     return {
-      versionNumber: 0,
       version: 'v0',
+      versionNumber: 0,
       buildDate: now.toISOString().split('T')[0],
-      buildTime: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`,
-      environment: import.meta.env.DEV ? 'development' : 'production',
+      buildTime: now.toTimeString().split(' ')[0],
+      environment: ENV_CONFIG.IS_DEV ? 'development' : 'production',
       timestamp: now.getTime()
     };
   };
@@ -102,17 +109,17 @@ export function VersionProvider({
    */
   const loadVersionInfo = useCallback(async () => {
     setIsLoading(true);
-    
+
     try {
       const fetchedVersion = await fetchVersionInfo();
       if (fetchedVersion) {
         setVersionInfo(fetchedVersion);
       } else {
-        setVersionInfo(generateDefaultVersionInfo());
+        setVersionInfo(generateVersionInfo());
       }
     } catch (error) {
-      console.warn('Error cargando versión:', error);
-      setVersionInfo(generateDefaultVersionInfo());
+      console.warn(VERSION_MESSAGES.ERROR.LOAD_VERSION, error);
+      setVersionInfo(generateVersionInfo());
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +138,7 @@ export function VersionProvider({
   }, [loadVersionInfo]);
 
   // Formatear versión para mostrar
-  const displayVersion = formatVersionForDisplay(versionInfo);
+  const displayVersion = getVersionDisplay(versionInfo);
 
   const value: VersionContextType = {
     versionInfo,
@@ -140,52 +147,48 @@ export function VersionProvider({
     refreshVersion
   };
 
-  return (
-    <VersionContext.Provider value={value}>
-      {children}
-    </VersionContext.Provider>
-  );
+  return <VersionContext.Provider value={value}>{children}</VersionContext.Provider>;
 }
 
 /**
  * Hook para usar el contexto de versión
- * 
+ *
  * @returns Contexto de versión
  * @throws Error si se usa fuera del VersionProvider
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { versionInfo, displayVersion, isLoading } = useVersion();
- * 
+ *
  *   if (isLoading) {
- *     return <div>Cargando versión...</div>;
+ *     return <div>{VERSION_MESSAGES.LOADING.VERSION}</div>;
  *   }
- * 
- *   return <div>Versión: {displayVersion}</div>;
+ *
+ *   return <div>{VERSION_MESSAGES.DISPLAY.VERSION_PREFIX}{displayVersion}</div>;
  * }
  * ```
  */
 export function useVersion(): VersionContextType {
   const context = useContext(VersionContext);
-  
+
   if (context === undefined) {
-    throw new Error('useVersion debe usarse dentro de un VersionProvider');
+    throw new Error(VERSION_MESSAGES.ERROR.CONTEXT_ERROR);
   }
-  
+
   return context;
 }
 
 /**
  * Formatea la versión para mostrar
- * 
+ *
  * Usa un diccionario de sufijos para simplificar la lógica condicional
  */
-function formatVersionForDisplay(versionInfo: VersionInfo): string {
+function getVersionDisplay(versionInfo: VersionInfo): string {
   const { version, environment } = versionInfo;
-  
+
   // Usar el diccionario para obtener el sufijo correspondiente
   const suffix = ENVIRONMENT_SUFFIXES[environment] || '';
-  
+
   return version + suffix;
-} 
+}

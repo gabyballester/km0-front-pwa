@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { logger } from '@utils';
 
+import { STORAGE_KEYS, THEME_MESSAGES } from '@constants';
+
 import { themes } from './themes';
 
 /**
@@ -40,11 +42,11 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
 
 /**
  * Provider del contexto de tema
- * 
+ *
  * Este componente proporciona funcionalidad de tema para toda la aplicación,
  * incluyendo cambio de colores y modo claro/oscuro. Los valores se persisten
  * en localStorage y se aplican automáticamente al DOM.
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico en el punto de entrada de la aplicación
@@ -59,7 +61,7 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
  *     </ThemeProvider>
  *   );
  * }
- * 
+ *
  * // Con otros providers
  * function App() {
  *   return (
@@ -72,11 +74,11 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
  *     </ThemeProvider>
  *   );
  * }
- * 
+ *
  * // Uso en componentes
  * function ThemeToggle() {
  *   const { themeMode, setThemeMode, themeColor, setThemeColor } = useTheme();
- * 
+ *
  *   return (
  *     <div>
  *       <button onClick={() => setThemeMode(themeMode === 'light' ? 'dark' : 'light')}>
@@ -94,15 +96,15 @@ const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeColor, setThemeColor] = useState<ThemeColor>(() => {
-    return (localStorage.getItem('themeColor') as ThemeColor) || 'slate';
+    return (localStorage.getItem(STORAGE_KEYS.THEME_COLOR) as ThemeColor) || 'slate';
   });
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
-    return (localStorage.getItem('themeMode') as ThemeMode) || 'light';
+    return (localStorage.getItem(STORAGE_KEYS.THEME_MODE) as ThemeMode) || 'light';
   });
 
   useEffect(() => {
-    const savedColor = (localStorage.getItem('themeColor') as ThemeColor) || 'slate';
-    const savedMode = (localStorage.getItem('themeMode') as ThemeMode) || 'light';
+    const savedColor = (localStorage.getItem(STORAGE_KEYS.THEME_COLOR) as ThemeColor) || 'slate';
+    const savedMode = (localStorage.getItem(STORAGE_KEYS.THEME_MODE) as ThemeMode) || 'light';
 
     setThemeColor(savedColor);
     setThemeMode(savedMode);
@@ -119,8 +121,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     applyColorTheme(themeColor, themeMode);
 
-    localStorage.setItem('themeColor', themeColor);
-    localStorage.setItem('themeMode', themeMode);
+    localStorage.setItem(STORAGE_KEYS.THEME_COLOR, themeColor);
+    localStorage.setItem(STORAGE_KEYS.THEME_MODE, themeMode);
   }, [themeColor, themeMode]);
 
   return (
@@ -132,19 +134,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 /**
  * Hook para usar el contexto de tema
- * 
+ *
  * Este hook proporciona acceso al contexto de tema y debe ser usado
  * dentro de un componente envuelto por ThemeProvider.
- * 
+ *
  * @returns Objeto con el estado del tema y funciones para cambiarlo
  * @throws Error si se usa fuera de ThemeProvider
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico
  * function MyComponent() {
  *   const { themeColor, themeMode, setThemeColor, setThemeMode } = useTheme();
- * 
+ *
  *   return (
  *     <div>
  *       <p>Color actual: {themeColor}</p>
@@ -158,13 +160,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
  *     </div>
  *   );
  * }
- * 
+ *
  * // En un componente de configuración
  * function ThemeSettings() {
  *   const { themeColor, themeMode, setThemeColor, setThemeMode } = useTheme();
- * 
+ *
  *   const availableColors: ThemeColor[] = ['slate', 'red', 'rose', 'orange', 'blue', 'green', 'yellow', 'violet'];
- * 
+ *
  *   return (
  *     <div className="space-y-4">
  *       <div>
@@ -191,21 +193,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used inside the ThemeProvider');
+    throw new Error(THEME_MESSAGES.ERROR.CONTEXT_ERROR);
   }
   return context;
 };
 
 /**
  * Aplica el tema de color al DOM
- * 
+ *
  * @param color - Color del tema a aplicar
  * @param mode - Modo del tema (claro/oscuro)
  */
 const applyColorTheme = (color: ThemeColor, mode: ThemeMode) => {
   const theme = themes[color]?.[mode];
   if (!theme) {
-    logger.error(`Theme or mode not found for color: ${color}, mode: ${mode}`);
+    logger.error(`${THEME_MESSAGES.ERROR.THEME_NOT_FOUND} ${color}, mode: ${mode}`);
     return;
   }
 

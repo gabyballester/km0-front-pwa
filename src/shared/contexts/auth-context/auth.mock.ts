@@ -1,4 +1,4 @@
-import type { User } from '@/shared/types/auth.types';
+import type { User } from '@types';
 
 /**
  * Crea un usuario mock con los datos proporcionados
