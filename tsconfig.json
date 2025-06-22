@@ -3,9 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@hooks": ["./src/shared/hooks"],
-      "@components": ["./src/shared/components"],
       "@ui": ["./src/shared/components/ui"],
-      "@custom": ["./src/shared/components/custom"],
+      "@custom-ui": ["./src/shared/components/custom"],
       "@utils": ["./src/shared/utils"],
       "@constants": ["./src/shared/constants"],
       "@contexts": ["./src/shared/contexts"],
@@ -33,10 +32,7 @@
     "jsx": "react-jsx"
   },
   "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "ts-node": {
     "compilerOptions": {
       "noWarnOnMultipleProjects": true

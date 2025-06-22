@@ -45,7 +45,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@hooks': pathResolver('./src/shared/hooks'),
-      '@components': pathResolver('./src/shared/components'),
+      '@ui': pathResolver('./src/shared/components/ui'),
+      '@custom-ui': pathResolver('./src/shared/components/custom'),
       '@utils': pathResolver('./src/shared/utils'),
       '@constants': pathResolver('./src/shared/constants'),
       '@contexts': pathResolver('./src/shared/contexts'),
@@ -69,7 +70,7 @@ export default defineConfig({
       filename: 'sw.ts',
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      
+
       // Configuración del manifest
       manifest: {
         id: 'Km0-PWA',
