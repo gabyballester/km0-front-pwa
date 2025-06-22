@@ -1,37 +1,32 @@
-import { BrowserRouter } from 'react-router-dom';
+import { AppProviders } from '@contexts';
 
-import { Router } from '@/router';
-import {
-  AppInitializer,
-  ErrorBoundary,
-  PWAInstallComponent,
-  PWAUpdateComponent,
-  Toaster,
-  VersionDisplay
-} from '@/shared/components';
+import { Router } from '@router';
 
-import { AuthProvider, ThemeProvider, VersionProvider } from '@contexts';
+import { AppInitializer, ErrorBoundary, GlobalLayout } from '@custom-ui';
 
 import './styles/global.css';
 
+/**
+ * Componente principal de la aplicación
+ *
+ * Utiliza el patrón Context Aggregator para manejar todos los providers
+ * y el GlobalLayout para elementos que deben estar presentes en toda la app.
+ *
+ * Estructura limpia siguiendo principios SOLID:
+ * - Single Responsibility: App solo se encarga de la composición
+ * - Open/Closed: Fácil agregar nuevos providers sin modificar App
+ * - Dependency Inversion: Depende de abstracciones (AppProviders, GlobalLayout)
+ */
 export const App = () => {
   return (
-    <AppInitializer>
-      <ErrorBoundary>
-        <VersionProvider>
-          <ThemeProvider>
-            <BrowserRouter>
-              <AuthProvider>
-                <Router />
-              </AuthProvider>
-            </BrowserRouter>
-          </ThemeProvider>
-          <Toaster />
-          <PWAInstallComponent />
-          <PWAUpdateComponent />
-          <VersionDisplay position="bottom-left" showDetails />
-        </VersionProvider>
-      </ErrorBoundary>
-    </AppInitializer>
+    <ErrorBoundary>
+      <AppProviders>
+        <AppInitializer>
+          <GlobalLayout>
+            <Router />
+          </GlobalLayout>
+        </AppInitializer>
+      </AppProviders>
+    </ErrorBoundary>
   );
 };
