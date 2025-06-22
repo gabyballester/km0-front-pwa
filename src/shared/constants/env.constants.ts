@@ -43,16 +43,16 @@ export const ENV_CONFIG = {
  */
 export const PWA_ENV = {
   /** Intervalo de verificación de actualizaciones en milisegundos */
-  UPDATE_CHECK_INTERVAL: import.meta.env.VITE_PWA_UPDATE_INTERVAL,
+  UPDATE_CHECK_INTERVAL: 900000,
 
   /** Timeout para detección de beforeinstallprompt en milisegundos */
-  INSTALL_PROMPT_TIMEOUT: import.meta.env.VITE_PWA_INSTALL_PROMPT_TIMEOUT,
+  INSTALL_PROMPT_TIMEOUT: 5000,
 
   /** Verificación inicial de actualizaciones en milisegundos */
-  INITIAL_CHECK_DELAY: import.meta.env.VITE_PWA_INITIAL_CHECK_DELAY,
+  INITIAL_CHECK_DELAY: 10000,
 
   /** Intervalo mínimo entre verificaciones forzadas en milisegundos */
-  MIN_FORCED_CHECK_INTERVAL: import.meta.env.VITE_PWA_MIN_FORCED_CHECK_INTERVAL
+  MIN_FORCED_CHECK_INTERVAL: 120000
 } as const;
 
 /**

@@ -12,7 +12,7 @@ dist
 dev-dist
 *.local
 coverage
-.env*
+.env.local
 
 
 # Editor directories and files
