@@ -8,7 +8,7 @@ import { combineClassNames } from '@utils';
 
 /**
  * Componente Dialog base (wrapper de Radix UI Dialog)
- * 
+ *
  * @example
  * ```tsx
  * <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -37,7 +37,7 @@ function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>)
 
 /**
  * Trigger para abrir el dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogTrigger asChild>
@@ -58,7 +58,7 @@ function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.
 
 /**
  * Botón para cerrar el dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogClose asChild>
@@ -92,7 +92,7 @@ function DialogOverlay({
 
 /**
  * Contenido principal del dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogContent className="max-w-md">
@@ -110,10 +110,10 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
-  showCloseButton = true,
+  showCloseIcon: showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
-  showCloseButton?: boolean;
+  showCloseIcon?: boolean;
 }) {
   return (
     <DialogPortal data-slot='dialog-portal'>
@@ -150,7 +150,7 @@ function DialogContent({
 
 /**
  * Header del dialog (título y descripción)
- * 
+ *
  * @example
  * ```tsx
  * <DialogHeader>
@@ -171,7 +171,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
 
 /**
  * Footer del dialog (botones de acción)
- * 
+ *
  * @example
  * ```tsx
  * <DialogFooter>
@@ -195,7 +195,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
 
 /**
  * Título del dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogTitle>Confirmar eliminación</DialogTitle>
@@ -213,7 +213,7 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
 
 /**
  * Descripción del dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogDescription>
@@ -235,15 +235,14 @@ function DialogDescription({
 }
 
 export {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogOverlay,
-    DialogPortal,
-    DialogTitle,
-    DialogTrigger
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger
 };
-

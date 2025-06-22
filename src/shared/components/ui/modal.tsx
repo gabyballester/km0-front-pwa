@@ -4,7 +4,6 @@ import { X } from 'lucide-react';
 
 import { combineClassNames } from '@utils';
 
-import { Button } from './button';
 import {
   Dialog,
   DialogContent,
@@ -30,9 +29,9 @@ export interface ModalProps {
   /** Contenido del header (encabezado) */
   header?: React.ReactNode;
   /** Contenido del botón de cerrar */
-  closeButton?: React.ReactNode;
+  closeIcon?: React.ReactNode;
   /** Indica si se debe mostrar el botón de cerrar */
-  showCloseButton?: boolean;
+  showCloseIcon?: boolean;
   /** Indica si el modal está en modo bare (solo backdrop y children) */
   bare?: boolean;
   /** Tamaño del modal */
@@ -48,7 +47,7 @@ export interface ModalProps {
   /** Callback personalizado para el cierre al presionar Escape */
   onCloseEscape?: () => void;
   /** Callback personalizado para el cierre con el botón X */
-  onCloseButton?: () => void;
+  onCloseIcon?: () => void;
   /** Callback que se ejecuta antes de cualquier cierre (retorna true para permitir, false para prevenir) */
   onBeforeClose?: () => boolean | Promise<boolean>;
 }
@@ -104,7 +103,7 @@ const sizeClasses = {
  *     console.log('Usuario cerró presionando Escape');
  *     setIsOpen(false);
  *   }}
- *   onCloseButton={() => {
+ *   onCloseIcon={() => {
  *     // Comportamiento personalizado al hacer clic en X
  *     console.log('Usuario cerró con el botón X');
  *     setIsOpen(false);
@@ -155,8 +154,8 @@ export function Modal({
   children,
   footer,
   header,
-  closeButton,
-  showCloseButton = true,
+  closeIcon,
+  showCloseIcon = true,
   bare = false,
   size = 'md',
   className,
@@ -164,7 +163,7 @@ export function Modal({
   preventCloseOnEscape = false,
   onCloseOutside,
   onCloseEscape,
-  onCloseButton,
+  onCloseIcon,
   onBeforeClose
 }: ModalProps) {
   // Función para manejar el cierre
@@ -188,9 +187,9 @@ export function Modal({
   };
 
   // Función para manejar el cierre con el botón X
-  const handleCloseButton = () => {
-    if (onCloseButton) {
-      onCloseButton();
+  const handleCloseIcon = () => {
+    if (onCloseIcon) {
+      onCloseIcon();
     } else {
       onOpenChange(false);
     }
@@ -246,48 +245,25 @@ export function Modal({
             'bg-background duration-150',
             className
           )}
-          showCloseButton={false} // Controlamos manualmente la X
+          showCloseIcon={false} // Controlamos manualmente la X
           onEscapeKeyDown={handleCloseEscape}
         >
-          {/* DialogTitle es requerido para accesibilidad */}
-          <DialogTitle className={title ? 'text-lg leading-none font-semibold' : 'sr-only'}>
-            {title || 'Modal'}
-          </DialogTitle>
-
-          {/* DialogDescription es requerido para accesibilidad */}
-          {description ? (
-            <DialogDescription className='text-muted-foreground text-sm'>
-              {description}
-            </DialogDescription>
-          ) : (
-            <DialogDescription className='sr-only'>Contenido del modal</DialogDescription>
-          )}
-
-          {/* Header custom o estándar */}
-          {header && <div className='flex flex-col gap-2 text-center sm:text-left'>{header}</div>}
-
-          {/* Botón de cerrar custom o estándar */}
-          {closeButton
-            ? closeButton
-            : showCloseButton && (
-                <Button
-                  variant='ghost'
-                  size='icon'
-                  className='absolute right-4 top-4'
-                  onClick={handleCloseButton}
-                >
-                  <X className='h-4 w-4' />
-                  <span className='sr-only'>Cerrar</span>
-                </Button>
+          {header || (
+            <div className='flex items-start justify-between'>
+              <div className='flex-grow'>
+                {title && <DialogTitle>{title}</DialogTitle>}
+                {description && <DialogDescription>{description}</DialogDescription>}
+              </div>
+              {showCloseIcon && (
+                <div className='ml-auto flex-shrink-0 cursor-pointer'>
+                  {closeIcon || <X className='h-5 w-5' onClick={handleCloseIcon} />}
+                </div>
               )}
-
-          {/* Contenido */}
-          {children}
-
-          {/* Footer custom o estándar */}
-          {footer && (
-            <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>{footer}</div>
+            </div>
           )}
+
+          {children}
+          {footer && <footer>{footer}</footer>}
         </DialogContent>
       </DialogPortal>
     </Dialog>
