@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import { Loader } from '@components';
-
 import { usePageLoading } from '@hooks';
+
+import { Loader } from '@ui';
 
 interface ContentLoaderProps {
   /** Estado de carga actual */

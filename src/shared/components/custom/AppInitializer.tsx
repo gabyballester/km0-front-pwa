@@ -8,7 +8,7 @@ import { useServiceWorker } from '@hooks';
 
 import { SESSION_KEYS } from '@constants';
 
-import { AppLoader } from './AppLoader';
+import { AppLoader, PWAInstallModal } from './';
 
 interface AppInitializerProps {
   children: React.ReactNode;
@@ -185,5 +185,10 @@ export const AppInitializer = ({ children }: AppInitializerProps) => {
   }
 
   // Si todo está bien, mostrar la aplicación
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <PWAInstallModal />
+    </>
+  );
 };

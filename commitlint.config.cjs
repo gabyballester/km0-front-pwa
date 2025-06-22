@@ -10,7 +10,12 @@ module.exports = {
         'fix',      // Correcciones de bugs
         'refactor', // Refactorización de código
         'docs',     // Documentación
-        'chore'     // Tareas de mantenimiento
+        'chore',    // Tareas de mantenimiento
+        'style',    // Cambios de estilo
+        'perf',     // Mejoras de rendimiento
+        'test',     // Tests
+        'ci',       // Integración continua
+        'build'     // Build system
       ]
     ],
     'type-case': [2, 'always', 'lowercase'],
@@ -18,6 +23,8 @@ module.exports = {
     'subject-case': [0, 'always'],
     'subject-empty': [2, 'never'],
     'subject-full-stop': [2, 'never', '.'],
-    'header-max-length': [2, 'always', 72]
+    'header-max-length': [2, 'always', 100],
+    'body-max-line-length': [0, 'always'],
+    'footer-max-line-length': [0, 'always']
   }
 }; 

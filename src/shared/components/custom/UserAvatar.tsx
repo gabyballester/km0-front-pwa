@@ -1,3 +1,4 @@
+
 import {
   Building2,
   LogOut,
@@ -6,13 +7,13 @@ import {
   User as UserIcon
 } from 'lucide-react';
 
-import type { User } from '@/shared/types/auth.types';
+import type { User as UserType } from '@types';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Badge,
+  BadgeComponent,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +21,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@components';
+} from '@ui';
 
 interface UserAvatarProps {
   /** Usuario a mostrar (null para no mostrar nada) */
-  user: User | null;
+  user: UserType | null;
   /** Tamaño del avatar */
   size?: 'sm' | 'md' | 'lg';
 }
@@ -146,13 +147,13 @@ export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
 
             {/* Estado de verificación */}
             {profile.isVerified && (
-              <Badge
+              <BadgeComponent
                 variant='outline'
                 className='text-xs bg-green-50 text-green-700 border-green-200'
               >
                 <Shield className='w-3 h-3 mr-1' />
                 Verificado
-              </Badge>
+              </BadgeComponent>
             )}
           </div>
         </DropdownMenuLabel>

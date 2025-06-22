@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
-import type { AppLoaderVariant, AppLoaderVariantConfig } from '@/shared/types/loader.types';
+import type { AppLoaderVariant, AppLoaderVariantConfig } from '@types';
 
-import { Loader } from '@components';
+import { Loader } from '@ui';
 
 interface AppLoaderProps {
   /** Variante del loader (app-init, route-load, error) */

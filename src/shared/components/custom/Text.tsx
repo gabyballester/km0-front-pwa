@@ -17,7 +17,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 const textVariants = cva('leading-7', {
   variants: {
@@ -81,3 +81,4 @@ const Text = forwardRef<HTMLParagraphElement, TextProps>(
 Text.displayName = 'Text';
 
 export { Text, textVariants };
+

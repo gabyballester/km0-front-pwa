@@ -20,7 +20,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 const codeVariants = cva('relative rounded bg-muted font-mono', {
   variants: {
@@ -69,3 +69,4 @@ const CodeText = forwardRef<HTMLElement, CodeProps>(
 CodeText.displayName = 'CodeText';
 
 export { CodeText, codeVariants };
+

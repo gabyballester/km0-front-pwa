@@ -12,14 +12,15 @@ import { useTranslation } from 'react-i18next';
 
 import { Languages } from 'lucide-react';
 
-import ESFlag from '@/assets/svg/flags/es.svg';
-import GBFlag from '@/assets/svg/flags/gb.svg';
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@/shared/components';
-import { combineClassNames } from '@/shared/utils';
+import { esFlag, gbFlag } from '@/assets/svg';
+
+import { combineClassNames } from '@utils';
+
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@ui';
 
 const FLAG_DICTIONARY = {
-  en: { component: GBFlag, altKey: 'header.ukFlag' },
-  es: { component: ESFlag, altKey: 'header.spainFlag' }
+  en: { component: gbFlag, altKey: 'header.ukFlag' },
+  es: { component: esFlag, altKey: 'header.spainFlag' }
 };
 
 export const LanguageSection = () => {

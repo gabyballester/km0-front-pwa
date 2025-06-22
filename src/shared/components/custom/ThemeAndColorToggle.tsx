@@ -11,11 +11,12 @@ import { useState } from 'react';
 
 import { Moon, Palette, Sun, X as XIcon } from 'lucide-react';
 
-import { Button, Popover, PopoverContent, PopoverTrigger, Text } from '@components';
-
 import { capitalize, combineClassNames } from '@utils';
 
 import { type ThemeColor, useTheme } from '@contexts';
+
+import { Text } from '@custom-ui';
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@ui';
 
 interface AvailableThemeColor {
   name: ThemeColor;
