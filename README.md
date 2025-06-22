@@ -361,18 +361,21 @@ npm run test:prod
 Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuente principal de verdad:
 
 #### **1. JSDoc (Prioridad Principal)**
+
 - **Documentación inline** en todos los componentes, hooks y utilidades
 - **Ejemplos de uso** directamente en el código
 - **TypeScript types** documentados automáticamente
 - **Autocompletado** en IDEs
 
 #### **2. README.md (Visión General)**
+
 - **Quick start** y instalación
 - **Arquitectura** de alto nivel
 - **Enlaces** a documentación específica
 - **Guías** de contribución
 
 #### **3. Documentación Especializada (Opcional)**
+
 - **Guías de migración** cuando sea necesario
 - **Arquitecturas complejas** que requieren explicación extensa
 - **Decisiones técnicas** importantes
@@ -380,6 +383,7 @@ Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuent
 ### Documentación Disponible
 
 #### **Componentes con JSDoc Completo**
+
 - `Button` - Componente con múltiples variantes y tamaños
 - `Modal` - Sistema de modales personalizado
 - `ConfirmDialog` - Confirmaciones con tipos
@@ -388,6 +392,7 @@ Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuent
 - `combineClassNames` - Utilidad para clases CSS
 
 #### **Documentación Especializada**
+
 - [`src/shared/docs/README.md`](src/shared/docs/README.md) - Guía de documentación
 - [`src/shared/docs/loading-architecture.md`](src/shared/docs/loading-architecture.md) - Sistema de loading
 - [`src/shared/docs/path-aliases.md`](src/shared/docs/path-aliases.md) - Aliases de importación
@@ -396,17 +401,19 @@ Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuent
 ### Cómo Documentar
 
 #### **Para Componentes**
-```tsx
+
+````tsx
+
 /**
  * Componente Button personalizado con variantes
- * 
+ *
  * @example
  * ```tsx
  * // Botón primario
  * <Button variant="primary" size="lg">
  *   Click me
  * </Button>
- * 
+ *
  * // Botón con loading
  * <Button disabled={isLoading}>
  *   {isLoading && <Loader size="sm" />}
@@ -417,27 +424,29 @@ Este proyecto sigue una estrategia **híbrida** priorizando **JSDoc** como fuent
 export function Button({ variant, size, children, ...props }) {
   // ...
 }
-```
+````
 
 #### **Para Hooks**
-```tsx
+
+````tsx
+
 /**
  * Hook para manejar estados de autenticación
- * 
+ *
  * @example
  * ```tsx
  * const { user, isLoading, login, logout } = useAuth();
- * 
+ *
  * if (isLoading) return <Loader />;
  * if (!user) return <LoginForm />;
- * 
+ *
  * return <Dashboard user={user} />;
  * ```
  */
 export function useAuth() {
   // ...
 }
-```
+````
 
 ### Beneficios de esta Estrategia
 
@@ -536,10 +545,30 @@ npm run preview
 ### Variables de Entorno
 
 ```bash
-# .env.production
-VITE_API_URL=https://api.tudominio.com
-VITE_GOOGLE_MAPS_API_KEY=tu-api-key
+# Variables de entorno para PWA (Progressive Web App)
+# Todas las variables tienen valores por defecto, por lo que son opcionales
+
+# Intervalo de verificación de actualizaciones en milisegundos (5 minutos por defecto)
+VITE_PWA_UPDATE_INTERVAL=300000
+
+# Timeout para detección de beforeinstallprompt en milisegundos (5 segundos por defecto)
+VITE_PWA_INSTALL_PROMPT_TIMEOUT=5000
+
+# Verificación inicial de actualizaciones en milisegundos (3 segundos por defecto)
+VITE_PWA_INITIAL_CHECK_DELAY=3000
+
+# Intervalo mínimo entre verificaciones forzadas en milisegundos (30 segundos por defecto)
+VITE_PWA_MIN_FORCED_CHECK_INTERVAL=30000
+
+# Variables de entorno para Google Maps
+VITE_APP_GOOGLE_MAPS_API_KEY=tu-api-key
+VITE_GOOGLE_MAPS_MAP_ID=tu-map-id
+
+# Habilitar PWA (opcional, por defecto true)
 VITE_PWA_ENABLED=true
+
+# API URL (opcional)
+VITE_API_URL=https://api.tudominio.com
 ```
 
 ### Optimizaciones de Producción
@@ -573,6 +602,7 @@ VITE_PWA_ENABLED=true
 Este proyecto utiliza **Conventional Commits** para mantener un historial de commits limpio. Ver la [guía completa](./docs/commits.md) para detalles.
 
 #### Formato Básico:
+
 ```bash
 <type>(<scope>): <description>
 
@@ -584,6 +614,7 @@ docs(readme): update installation guide
 ```
 
 #### Tipos de Commit:
+
 - `feat` - Nuevas características
 - `fix` - Correcciones de bugs
 - `docs` - Documentación
@@ -633,7 +664,7 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 > ⚠️ **Advertencia esperada:**
 >
 > Si ves el mensaje:
-> 
+>
 > `Multiple projects found, consider using a single tsconfig with references to speed up, or use noWarnOnMultipleProjects to suppress this warning`
 >
 > Es completamente normal en proyectos grandes con referencias y múltiples tsconfig. No afecta el funcionamiento, el build ni el lint. Puedes ignorarlo con seguridad.

@@ -69,6 +69,29 @@
       "title": "Aplicación actualizada",
       "description": "La aplicación se ha actualizado a la nueva versión {{version}}.",
       "understood": "Entendido"
+    },
+    "install": {
+      "title": "¿Instalar la aplicación?",
+      "description": "Instala la aplicación para tener acceso más rápido y una mejor experiencia. Puedes instalarlo ahora o usar el botón verde más tarde.",
+      "buttonInstall": "📱 Instalar",
+      "buttonLater": "Más tarde",
+      "buttonInstallApp": "📱 Instalar App",
+      "buttonHide": "✕",
+      "buttonHideTitle": "Ocultar durante esta sesión",
+      "debugForceInstall": "🔧 Forzar Instalación",
+      "iosInstructions": "Para instalar esta app en iOS:\n1. Toca el botón \"Compartir\" en Safari\n2. Selecciona \"Agregar a pantalla de inicio\"",
+      "desktopInstructions": "Para instalar esta app:\n\n1. Busca el icono de instalación (📱) en la barra de direcciones\n2. O usa el menú del navegador (⋮) > \"Instalar aplicación\"\n3. O usa Ctrl+Shift+I > Application > Manifest > Install\n\nSi no ves estas opciones, la app ya podría estar instalada.",
+      "install": "Instalar App",
+      "modal": {
+        "title": "¿Quieres instalar la app en tu dispositivo?",
+        "description": "Instala la aplicación para tener acceso más rápido y una mejor experiencia desde tu pantalla de inicio.",
+        "benefits": "Beneficios:",
+        "benefit1": "• Acceso rápido desde tu pantalla de inicio",
+        "benefit2": "• Mejor rendimiento",
+        "buttonInstall": "📥 Instalar ahora",
+        "buttonLater": "Más tarde",
+        "buttonCancel": "No, gracias"
+      }
     }
   },
   "dashboard": {
@@ -187,5 +210,12 @@
     "about": "Acerca de",
     "googleMaps": "Google Maps",
     "dashboard": "Dashboard"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Página no encontrada",
+    "description": "Lo sentimos, la página que buscas no existe o ha sido movida.",
+    "backToHome": "Volver al inicio",
+    "goBack": "Volver atrás"
   }
 }
