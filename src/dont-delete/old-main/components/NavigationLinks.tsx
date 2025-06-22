@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 
-import { Button } from '@/shared/components';
-import { combineClassNames } from '@/shared/utils';
+import { combineClassNames } from '@utils';
 
 import { PATHS } from '@paths';
+
+import { Button } from '@ui';
 
 const items = [
   { text: 'Inicio', to: PATHS.HOME },
