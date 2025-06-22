@@ -1,15 +1,15 @@
-import { toBool, toInt } from '../utils/convertUtils';
+import { ENV_CONFIG, PWA_ENV } from './env.constants';
 
 /**
  * Constantes de configuración para PWA (Progressive Web App)
- * 
+ *
  * Este archivo centraliza todas las configuraciones relacionadas con PWA,
  * incluyendo intervalos de verificación, timeouts y configuraciones de desarrollo.
- * 
+ *
  * @example
  * ```typescript
  * import { PWA_CONFIG } from '@constants';
- * 
+ *
  * // Usar en componentes
  * const updateInterval = PWA_CONFIG.UPDATE_CHECK_INTERVAL;
  * ```
@@ -20,48 +20,33 @@ import { toBool, toInt } from '../utils/convertUtils';
  */
 export const PWA_CONFIG = {
   /** Intervalo de verificación de actualizaciones en milisegundos */
-  UPDATE_CHECK_INTERVAL: toInt(
-    import.meta.env.VITE_PWA_UPDATE_INTERVAL,
-    10000
-  ),
-  
+  UPDATE_CHECK_INTERVAL: Number(PWA_ENV.UPDATE_CHECK_INTERVAL) || 300000, // 5 minutos por defecto
+
   /** Timeout para detección de beforeinstallprompt en milisegundos */
-  INSTALL_PROMPT_TIMEOUT: toInt(
-    import.meta.env.VITE_PWA_INSTALL_PROMPT_TIMEOUT,
-    5000
-  ),
-  
+  INSTALL_PROMPT_TIMEOUT: Number(PWA_ENV.INSTALL_PROMPT_TIMEOUT) || 5000,
+
   /** Verificación inicial de actualizaciones en milisegundos */
-  INITIAL_CHECK_DELAY: toInt(
-    import.meta.env.VITE_PWA_INITIAL_CHECK_DELAY,
-    1000
-  ),
-  
-  /** Verificación forzada después del registro en milisegundos */
-  FORCED_CHECK_DELAY: toInt(
-    import.meta.env.VITE_PWA_FORCED_CHECK_DELAY,
-    1000
-  ),
-  
+  INITIAL_CHECK_DELAY: Number(PWA_ENV.INITIAL_CHECK_DELAY) || 3000,
+
+  /** Intervalo mínimo entre verificaciones forzadas en milisegundos */
+  MIN_FORCED_CHECK_INTERVAL: Number(PWA_ENV.MIN_FORCED_CHECK_INTERVAL) || 30000,
+
+  /** Configuración del modal de instalación */
+  INSTALL_MODAL: {
+    /** Delay antes de mostrar el modal de instalación (5 segundos) */
+    DELAY_MS: 5000
+  },
+
   /** Configuración de desarrollo */
   DEV: {
     /** Mostrar botones de debug en desarrollo */
-    SHOW_DEBUG_BUTTONS: toBool(
-      import.meta.env.VITE_PWA_SHOW_DEBUG_BUTTONS,
-      import.meta.env.DEV
-    ),
-    
+    SHOW_DEBUG_BUTTONS: ENV_CONFIG.IS_DEV,
+
     /** Logs detallados en desarrollo */
-    VERBOSE_LOGGING: toBool(
-      import.meta.env.VITE_PWA_VERBOSE_LOGGING,
-      import.meta.env.DEV
-    ),
-    
+    VERBOSE_LOGGING: ENV_CONFIG.IS_DEV,
+
     /** Función global para forzar instalación en desarrollo */
-    ENABLE_FORCE_INSTALL: toBool(
-      import.meta.env.VITE_PWA_ENABLE_FORCE_INSTALL,
-      import.meta.env.DEV
-    )
+    ENABLE_FORCE_INSTALL: ENV_CONFIG.IS_DEV
   }
 } as const;
 
@@ -69,18 +54,21 @@ export const PWA_CONFIG = {
  * Valores por defecto recomendados para diferentes entornos
  */
 export const PWA_DEFAULTS = {
-  /** Desarrollo: verificación cada 10 segundos */
-  DEV_UPDATE_INTERVAL: 10000,
-  
-  /** Producción: verificación cada 1 minuto */
-  PROD_UPDATE_INTERVAL: 60000,
-  
-  /** Staging: verificación cada 30 segundos */
-  STAGING_UPDATE_INTERVAL: 30000
+  /** Intervalo de verificación de actualizaciones (5 minutos) */
+  UPDATE_INTERVAL: 300000,
+
+  /** Timeout para detección de beforeinstallprompt (5 segundos) */
+  INSTALL_PROMPT_TIMEOUT: 5000,
+
+  /** Verificación inicial de actualizaciones (3 segundos) */
+  INITIAL_CHECK_DELAY: 3000,
+
+  /** Intervalo mínimo entre verificaciones forzadas (30 segundos) */
+  MIN_FORCED_CHECK_INTERVAL: 30000
 } as const;
 
 /**
  * Tipos de configuración de PWA
  */
 export type PWAConfig = typeof PWA_CONFIG;
-export type PWADefaults = typeof PWA_DEFAULTS; 
+export type PWADefaults = typeof PWA_DEFAULTS;

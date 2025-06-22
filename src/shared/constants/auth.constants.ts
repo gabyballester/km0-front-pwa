@@ -3,7 +3,7 @@
  */
 
 export const AUTH_STORAGE_KEYS = {
-  USER: 'user'
+  USER: 'auth-user'
 } as const;
 
 export const EXPIRATION_TIMES = {
