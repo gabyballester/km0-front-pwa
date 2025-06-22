@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import { AppLoader } from '@/shared/components/custom/AppLoader';
+import { AppLoader } from '@custom-ui';
 
 import { RouteGuard } from '../components/RouteGuard';
 import { routes } from '../routes';
@@ -51,7 +51,7 @@ const renderRoute = (route: RouteConfig): JSX.Element => {
  */
 export function Router() {
   return (
-    <Suspense fallback={<AppLoader variant="route-load" />}>
+    <Suspense fallback={<AppLoader variant='route-load' />}>
       <Routes>{routes.map(route => renderRoute(route))}</Routes>
     </Suspense>
   );

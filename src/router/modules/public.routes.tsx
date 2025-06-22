@@ -2,13 +2,14 @@ import { lazy } from 'react';
 
 import { PATHS } from '@paths';
 
+import { NotFoundPage } from '@pages';
+
 import type { RouteConfig } from '../types';
 
 // Lazy load de páginas públicas
 const LandingPage = lazy(() => import('@/features/landing/pages/LandingPage'));
 const AboutPage = lazy(() => import('@/features/about/AboutPage'));
 const GoogleMapsPage = lazy(() => import('@/features/google-maps/GoogleMapsPage'));
-const NotFoundPage = lazy(() => import('@/shared/pages/NotFoundPage'));
 
 /**
  * Configuración de rutas públicas

@@ -1,4 +1,4 @@
-import { logger } from '@/shared/utils';
+import { logger } from '@utils';
 
 import { authRoutes } from './modules/auth.routes';
 import { protectedRoutes } from './modules/protected.routes';
