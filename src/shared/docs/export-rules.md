@@ -7,6 +7,7 @@ Este documento describe las reglas y mejores prácticas para la exportación de 
 **SIEMPRE** usar `export * from` en los archivos barrel (index.ts) para evitar errores de exportación y mantener la consistencia.
 
 ### ✅ Correcto
+
 ```typescript
 // En src/shared/components/index.ts
 export * from './custom';
@@ -14,6 +15,7 @@ export * from './ui';
 ```
 
 ### ❌ Incorrecto
+
 ```typescript
 // En src/shared/components/index.ts
 export { Button } from './ui/button';
@@ -26,6 +28,7 @@ export { AppLoader } from './custom/AppLoader';
 Los componentes que usan `export default` deben ser exportados como nombrados en sus archivos originales para poder ser importados desde los barrels.
 
 ### ✅ Correcto
+
 ```typescript
 // En src/shared/components/custom/AppLoader.tsx
 export function AppLoader() {
@@ -37,6 +40,7 @@ export default AppLoader;
 ```
 
 ### ❌ Incorrecto
+
 ```typescript
 // En src/shared/components/custom/AppLoader.tsx
 export default function AppLoader() {
@@ -50,6 +54,7 @@ export default function AppLoader() {
 Usar siempre los alias configurados para imports más limpios y mantenibles.
 
 ### ✅ Correcto
+
 ```typescript
 import { Button, Card, AppLoader } from '@components';
 import { useVersion } from '@contexts';
@@ -57,19 +62,21 @@ import { VERSION_CONFIG } from '@constants';
 ```
 
 ### ❌ Incorrecto
+
 ```typescript
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
-import { AppLoader } from '@/shared/components/custom/AppLoader';
+import { AppLoader } from '@custom-uiAppLoader';
 ```
 
 ## Estructura de Barrels
 
 ### Barrel Principal (`src/shared/components/index.ts`)
+
 ```typescript
 /**
  * Barrel export principal para todos los componentes
- * 
+ *
  * REGLAS DE EXPORTACIÓN:
  * - Usar SIEMPRE 'export * from' para evitar errores de exportación
  * - NO usar exportaciones nombradas individuales
@@ -82,10 +89,11 @@ export * from './ui';
 ```
 
 ### Barrel de Categoría (`src/shared/components/custom/index.ts`)
+
 ```typescript
 /**
  * Barrel export para componentes custom
- * 
+ *
  * REGLAS DE EXPORTACIÓN:
  * - Usar SIEMPRE 'export * from' para evitar errores de exportación
  * - NO usar exportaciones nombradas individuales
@@ -110,6 +118,7 @@ export * from './UserAvatar';
 ## Ejemplos de Uso
 
 ### Importar Componentes
+
 ```typescript
 // Importar desde el barrel principal
 import { Button, Card, AppLoader, UserAvatar } from '@components';
@@ -120,6 +129,7 @@ import { AppLoader, UserAvatar } from '@custom';
 ```
 
 ### Uso en Componentes
+
 ```typescript
 function MyPage() {
   return (
@@ -148,4 +158,4 @@ Para verificar que las reglas se están siguiendo correctamente:
 2. No hay exportaciones nombradas individuales en barrels
 3. Los componentes default también tienen exportación nombrada
 4. Los imports usan alias cortos
-5. La documentación está actualizada en cada barrel 
+5. La documentación está actualizada en cada barrel
