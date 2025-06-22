@@ -99,15 +99,15 @@ export function PWAInstallModal() {
     logger.info('Usuario eligió "Más tarde" para la instalación PWA');
   };
 
+  const handleCloseOutside = () => {
+    setShowModal(false);
+    logger.info('Usuario cerró el modal de instalación PWA haciendo clic fuera');
+  };
+
   const handleCancel = () => {
     setShowModal(false);
     localStorage.setItem(STORAGE_KEYS.PWA_INSTALL_DECLINED, 'true');
     logger.info('Usuario declinó permanentemente la instalación PWA');
-  };
-
-  const handleCloseOutside = () => {
-    setShowModal(false);
-    logger.info('Usuario cerró el modal de instalación PWA haciendo clic fuera');
   };
 
   if (!showModal) return null;
@@ -121,43 +121,27 @@ export function PWAInstallModal() {
       size='sm'
       preventCloseOnEscape={false}
     >
-      <div className='space-y-3'>
-        <p className='text-sm text-foreground leading-relaxed'>
-          {t('pwa.install.modal.description')}
-        </p>
-
-        <div className='space-y-2'>
-          <h4 className='text-sm font-medium text-foreground'>{t('pwa.install.modal.benefits')}</h4>
-          <ul className='space-y-1 text-xs text-muted-foreground'>
-            <li className='flex items-center gap-2'>
-              <span className='text-primary'>•</span>
-              {t('pwa.install.modal.benefit1')}
-            </li>
-            <li className='flex items-center gap-2'>
-              <span className='text-primary'>•</span>
-              {t('pwa.install.modal.benefit2')}
-            </li>
-          </ul>
-        </div>
-
-        <div className='flex flex-col gap-2 pt-3'>
+      <div className='flex flex-col gap-4 p-2 bg-white text-foreground'>
+        <p className='text-center text-sm'>{t('pwa.install.modal.description')}</p>
+        <div className='flex flex-col gap-2'>
           <Button
             onClick={handleInstall}
-            className='w-full bg-green-600 hover:bg-green-700'
+            className='w-full bg-green-600 hover:bg-green-700 text-white'
             size='sm'
           >
             {t('pwa.install.modal.buttonInstall')}
           </Button>
-
-          <div className='flex gap-2'>
-            <Button variant='outline' onClick={handleLater} className='flex-1' size='sm'>
-              {t('pwa.install.modal.buttonLater')}
-            </Button>
-
-            <Button variant='ghost' onClick={handleCancel} className='flex-1' size='sm'>
-              {t('pwa.install.modal.buttonCancel')}
-            </Button>
-          </div>
+          <Button variant='ghost' onClick={handleLater} className='w-full text-xs' size='sm'>
+            {t('pwa.install.modal.buttonLater')}
+          </Button>
+          <Button
+            variant='ghost'
+            onClick={handleCancel}
+            className='w-full text-xs text-muted-foreground'
+            size='sm'
+          >
+            {t('pwa.install.modal.buttonCancel')}
+          </Button>
         </div>
       </div>
     </Modal>
