@@ -1,4 +1,4 @@
-import { ENV_CONFIG, PWA_ENV } from './env.constants';
+import { ENV_CONFIG } from './env.constants';
 
 /**
  * Constantes de configuración para PWA (Progressive Web App)
@@ -20,16 +20,16 @@ import { ENV_CONFIG, PWA_ENV } from './env.constants';
  */
 export const PWA_CONFIG = {
   /** Intervalo de verificación de actualizaciones en milisegundos */
-  UPDATE_CHECK_INTERVAL: Number(PWA_ENV.UPDATE_CHECK_INTERVAL) || 300000, // 5 minutos por defecto
+  UPDATE_CHECK_INTERVAL: 30000, // 30 segundos (muy agresivo)
 
   /** Timeout para detección de beforeinstallprompt en milisegundos */
-  INSTALL_PROMPT_TIMEOUT: Number(PWA_ENV.INSTALL_PROMPT_TIMEOUT) || 5000,
+  INSTALL_PROMPT_TIMEOUT: 5000,
 
   /** Verificación inicial de actualizaciones en milisegundos */
-  INITIAL_CHECK_DELAY: Number(PWA_ENV.INITIAL_CHECK_DELAY) || 3000,
+  INITIAL_CHECK_DELAY: 1000, // 1 segundo (muy rápido)
 
   /** Intervalo mínimo entre verificaciones forzadas en milisegundos */
-  MIN_FORCED_CHECK_INTERVAL: Number(PWA_ENV.MIN_FORCED_CHECK_INTERVAL) || 30000,
+  MIN_FORCED_CHECK_INTERVAL: 5000, // 5 segundos (muy agresivo)
 
   /** Configuración del modal de instalación */
   INSTALL_MODAL: {
@@ -54,17 +54,17 @@ export const PWA_CONFIG = {
  * Valores por defecto recomendados para diferentes entornos
  */
 export const PWA_DEFAULTS = {
-  /** Intervalo de verificación de actualizaciones (5 minutos) */
-  UPDATE_INTERVAL: 300000,
+  /** Intervalo de verificación de actualizaciones (30 segundos) */
+  UPDATE_INTERVAL: 30000,
 
   /** Timeout para detección de beforeinstallprompt (5 segundos) */
   INSTALL_PROMPT_TIMEOUT: 5000,
 
-  /** Verificación inicial de actualizaciones (3 segundos) */
-  INITIAL_CHECK_DELAY: 3000,
+  /** Verificación inicial de actualizaciones (1 segundo) */
+  INITIAL_CHECK_DELAY: 1000,
 
-  /** Intervalo mínimo entre verificaciones forzadas (30 segundos) */
-  MIN_FORCED_CHECK_INTERVAL: 30000
+  /** Intervalo mínimo entre verificaciones forzadas (5 segundos) */
+  MIN_FORCED_CHECK_INTERVAL: 5000
 } as const;
 
 /**

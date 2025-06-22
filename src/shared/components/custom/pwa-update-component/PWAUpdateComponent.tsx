@@ -126,11 +126,11 @@ export const PWAUpdateComponent = () => {
           logger.info('Service Worker controller changed!');
         });
 
-        // Verificación suavizada después del registro
+        // Verificación inmediata después del registro
         setTimeout(() => {
-          logger.info('Gentle update check after registration...');
+          logger.info('Immediate update check after registration...');
           registration.update().catch(error => {
-            logger.error('Error during gentle update check:', error);
+            logger.error('Error during immediate update check:', error);
           });
         }, PWA_CONFIG.INITIAL_CHECK_DELAY);
       }
@@ -156,11 +156,14 @@ export const PWAUpdateComponent = () => {
     onOfflineReady() {
       logger.info('PWA is ready for offline use');
     },
-    // Configuración menos agresiva
-    immediate: false // Cambiado a false para ser menos agresivo
+    // Configuración ultra-agresiva para detectar actualizaciones
+    immediate: true, // Cambiado a true para ser ultra-agresivo
+    onUpdateFound: () => {
+      logger.info('Update found - checking for new version...');
+    }
   });
 
-  // Función para realizar verificaciones suaves sin forzar
+  // Función para realizar verificaciones forzadas y agresivas
   const performGentleUpdateCheck = async () => {
     if (isCheckingRef.current) {
       logger.info('Update check already in progress, skipping...');
@@ -170,7 +173,7 @@ export const PWAUpdateComponent = () => {
     const now = Date.now();
     const timeSinceLastCheck = now - lastForcedCheckRef.current;
 
-    // Evitar verificaciones forzadas muy frecuentes
+    // Verificación más agresiva - reducir el intervalo mínimo
     if (timeSinceLastCheck < PWA_CONFIG.MIN_FORCED_CHECK_INTERVAL) {
       logger.info(
         `Skipping forced check - too soon (${Math.round(timeSinceLastCheck / 1000)}s ago)`
@@ -182,18 +185,28 @@ export const PWAUpdateComponent = () => {
     lastForcedCheckRef.current = now;
 
     try {
-      logger.info('Performing gentle update check...');
+      logger.info('Performing aggressive update check...');
 
       if ('serviceWorker' in navigator) {
         const registration = await navigator.serviceWorker.getRegistration();
         if (registration) {
-          // Verificación suave sin forzar
+          // Verificación forzada y agresiva
           await registration.update();
-          logger.info('Gentle service worker update check completed');
+          logger.info('Aggressive service worker update check completed');
+
+          // Verificación adicional inmediata
+          setTimeout(async () => {
+            try {
+              await registration.update();
+              logger.info('Additional aggressive update check completed');
+            } catch (error) {
+              logger.error('Error in additional update check:', error);
+            }
+          }, 1000);
         }
       }
     } catch (error) {
-      logger.error('Error during gentle update check:', error);
+      logger.error('Error during aggressive update check:', error);
     } finally {
       isCheckingRef.current = false;
     }
@@ -324,9 +337,9 @@ export const PWAUpdateComponent = () => {
 
   // Verificación inicial y periódica de actualizaciones
   useEffect(() => {
-    // Verificación inicial suavizada al cargar la app
+    // Verificación inicial ultra-agresiva al cargar la app
     const initialCheck = async () => {
-      logger.info('Initial gentle update check on app load...');
+      logger.info('Initial aggressive update check on app load...');
 
       try {
         await performGentleUpdateCheck();
@@ -340,12 +353,12 @@ export const PWAUpdateComponent = () => {
       }
     };
 
-    // Ejecutar verificación inicial después de un delay más largo
+    // Ejecutar verificación inicial inmediatamente
     const initialTimeout = setTimeout(initialCheck, PWA_CONFIG.INITIAL_CHECK_DELAY);
 
-    // Verificación periódica suavizada
+    // Verificación periódica ultra-agresiva
     const periodicCheck = async () => {
-      logger.info('Periodic gentle update check...');
+      logger.info('Periodic aggressive update check...');
 
       try {
         await performGentleUpdateCheck();
@@ -359,7 +372,7 @@ export const PWAUpdateComponent = () => {
       }
     };
 
-    // Iniciar verificación periódica con intervalo más largo
+    // Iniciar verificación periódica con intervalo ultra-corto
     const intervalId = setInterval(periodicCheck, UPDATE_CHECK_INTERVAL);
 
     return () => {
@@ -373,7 +386,7 @@ export const PWAUpdateComponent = () => {
     const handleVisibilityChange = async () => {
       // Solo verificar cuando la página se vuelve visible (app traída a primer plano)
       if (!document.hidden) {
-        logger.info('App brought to foreground, performing gentle update check...');
+        logger.info('App brought to foreground, performing aggressive update check...');
 
         try {
           await performGentleUpdateCheck();
@@ -393,7 +406,7 @@ export const PWAUpdateComponent = () => {
 
     // También escuchar cuando la ventana obtiene el foco (útil para PWA)
     const handleFocus = async () => {
-      logger.info('Window focused, performing gentle update check...');
+      logger.info('Window focused, performing aggressive update check...');
 
       try {
         await performGentleUpdateCheck();

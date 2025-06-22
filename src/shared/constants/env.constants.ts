@@ -39,23 +39,6 @@ export const ENV_CONFIG = {
 } as const;
 
 /**
- * Configuración de variables de entorno de PWA
- */
-export const PWA_ENV = {
-  /** Intervalo de verificación de actualizaciones en milisegundos */
-  UPDATE_CHECK_INTERVAL: 900000,
-
-  /** Timeout para detección de beforeinstallprompt en milisegundos */
-  INSTALL_PROMPT_TIMEOUT: 5000,
-
-  /** Verificación inicial de actualizaciones en milisegundos */
-  INITIAL_CHECK_DELAY: 10000,
-
-  /** Intervalo mínimo entre verificaciones forzadas en milisegundos */
-  MIN_FORCED_CHECK_INTERVAL: 120000
-} as const;
-
-/**
  * Configuración de variables de entorno de Google Maps
  */
 export const GOOGLE_MAPS_ENV = {
@@ -104,7 +87,6 @@ export const PROD_CONFIG = {
  * Tipos de configuración del entorno
  */
 export type EnvConfig = typeof ENV_CONFIG;
-export type PwaEnv = typeof PWA_ENV;
 export type GoogleMapsEnv = typeof GOOGLE_MAPS_ENV;
 export type DevConfig = typeof DEV_CONFIG;
 export type ProdConfig = typeof PROD_CONFIG;
