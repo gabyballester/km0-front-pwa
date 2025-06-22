@@ -149,18 +149,10 @@ export const PWAUpdateComponent = () => {
         logger.warn('Resource error detected during registration');
       }
     },
-    // Configuración adicional para mejorar detección
-    onNeedRefresh() {
-      logger.info('PWA needs refresh - new version detected!');
-    },
     onOfflineReady() {
       logger.info('PWA is ready for offline use');
     },
-    // Configuración ultra-agresiva para detectar actualizaciones
-    immediate: true, // Cambiado a true para ser ultra-agresivo
-    onUpdateFound: () => {
-      logger.info('Update found - checking for new version...');
-    }
+    immediate: true
   });
 
   // Función para realizar verificaciones forzadas y agresivas
