@@ -1,33 +1,43 @@
-import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { Home, Search } from 'lucide-react';
+import { Home } from 'lucide-react';
 
-import { Button } from '@/shared/components';
+import { Button } from '@ui';
 
-import { PATHS } from '@paths';
+/**
+ * Página NotFoundPage
+ *
+ * Muestra un mensaje 404 y botones para volver atrás o ir al inicio.
+ * Utiliza Button de @ui.
+ *
+ * @example
+ * ```tsx
+ * import { NotFoundPage } from '@pages';
+ *
+ * <Route path="*" element={<NotFoundPage />} />
+ * ```
+ */
 
-export default function NotFoundPage() {
+export function NotFoundPage() {
+  const { t } = useTranslation();
+
   return (
-    <div className='min-h-screen flex items-center justify-center bg-background'>
-      <div className='text-center space-y-6 p-8'>
-        <div className='space-y-2'>
-          <Search className='mx-auto h-16 w-16 text-muted-foreground' />
-          <h1 className='text-4xl font-bold'>404</h1>
-          <h2 className='text-2xl font-semibold'>Página no encontrada</h2>
-          <p className='text-muted-foreground max-w-md'>
-            Lo sentimos, la página que buscas no existe o ha sido movida.
-          </p>
+    <div className='min-h-screen flex items-center justify-center bg-gray-50'>
+      <div className='max-w-md w-full space-y-8 text-center'>
+        <div>
+          <h1 className='text-9xl font-bold text-gray-300'>404</h1>
+          <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>{t('notFound.subtitle')}</h2>
+          <p className='mt-2 text-sm text-gray-600'>{t('notFound.description')}</p>
         </div>
-
-        <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-          <Button asChild>
-            <Link to={PATHS.HOME}>
-              <Home className='h-4 w-4 mr-2' />
-              Volver al inicio
-            </Link>
+        <div>
+          <Button onClick={() => window.history.back()} className='mr-4' variant='outline'>
+            {t('notFound.goBack')}
           </Button>
-          <Button variant='outline' onClick={() => window.history.back()}>
-            Volver atrás
+          <Button asChild>
+            <a href='/'>
+              <Home className='w-4 h-4 mr-2' />
+              {t('notFound.backToHome')}
+            </a>
           </Button>
         </div>
       </div>

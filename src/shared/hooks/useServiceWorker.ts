@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import { clearServiceWorkerSessionData, logger, restartServiceWorker } from '@utils';
 
+import { ENV_CONFIG, SESSION_KEYS } from '@constants';
+
 interface ServiceWorkerMessage {
   type: string;
   version?: string;
@@ -10,28 +12,28 @@ interface ServiceWorkerMessage {
 
 /**
  * Hook para manejar el Service Worker de la aplicación PWA
- * 
+ *
  * Proporciona funcionalidades para gestionar el Service Worker, incluyendo
  * detección de errores, recuperación automática, actualización forzada
  * y limpieza de caché.
- * 
+ *
  * @example
  * ```tsx
  * // Uso básico en App.tsx
  * function App() {
  *   const { forceUpdate, restart, clearCache } = useServiceWorker();
- * 
+ *
  *   return (
  *     <div>
  *       <AppContent />
  *     </div>
  *   );
  * }
- * 
+ *
  * // Uso con controles manuales
  * function ServiceWorkerControls() {
  *   const { forceUpdate, restart, clearCache, clearSessionData } = useServiceWorker();
- * 
+ *
  *   return (
  *     <div className="space-y-2">
  *       <Button onClick={forceUpdate}>
@@ -49,19 +51,19 @@ interface ServiceWorkerMessage {
  *     </div>
  *   );
  * }
- * 
+ *
  * // Uso con notificaciones de estado
  * function ServiceWorkerStatus() {
  *   const { forceUpdate } = useServiceWorker();
  *   const [hasUpdate, setHasUpdate] = useState(false);
- * 
+ *
  *   useEffect(() => {
  *     // Escuchar actualizaciones del service worker
  *     navigator.serviceWorker?.addEventListener('controllerchange', () => {
  *       setHasUpdate(true);
  *     });
  *   }, []);
- * 
+ *
  *   if (hasUpdate) {
  *     return (
  *       <div className="bg-blue-100 p-4 rounded">
@@ -72,22 +74,22 @@ interface ServiceWorkerMessage {
  *       </div>
  *     );
  *   }
- * 
+ *
  *   return null;
  * }
  * ```
- * 
+ *
  * @returns Objeto con funciones para gestionar el Service Worker
  */
 export const useServiceWorker = () => {
   const hasReloaded = useRef(false);
   const retryCount = useRef(0);
   const maxRetries = 3;
-  const isDev = import.meta.env.DEV;
+  const isDev = ENV_CONFIG.IS_DEV;
 
   useEffect(() => {
     // Verificar si ya hemos recargado en esta sesión
-    const sessionReloaded = sessionStorage.getItem('sw-reloaded');
+    const sessionReloaded = sessionStorage.getItem(SESSION_KEYS.SW_RELOADED);
     if (sessionReloaded === 'true') {
       hasReloaded.current = true;
       return;
@@ -112,7 +114,7 @@ export const useServiceWorker = () => {
             logger.info(`Attempting page reload (attempt ${retryCount.current}/${maxRetries})`);
 
             // Marcar que hemos recargado en esta sesión
-            sessionStorage.setItem('sw-reloaded', 'true');
+            sessionStorage.setItem(SESSION_KEYS.SW_RELOADED, 'true');
             hasReloaded.current = true;
 
             // Pequeño delay para asegurar que el service worker se haya registrado
@@ -147,7 +149,7 @@ export const useServiceWorker = () => {
             `Attempting page reload due to MIME error (attempt ${retryCount.current}/${maxRetries})`
           );
 
-          sessionStorage.setItem('sw-reloaded', 'true');
+          sessionStorage.setItem(SESSION_KEYS.SW_RELOADED, 'true');
           hasReloaded.current = true;
 
           setTimeout(() => {

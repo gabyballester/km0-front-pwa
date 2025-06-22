@@ -2,12 +2,14 @@
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import {
-    cleanupOutdatedCaches,
-    createHandlerBoundToURL,
-    precacheAndRoute
+  cleanupOutdatedCaches,
+  createHandlerBoundToURL,
+  precacheAndRoute
 } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+
+import { ENV_CONFIG } from '@constants';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -16,7 +18,7 @@ interface ManifestEntry {
   revision: string | null;
 }
 
-const isDev = import.meta.env.DEV;
+const isDev = ENV_CONFIG.IS_DEV;
 
 // Versión dinámica del service worker basada en timestamp
 const SW_VERSION = isDev ? `dev-${Date.now()}` : `prod-${Date.now()}`;
@@ -149,7 +151,7 @@ if (!isDev) {
   try {
     const navigationHandler = createHandlerBoundToURL('/index.html');
     const navigationRoute = new NavigationRoute(navigationHandler, {
-      allowlist: [new RegExp(`^${import.meta.env.BASE_URL || '/'}`)],
+      allowlist: [new RegExp(`^${ENV_CONFIG.BASE_URL}`)],
       denylist: [
         /^\/api\//,
         // Archivos estáticos específicos
@@ -292,29 +294,32 @@ self.addEventListener('message', event => {
   // Manejar verificación manual de actualizaciones
   if (event.data && event.data.type === 'CHECK_FOR_UPDATES') {
     log('Manual update check requested', 'info');
-    
+
     // Forzar verificación de actualizaciones
-    self.registration?.update().then(() => {
-      log('Manual update check completed', 'info');
-      // Notificar al cliente
-      event.ports[0]?.postMessage({ 
-        success: true, 
-        message: 'Update check completed' 
+    self.registration
+      ?.update()
+      .then(() => {
+        log('Manual update check completed', 'info');
+        // Notificar al cliente
+        event.ports[0]?.postMessage({
+          success: true,
+          message: 'Update check completed'
+        });
+      })
+      .catch(error => {
+        log(`Manual update check failed: ${error}`, 'error');
+        event.ports[0]?.postMessage({
+          success: false,
+          error: error.message
+        });
       });
-    }).catch(error => {
-      log(`Manual update check failed: ${error}`, 'error');
-      event.ports[0]?.postMessage({ 
-        success: false, 
-        error: error.message 
-      });
-    });
   }
 });
 
 // Detectar cuando el service worker se actualiza
 self.addEventListener('updatefound', () => {
   log('Service worker update found!', 'warn');
-  
+
   // Notificar a todos los clientes que hay una actualización disponible
   self.clients.matchAll().then(clients => {
     clients.forEach(client => {
@@ -329,7 +334,7 @@ self.addEventListener('updatefound', () => {
 // Detectar cuando el controlador cambia (nueva versión activada)
 self.addEventListener('controllerchange', () => {
   log('Service worker controller changed!', 'warn');
-  
+
   // Notificar a todos los clientes que se ha activado una nueva versión
   self.clients.matchAll().then(clients => {
     clients.forEach(client => {

@@ -1,7 +1,8 @@
 import { toast } from 'sonner';
 
-import { TOAST_TYPES } from '@/shared/constants';
-import { logger } from '@/shared/utils';
+import { logger } from '@utils';
+
+import { TOAST_TYPES } from '@constants';
 
 /**
  * Opciones de configuración para los toasts
