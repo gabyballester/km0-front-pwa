@@ -33,3 +33,25 @@ declare module '*.svg?url' {
 }
 
 declare module 'util';
+
+// Extender la interfaz Window para incluir propiedades específicas de PWA
+interface Window {
+  deferredPrompt?: BeforeInstallPromptEvent;
+}
+
+// Extender la interfaz BeforeInstallPromptEvent para mejor tipado
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt: () => Promise<void>;
+}
+
+// Declarar el evento beforeinstallprompt
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}

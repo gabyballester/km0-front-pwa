@@ -83,7 +83,7 @@
       "desktopInstructions": "To install this app:\n\n1. Look for the install icon (📱) in the address bar\n2. Or use the browser menu (⋮) > \"Install application\"\n3. Or use Ctrl+Shift+I > Application > Manifest > Install\n\nIf you don't see these options, the app might already be installed.",
       "install": "Install App",
       "modal": {
-        "title": "Do you want to install the app on your device?",
+        "title": "Do you want to install KM0 {{version}} on your device?",
         "description": "Install the app for faster access and a better experience from your home screen.",
         "benefits": "Benefits:",
         "benefit1": "• Quick access from your home screen",

@@ -22,10 +22,10 @@ type PWAInstallButtonProps = Omit<React.ComponentProps<typeof Button>, 'onClick'
  * <PWAInstallButton variant="outline" size="sm" className="fixed bottom-4 right-4" />
  */
 export function PWAInstallButton({ children, ...buttonProps }: PWAInstallButtonProps) {
-  const { canInstall, installApp } = usePWAInstall();
+  const { canInstall, installApp, isChecking } = usePWAInstall();
   const { t } = useTranslation();
 
-  if (!canInstall) return null;
+  if (isChecking || !canInstall) return null;
 
   return (
     <Button onClick={installApp} {...buttonProps}>

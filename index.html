@@ -52,6 +52,30 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
+      // Script para manejar el prompt de instalación PWA en Chrome para Android
+      // Este script se ejecuta antes que React para capturar el evento beforeinstallprompt
+      window.addEventListener('beforeinstallprompt', e => {
+        // Prevenir que el mini-infobar aparezca automáticamente
+        e.preventDefault();
+
+        // Guardar el evento para uso posterior (especialmente útil en Chrome para Android)
+        window.deferredPrompt = e;
+
+        console.log('PWA: Evento beforeinstallprompt capturado y guardado');
+      });
+
+      // Verificar si la PWA ya está instalada
+      if (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.matchMedia('(display-mode: minimal-ui)').matches ||
+        window.matchMedia('(display-mode: window-controls-overlay)').matches
+      ) {
+        console.log('PWA: Aplicación ya está instalada');
+        // Limpiar cualquier prompt guardado
+        window.deferredPrompt = null;
+      }
+
       // Oculta el splash cuando la app cargue
       window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('splash')?.remove();
