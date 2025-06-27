@@ -105,7 +105,12 @@ const LandingPage = () => {
             <p className='drop-shadow-lg'>{t('landing.info.hasAccount')}</p>
             <p className='drop-shadow-lg'>{t('landing.info.newUser')}</p>
             {/* Texto de prueba para verificar actualización PWA */}
-            <p className='drop-shadow-lg text-yellow-300 font-bold'>🔄 PWA Test Update - v1.1</p>
+            <p className='drop-shadow-lg text-green-300 font-bold'>
+              🚀 PWA Test Update - v1.2 - ¡Funciona!
+            </p>
+            <p className='drop-shadow-lg text-blue-300 text-xs'>
+              Actualización automática detectada ✅
+            </p>
           </div>
         </div>
       </div>
