@@ -78,13 +78,12 @@ const LandingPage = () => {
       {/* Main Content - Positioned in lower third */}
       <div className='relative z-10 min-h-screen w-full flex items-end justify-center p-4 pb-[20vh]'>
         <div className='text-center space-y-8 max-w-md w-full'>
-
           {/* Main Action Buttons */}
           <div className='space-y-4'>
             <Button
               onClick={handleGoToLogin}
-              className='w-full h-12 text-lg font-semibold bg-green-600 text-white hover:bg-blue-700 backdrop-blur-sm border-2
-                border-blue-500/20 shadow-lg'
+              className='w-full h-12 text-lg font-semibold bg-green-600 text-white hover:bg-blue-700 backdrop-blur-sm
+                border-2 border-blue-500/20 shadow-lg'
             >
               <LogIn className='w-5 h-5 mr-2' />
               {t('landing.loginButton')}
@@ -105,6 +104,8 @@ const LandingPage = () => {
           <div className='text-sm text-white space-y-2 backdrop-blur-sm bg-gray-300/10 rounded-lg p-4 shadow-xl'>
             <p className='drop-shadow-lg'>{t('landing.info.hasAccount')}</p>
             <p className='drop-shadow-lg'>{t('landing.info.newUser')}</p>
+            {/* Texto de prueba para verificar actualización PWA */}
+            <p className='drop-shadow-lg text-yellow-300 font-bold'>🔄 PWA Test Update - v1.1</p>
           </div>
         </div>
       </div>
